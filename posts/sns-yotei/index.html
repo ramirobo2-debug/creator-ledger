@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SNS の投稿予定を表で管理する|「遅れ」「今日」を色で出し、最後に投稿してからの日数を MAXIFS で|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="SNS の投稿の予定日と投稿した日を1行に書き、遅れ・今日を色で出す方法。SNS ごとの最後に投稿した日・たった日数・次の予定日を MAXIFS・MINIFS で出します。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/sns-yotei/">
+<meta property="og:title" content="SNS の投稿予定を表で管理する|「遅れ」「今日」を色で出し、最後に投稿してからの日数を MAXIFS で">
+<meta property="og:description" content="SNS の投稿の予定日と投稿した日を1行に書き、遅れ・今日を色で出す方法。SNS ごとの最後に投稿した日・たった日数・次の予定日を MAXIFS・MINIFS で出します。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/sns-yotei/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>SNS の投稿予定を表で管理する|「遅れ」「今日」を色で出し、最後に投稿してからの日数を MAXIFS で</h1>
+<p class="date">公開日: 2026-11-11</p>
+<p>「新作が出たら投稿しよう」「イベントの1週間前に告知しよう」と決めていても、制作や発送に追われていると、気づけば予定の日を過ぎていた、ということが起きます。SNS ごとに「最後にいつ投稿したか」も、いくつも使っていると覚えきれません。</p>
+<p>この記事では、投稿の予定日と投稿した日を1行ずつ書き、状態(投稿済み・今日・遅れ・予定)を式で出して色をつけ、SNS ごとに最後に投稿した日・たった日数・次の予定日を出す表を作ります。</p>
+<h2>予定日と投稿した日を、同じ行に書く</h2>
+<p>投稿したい内容を思いついたら、予定日・SNS・種類・内容のメモを書いて、1行の「予定」にしておきます。投稿したら、同じ行の「投稿した日」を埋めます。予定と実績を別の表にしないので、「予定していたのに出していない投稿」が残っている行としてそのまま見えます。</p>
+<p>反応の数(いいね・保存など)も同じ行に書けば、<a href="../sns-hannou/">反応を種類別・曜日別に比べる記事</a>の集計にそのまま使えます。</p>
+<h2>状態を式で出して、色をつける</h2>
+<pre><code>N2(状態): =IF($B2&lt;&gt;&quot;&quot;,&quot;投稿済み&quot;,IF(NOT(ISNUMBER($A2)),&quot;&quot;,IF($A2=TODAY(),&quot;今日&quot;,IF($A2&lt;TODAY(),&quot;遅れ&quot;,&quot;予定&quot;))))
+</code></pre>
+<ul>
+<li>投稿した日が入っていれば「投稿済み」です。予定日より何日遅れて投稿しても、投稿した時点で「投稿済み」になります</li>
+<li>投稿した日が空で、予定日が今日なら「今日」、過ぎていれば「遅れ」、まだ先なら「予定」です</li>
+<li>予定日が日付でない(文字が入っているなど)ときは空にします。<code>ISNUMBER</code> で日付かどうかを見ています</li>
+</ul>
+<p>色は条件付き書式でつけます。範囲を状態の列(N2:N2001)にして、「数式を使用して…」で次の式を入れ、それぞれ色を選びます。</p>
+<pre><code>$N2=&quot;遅れ&quot;   → オレンジ(予定日の列 A2:A2001 にも同じ式でつけると、どの日が遅れているかが目立ちます)
+$N2=&quot;今日&quot;   → 青
+</code></pre>
+<p><a href="../../img/30_yotei.png"><img alt="投稿の予定の表。10/22〜11/4 の5件は投稿済み、11/8 Instagram 再入荷の告知は遅れ(予定日と状態がオレンジ)、11/11 Threads 作業机の写真は今日(青)、11/15 Instagram ミニ巾着は予定" src="../../img/30_yotei.png" /></a></p>
+<p>この画面は 2026年11月11日に開いたときのものです。11/8 の再入荷の告知はまだ投稿していないので「遅れ」になっています。TODAY() を使っているので、ファイルを開いた日によって、「予定」が「今日」に、「今日」が「遅れ」に変わっていきます。</p>
+<p>予定日を過ぎたら必ず投稿しなければいけないわけではありません。出さないと決めた予定は、行を消すか、予定日を空にしておくと「遅れ」から外れます(予定日を空にした行は状態も空になります)。</p>
+<h2>SNS ごとに、最後に投稿した日・たった日数・次の予定日</h2>
+<p>SNS 別の表に3つの列を足します。</p>
+<pre><code>J2(最後に投稿した日): =IF(COUNTIFS(投稿!$C$2:$C$2001,$A2,投稿!$B$2:$B$2001,&quot;&lt;&gt;&quot;)=0,&quot;&quot;,MAXIFS(投稿!$B$2:$B$2001,投稿!$C$2:$C$2001,$A2))
+K2(たった日数):       =IF(J2=&quot;&quot;,&quot;&quot;,TODAY()-J2)
+L2(次の予定日):       =IF(COUNTIFS(投稿!$C$2:$C$2001,$A2,投稿!$B$2:$B$2001,&quot;&quot;,投稿!$A$2:$A$2001,&quot;&gt;0&quot;)=0,&quot;&quot;,MINIFS(投稿!$A$2:$A$2001,投稿!$C$2:$C$2001,$A2,投稿!$B$2:$B$2001,&quot;&quot;,投稿!$A$2:$A$2001,&quot;&gt;0&quot;))
+</code></pre>
+<ul>
+<li>最後に投稿した日は、その SNS の行の「投稿した日」のいちばん新しい日付です。MAXIFS で出します</li>
+<li>次の予定日は、まだ投稿していない行の予定日のうち、いちばん早い日です。MINIFS で出します。遅れている予定があれば、その日が出ます</li>
+<li>予定日の条件 <code>"&gt;0"</code> は、予定日を空にした行を外すためのものです。これが無いと、ソフトによっては空の予定日が 0 として最小の値に選ばれ、次の予定日がおかしな日付になります。この例でも、予定日を空にした Instagram の行を表の外に1行足して、次の予定日が 11/8 のままになることを確かめました</li>
+<li>どちらも、当てはまる行が1つも無いと 0 を返すので、COUNTIFS で数えて空にしています(0 を日付にすると 1899年や1900年の日付になります)</li>
+<li>J と L のセルは、表示形式を日付にします</li>
+</ul>
+<p><a href="../../img/30_sns.png"><img alt="SNS別の表。Instagram 投稿3・予定2・最後に投稿した日 2026/11/01・10日・次の予定日 2026/11/08、X 投稿2・予定0・11/04・7日・次の予定なし、Threads 投稿0・予定1・最後なし・次 2026/11/11" src="../../img/30_sns.png" /></a></p>
+<p>この例では、Instagram は最後の投稿から10日たっていて、次の予定日の 11/8 はもう過ぎています。X は7日前に投稿したきり、次の予定がありません。Threads はまだ1回も投稿していなくて、今日が最初の予定です。「次の予定日が空の SNS」は、予定を足し忘れている SNS の目印になります。</p>
+<p>たった日数に色をつけたいときは、K の列に条件付き書式で <code>AND(ISNUMBER($K2),$K2&gt;=14)</code> のような式を入れます。何日あいたら気にするかは、SNS ごとの投稿のペースに合わせて決めてください。</p>
+<p>MAXIFS・MINIFS は Excel 2019 以降・Microsoft 365・Google スプレッドシート・LibreOffice で使えます。MAXIFS の代わりに古い Excel でも動く書き方は、<a href="../urenai-sakuhin/">しばらく売れていない作品を見つける記事</a>の最後に書いています(MINIFS は同じ形では置き換えられないので、古い Excel では次の予定日の列を省いてください)。</p>
+<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の表は、設定(SNS・種類)・投稿・SNS別・種類別・曜日別をまとめたテンプレートで作りました。状態と色の設定は入っていますが、最後に投稿した日・たった日数・次の予定日の3列は入っていないので、使うときはこの記事の式を SNS 別のシートの右に足してください。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9132295">ハンドメイド作家の SNS 投稿 予定・反応の記録シート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../henshin-wasure/">ハンドメイドのお客さま対応で、返信忘れを式で知らせる|minne・Creema・DM の問い合わせを1枚に</a></li><li><a href="../repeater/">お客さまごとの購入回数で、リピーターを見分ける|COUNTIFS と最後の連絡からの日数</a></li><li><a href="../mochimono-check/">出店の持ち物チェックリストをスプレッドシートで作る|「済」を選ぶと行の色が変わる</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#dandori">注文・出品・SNS・お客さま対応</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>

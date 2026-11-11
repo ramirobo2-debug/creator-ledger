@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="同人・BOOTH・ハンドメイドの頒布数・在庫・イベント収支を、スプレッドシートで管理する方法をまとめています。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/">
+<meta property="og:title" content="個人クリエイターの売上・在庫管理">
+<meta property="og:description" content="同人・BOOTH・ハンドメイドの頒布数・在庫・イベント収支を、スプレッドシートで管理する方法をまとめています。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site"><a href="" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+
+
+
+<p class="lead">同人・BOOTH・ハンドメイドの頒布数・在庫・イベント収支を、スプレッドシートで管理する方法をまとめています。</p>
+<nav class="cats"><a href="#doujin">同人・BOOTH の頒布と収支(8)</a> ・ <a href="#handmade">ハンドメイドの値段と利益(9)</a> ・ <a href="#zaiko">在庫・材料・委託(7)</a> ・ <a href="#dandori">注文・出品・SNS・お客さま対応(7)</a> ・ <a href="#shiki">式の書き方(3)</a></nav>
+<h2 id="new">新しい記事</h2>
+<ul class="posts">
+<li><a href="posts/repeater/">お客さまごとの購入回数で、リピーターを見分ける|COUNTIFS と最後の連絡からの日数</a><p>お客さまとの連絡の記録から、COUNTIFS・SUMIFS でお客さまごとの購入の回数と合計を出し、リピーター・最後の連絡からの日数・評価の平均を式で出す方法。</p></li>
+<li><a href="posts/henshin-wasure/">ハンドメイドのお客さま対応で、返信忘れを式で知らせる|minne・Creema・DM の問い合わせを1枚に</a><p>minne・Creema・DM などの問い合わせを1件1行で記録し、返信した日が空の行に未返信、目安の日数を過ぎた行に遅れと式で出す方法。窓口ごとの返信までの日数つき。</p></li>
+<li><a href="posts/zentai-jikyu/">作品に入らない作業も入れた、ハンドメイド全体の時給を出す|撮影・梱包・買い出しの時間</a><p>撮影・梱包・材料の買い出しなど作品に入らない作業の時間を種類別に集め、その時間も入れた全体の時給を、作品の時間だけの時給と比べる方法。</p></li>
+<li><a href="posts/sagyou-jikan/">ハンドメイドの作業時間を記録して、作品ごとの時給を出す|開始・終了・休憩から</a><p>作業の記録を1回1行で書き、開始・終了・休憩から作業の時間を出して、作品ごとの1点あたりの時間・時給・目標の時給にとどく価格を式で出す方法。</p></li>
+<li><a href="posts/sns-yotei/">SNS の投稿予定を表で管理する|「遅れ」「今日」を色で出し、最後に投稿してからの日数を MAXIFS で</a><p>SNS の投稿の予定日と投稿した日を1行に書き、遅れ・今日を色で出す方法。SNS ごとの最後に投稿した日・たった日数・次の予定日を MAXIFS・MINIFS で出します。</p></li>
+</ul>
+<h2 id="doujin">同人・BOOTH の頒布と収支</h2>
+<ul class="posts">
+<li><a href="posts/event-shuushi/">同人イベントの収支を出す方法|参加費・交通費・頒布数から黒字か赤字かを一目で</a><p>参加費・交通費・頒布数から、同人イベント1回分の収支を出す手順。頒布した分の原価で見るか、刷った全部の印刷代で見るかの違いも説明します。</p></li>
+<li><a href="posts/insatsu-busuu/">新刊を何部刷るか決めるときに見る3つの数字(過去の頒布数・在庫・損益分岐点)</a><p>新刊の部数を、過去の頒布数・既刊の在庫・損益分岐点の3つの数字から決める方法。50部と100部で、需要ごとに残るお金を比べます。</p></li>
+<li><a href="posts/sumifs-zaiko/">頒布数と在庫をスプレッドシートで管理する|SUMIFS で作品ごとに自動集計</a><p>頒布記録を1行ずつ書き、SUMIFS で作品ごとの頒布数・在庫・売上を自動で集計する表の作り方。数が合わないときの確かめ方つき。</p></li>
+<li><a href="posts/event-tsuhan/">イベントと通販の売上を1つの表にまとめるやり方</a><p>イベントと通販(BOOTH など)の頒布を1枚の記録にまとめ、SUMIFS で場所ごとの部数・売上・収支を出す方法。通販だけ・イベントだけの合計の出し方つき。</p></li>
+<li><a href="posts/booth-tsukibetsu/">BOOTH の売上をスプレッドシートで月別に集計する|SUMIFS と EOMONTH で月ごとの合計を出す</a><p>日付の入った BOOTH の売上の記録から、SUMIFS と EOMONTH で月ごとの金額・数を出し、前の年の同じ月と比べる表の作り方。</p></li>
+<li><a href="posts/event-nenkan/">1年分のイベント収支を振り返る表の作り方|年ごとの合計と黒字・赤字の回数を式で出す</a><p>イベントの表に日付を入れ、SUMIFS と COUNTIFS で年ごとの費用・売上・収支と、黒字・赤字の回数を出す方法。1部あたりの費用の見方つき。</p></li>
+<li><a href="posts/muryou-gentei/">無料配布・献本・イベント限定価格を、売上の集計でまちがえない書き方|単価を上書きする1列で分ける</a><p>献本・無料配布・イベント限定価格・セット販売を、頒布記録の「単価(上書き)」の1列で書き分け、在庫と売上を合わせる方法。</p></li>
+<li><a href="posts/hanpu-zenkai/">新刊の頒布数を、イベントごとに前回と比べる表|SUMIFS の2条件で「作品 × イベント」を出す</a><p>頒布記録から SUMIFS の2条件で「作品 × イベント」の表を作り、前回との差を、その回の新刊を除いた部数でも比べる方法。</p></li>
+</ul>
+<h2 id="handmade">ハンドメイドの値段と利益</h2>
+<ul class="posts">
+<li><a href="posts/handmade-genka/">ハンドメイド作品の原価の出し方|材料の単価から1点分の材料費を計算する</a><p>まとめ買いした材料の単価から、ハンドメイド作品1点分の材料費を出す手順。型や道具の分の入れ方、端数の扱いも説明します。</p></li>
+<li><a href="posts/handmade-nedan/">ハンドメイド作品の値段の決め方|手数料・送料・作業時間から販売価格の目安を出す</a><p>手数料・梱包・送料・作業時間を入れて、ハンドメイド作品の販売価格の目安を逆算する方法。「材料費の3倍」で足りるかも比べます。</p></li>
+<li><a href="posts/handmade-event/">ハンドメイドイベントの出店で、いくら残ったかを出す方法|出店料・交通費・決済手数料・原価から利益と時給を計算する</a><p>マルシェ・手づくり市の出店1回分の利益を、売上から決済手数料・原価・出店料や交通費を引いて出す方法。時給と目標の達成率も式で出します。</p></li>
+<li><a href="posts/hanbaisaki-betsu/">ハンドメイドの売上を販売先ごとに集計する|minne・Creema・イベントで手数料率が違うとき</a><p>minne・Creema・イベントなど手数料率の違う販売先の売上を、1行ごとの手数料と SUMIFS で販売先ごとに集計する方法。利益率の見方の注意つき。</p></li>
+<li><a href="posts/handmade-tsukibetsu/">ハンドメイドの売上を月別に集計して、去年と比べる|手数料・原価を引いた利益で見る</a><p>ハンドメイドの販売記録から、SUMIFS で月ごとの売上・手数料・原価・利益を出し、前の年の同じ月の利益と前年比で比べる方法。</p></li>
+<li><a href="posts/itaku-oroshi/">委託手数料と卸の掛け率で、手元に残る額を比べる|同じ作品を委託・卸・自分の通販で並べる</a><p>同じ作品を委託・卸・自分の通販で売ったときの1点の利益を並べ、売れ残りを入れた比べ方と、お店ごとの受け取り額・未入金・利益の出し方を説明します。</p></li>
+<li><a href="posts/order-jikyu/">受注制作の時給を出す|代金・手数料・材料費・作業時間から1件ごとに</a><p>受注制作の注文ごとに、代金・送料・手数料・経費・作業時間から利益と時給を出す方法。時給の目標に届く代金を逆算する式つき。</p></li>
+<li><a href="posts/sagyou-jikan/">ハンドメイドの作業時間を記録して、作品ごとの時給を出す|開始・終了・休憩から</a><p>作業の記録を1回1行で書き、開始・終了・休憩から作業の時間を出して、作品ごとの1点あたりの時間・時給・目標の時給にとどく価格を式で出す方法。</p></li>
+<li><a href="posts/zentai-jikyu/">作品に入らない作業も入れた、ハンドメイド全体の時給を出す|撮影・梱包・買い出しの時間</a><p>撮影・梱包・材料の買い出しなど作品に入らない作業の時間を種類別に集め、その時間も入れた全体の時給を、作品の時間だけの時給と比べる方法。</p></li>
+</ul>
+<h2 id="zaiko">在庫・材料・委託</h2>
+<ul class="posts">
+<li><a href="posts/zaiko-iro/">在庫が少なくなったら色で知らせる|条件付き書式の設定</a><p>在庫が5部以下の行を黄色、0部未満(数えまちがい)の行を赤にする条件付き書式の設定。Excel・Google スプレッドシート・LibreOffice の手順つき。</p></li>
+<li><a href="posts/mochikomi-kazu/">マルシェに何個持っていくか|前回の「売れた割合」から持ち込み数を決める</a><p>マルシェ・手づくり市に持っていく作品の数を、前回の持ち込み数と売れた数から決める方法。SUMIFS の2条件で売れた数と売れた割合を出します。</p></li>
+<li><a href="posts/handmade-zaiko/">ハンドメイド作品の在庫を、販売記録から自動で減らす|作品名の打ちまちがいで減らないときの対策</a><p>作った数だけを書き、販売記録から SUMIFS で売れた数を集めて在庫を自動で出す方法。作品名の打ちまちがいで在庫が減らないときの見つけ方と防ぎ方つき。</p></li>
+<li><a href="posts/itaku-azuke/">委託販売で、お店ごとに預けた数・売れた数・お店にある数を管理する|SUMIFS の2条件で「お店 × 作品」</a><p>委託販売の納品と販売報告を1行ずつ書き、SUMIFS の2条件でお店 × 作品の預けた数・売れた数・引き取った数・お店にある数・売れた割合を出す方法。</p></li>
+<li><a href="posts/zairyou-zaiko/">ハンドメイドの材料・パーツの在庫を、仕入れた数と使った数から出す|買い足す時期を式で知らせる</a><p>金具・ビーズ・糸などの材料の残りを、仕入れた数と使った数から SUMIFS で出し、目安を下回った材料に「買い足す」と出して買い物リストに並べる方法。</p></li>
+<li><a href="posts/zairyou-tanka/">材料の単価を仕入先ごとに比べる|最後に買った単価と、いちばん安かった仕入先を式で出す</a><p>仕入の記録から送料込みの単価を出し、材料ごとに最後に買った単価・いちばん安かった単価と仕入先を LOOKUP・MINIFS・INDEX/MATCH で出す方法。</p></li>
+<li><a href="posts/urenai-sakuhin/">しばらく売れていない作品を式で見つける|MAXIFS で「最後に売れた日」と日数を出す</a><p>販売記録から MAXIFS で作品ごとの最後に売れた日を出し、たった日数と直近90日の販売数で、在庫が残ったまま止まっている作品に印をつける方法。</p></li>
+</ul>
+<h2 id="dandori">注文・出品・SNS・お客さま対応</h2>
+<ul class="posts">
+<li><a href="posts/mochimono-check/">出店の持ち物チェックリストをスプレッドシートで作る|「済」を選ぶと行の色が変わる</a><p>マルシェ・手づくり市の持ち物チェックリストを、入力規則の「済」と条件付き書式で作る方法。残りの数を COUNTIF で出し、イベントごとに使い回します。</p></li>
+<li><a href="posts/order-nouki/">オーダーメイドの注文を、納期の近い順に並べる表|発送済みを除いて SMALL・INDEX/MATCH で</a><p>オーダーメイドの注文から、発送済み・キャンセルを除いて納期の近い順に並べる表の作り方。TODAY・SMALL・INDEX/MATCH と SORT・FILTER の書き方つき。</p></li>
+<li><a href="posts/shuppin-junbi/">ハンドメイド作品の出品準備を表で管理する|進み具合と「次にやる作業」を式で出す</a><p>ハンドメイド作品の出品までの作業を「済」で消していき、進み具合(%)と次にやる作業を式で出す表の作り方。出品先ごとの状態の一覧つき。</p></li>
+<li><a href="posts/sns-hannou/">SNS 投稿の反応を記録して、種類別・曜日別に平均で比べる|AVERAGEIFS と反応率の出し方</a><p>Instagram・X などの投稿を1行ずつ記録し、反応の合計と反応率を式で出して、AVERAGEIFS で SNS 別・種類別・曜日別の平均を比べる方法。</p></li>
+<li><a href="posts/sns-yotei/">SNS の投稿予定を表で管理する|「遅れ」「今日」を色で出し、最後に投稿してからの日数を MAXIFS で</a><p>SNS の投稿の予定日と投稿した日を1行に書き、遅れ・今日を色で出す方法。SNS ごとの最後に投稿した日・たった日数・次の予定日を MAXIFS・MINIFS で出します。</p></li>
+<li><a href="posts/henshin-wasure/">ハンドメイドのお客さま対応で、返信忘れを式で知らせる|minne・Creema・DM の問い合わせを1枚に</a><p>minne・Creema・DM などの問い合わせを1件1行で記録し、返信した日が空の行に未返信、目安の日数を過ぎた行に遅れと式で出す方法。窓口ごとの返信までの日数つき。</p></li>
+<li><a href="posts/repeater/">お客さまごとの購入回数で、リピーターを見分ける|COUNTIFS と最後の連絡からの日数</a><p>お客さまとの連絡の記録から、COUNTIFS・SUMIFS でお客さまごとの購入の回数と合計を出し、リピーター・最後の連絡からの日数・評価の平均を式で出す方法。</p></li>
+</ul>
+<h2 id="shiki">式の書き方</h2>
+<ul class="posts">
+<li><a href="posts/lookup-kakaku/">作品名から価格を引く式|VLOOKUP・INDEX/MATCH・XLOOKUP のどれを使うか</a><p>作品名から価格や原価を引く式を、VLOOKUP・INDEX/MATCH・XLOOKUP の3つで比べる。見つからないときの IFERROR、空白で見つからないときの TRIM も。</p></li>
+<li><a href="posts/nyuuryoku-iro/">入力のまちがいを色で知らせる|登録していない名前・空欄・重なりを条件付き書式で見つける</a><p>作品の表に無い名前・書き忘れた空欄・作品名の重なりを、COUNTIF の条件付き書式で赤にして、集計がずれる前に気づく方法。</p></li>
+<li><a href="posts/uriage-juni/">よく売れた作品の順位を式で出す|LARGE・INDEX/MATCH で上位3つ、同じ金額でも重ならない書き方</a><p>売上の合計の上位3つを LARGE・INDEX/MATCH で出す方法。同じ金額で同じ作品が2回出る問題を RANK と COUNTIF で直し、SORT・FILTER の書き方も比べます。</p></li>
+</ul>
+
+</main>
+<footer class="site">
+<nav><a href="">記事の一覧</a> ・ <a href="about/">このサイトについて</a> ・ <a href="privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>

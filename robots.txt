@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ramirobo2-debug.github.io/creator-ledger/sitemap.xml

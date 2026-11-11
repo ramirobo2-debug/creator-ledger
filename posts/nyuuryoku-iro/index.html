@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>入力のまちがいを色で知らせる|登録していない名前・空欄・重なりを条件付き書式で見つける|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="作品の表に無い名前・書き忘れた空欄・作品名の重なりを、COUNTIF の条件付き書式で赤にして、集計がずれる前に気づく方法。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/nyuuryoku-iro/">
+<meta property="og:title" content="入力のまちがいを色で知らせる|登録していない名前・空欄・重なりを条件付き書式で見つける">
+<meta property="og:description" content="作品の表に無い名前・書き忘れた空欄・作品名の重なりを、COUNTIF の条件付き書式で赤にして、集計がずれる前に気づく方法。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/nyuuryoku-iro/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>入力のまちがいを色で知らせる|登録していない名前・空欄・重なりを条件付き書式で見つける</h1>
+<p class="date">公開日: 2026-11-11</p>
+<p>頒布記録や販売記録を SUMIFS で集計していると、「記録は書いたのに集計の数が合わない」ということが起きます。原因の多くは、作品名の後ろの空白、イベント名の打ちまちがい、部数の書き忘れのような小さな入力のまちがいです。式はエラーを出さずに 0 として数えるので、気づくのが遅れます。</p>
+<p>この記事では、まちがえた行に色が付くように、条件付き書式を3つと、作品の表の重なりを見つけるルールを1つ足します。</p>
+<h2>まちがいがあると、集計はどうずれるか</h2>
+<p><a href="../../img/19_kiroku-iro.png"><img alt="頒布記録の表。3行目の作品名「新刊 」、4行目の空の部数、6行目のイベント名「春イベンド」のセルが赤くなっている" src="../../img/19_kiroku-iro.png" /></a></p>
+<p>この例の頒布記録には、まちがいが3つあります。</p>
+<ul>
+<li>3行目: 作品名が「新刊 」(後ろに空白)。作品の表に無い名前なので、使った単価が 0 になり、新刊の頒布数にも入りません</li>
+<li>4行目: 部数が空。売上が 0 のままです</li>
+<li>6行目: イベント名が「春イベンド」。作品の新刊には 5部が入りますが、イベントの表の「春イベント」の頒布部数は 0 のままです</li>
+</ul>
+<p>作品の表の新刊は、本当は 28 + 3 + 5 = 36部のはずが 33部になります。どの式もエラーを出さないので、表を見ただけでは分かりません。</p>
+<h2>1. 作品の表に無い名前を赤にする</h2>
+<p>作品名の列(この例では B2:B201)を選んで、条件付き書式に「数式」のルールを足し、塗りつぶしを赤にします。</p>
+<pre><code>=AND($B2&lt;&gt;&quot;&quot;,COUNTIF(作品!$A:$A,$B2)=0)
+</code></pre>
+<ul>
+<li><code>COUNTIF(作品!$A:$A,$B2)</code> は、作品の表にその名前がいくつあるかを数えます。0 なら、表に無い名前です</li>
+<li><code>$B2&lt;&gt;""</code> を付けて、まだ書いていない空の行には色を付けないようにします</li>
+<li>後ろの空白も別の文字として扱われるので、「新刊 」の行が赤くなります</li>
+</ul>
+<p>イベント名の列(A2:A201)にも、同じ形のルールを足します。</p>
+<pre><code>=AND($A2&lt;&gt;&quot;&quot;,COUNTIF(イベント!$A:$A,$A2)=0)
+</code></pre>
+<h2>2. 書き忘れた空欄を赤にする</h2>
+<p>部数の列(C2:C201)には、「作品名は書いたのに部数が空」の行だけ色を付けます。</p>
+<pre><code>=AND($B2&lt;&gt;&quot;&quot;,$C2=&quot;&quot;)
+</code></pre>
+<p>部数だけを見て「空なら赤」にすると、まだ使っていない下の行まで全部赤くなります。同じ行のほかの列(ここでは作品名)が埋まっているかどうかを条件に入れるのがポイントです。</p>
+<h2>3. 作品の表の重なりを赤にする</h2>
+<p><a href="../../img/19_sakuhin-kasanari.png"><img alt="作品の表。2行目と4行目に同じ「新刊」が書かれ、両方の作品名が赤くなっている。頒布した部数はどちらも33" src="../../img/19_sakuhin-kasanari.png" /></a></p>
+<p>作品の表に同じ名前が2回あると、SUMIFS はどちらの行にも同じ数を返すので、頒布数も在庫も二重に見えます。作品名の列(作品シートの A2:A201)に、次のルールを足します。</p>
+<pre><code>=AND($A2&lt;&gt;&quot;&quot;,COUNTIF($A$2:$A$201,$A2)&gt;1)
+</code></pre>
+<p>範囲は <code>$A$2:$A$201</code> と行まで固定し、数える名前は <code>$A2</code> と列だけ固定します。こうすると、どの行も「表全体の中で、自分と同じ名前がいくつあるか」を数えます。</p>
+<h2>まちがいの数を1つのセルで出す</h2>
+<p>色は、表を上から見ていかないと気づきません。表の上やまとめのシートに、まちがいの数を出しておくと、0 かどうかだけを見れば済みます。</p>
+<pre><code>=SUMPRODUCT((B2:B201&lt;&gt;&quot;&quot;)*(COUNTIF(作品!A:A,B2:B201)=0))
+</code></pre>
+<p>この例では 1(3行目の「新刊 」)です。COUNTIF の2つ目の引数に範囲を渡すと、1行ずつ数えた結果がまとめて返り、SUMPRODUCT がそれを足します。</p>
+<h2>色を付ける前に、まちがいを減らす</h2>
+<ul>
+<li><strong>プルダウンで選ばせる</strong>: このテンプレートでは、頒布記録のイベント名・作品名を、入力規則のプルダウンで選ぶようにしてあります。それでも、ほかの表からの貼り付けや、規則を付ける前の行では、まちがいが入ります。条件付き書式は、その取りこぼしを見つけるためのものです</li>
+<li><strong>空白を消す</strong>: 名前の後ろの空白は、<code>TRIM</code> で消せます(作品名から価格を引く式で空白が原因のときの直し方は、<a href="../lookup-kakaku/">価格を引く式の記事</a>で説明しています)</li>
+<li><strong>色の重なり</strong>: 在庫の数に色を付けるルール(<a href="../zaiko-iro/">在庫が少なくなったら色で知らせる記事</a>)と同じ範囲に重ねるときは、まちがいの赤を優先する順に並べます</li>
+</ul>
+<h2>ソフトごとの違い</h2>
+<ul>
+<li><strong>Excel</strong>: 「ホーム」→「条件付き書式」→「新しいルール」→「数式を使用して、書式設定するセルを決定」。Excel 2010 以降なら、ほかのシート(<code>作品!$A:$A</code>)をそのまま書けます</li>
+<li><strong>LibreOffice</strong>: 「書式」→「条件」→「条件」で、条件を「数式が」にします。式の区切りが <code>;</code> の設定のときは、<code>,</code> を <code>;</code> に置き換えます</li>
+<li><strong>Google スプレッドシート</strong>: 「表示形式」→「条件付き書式」→「カスタム数式」。条件付き書式の式からほかのシートを見るときは、<code>INDIRECT("作品!A:A")</code> の形で書きます</li>
+</ul>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の頒布記録は、作品・イベント・頒布記録・まとめを1つにまとめたテンプレートで作りました(この記事の赤のルールは、記事で足したものです)。イベント名・作品名をプルダウンで選べるようにしてあり、頒布数・在庫・収支が式で出ます。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9124497">同人イベント頒布管理シート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../uriage-juni/">よく売れた作品の順位を式で出す|LARGE・INDEX/MATCH で上位3つ、同じ金額でも重ならない書き方</a></li><li><a href="../lookup-kakaku/">作品名から価格を引く式|VLOOKUP・INDEX/MATCH・XLOOKUP のどれを使うか</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#shiki">式の書き方</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>

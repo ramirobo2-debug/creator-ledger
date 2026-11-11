@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>よく売れた作品の順位を式で出す|LARGE・INDEX/MATCH で上位3つ、同じ金額でも重ならない書き方|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="売上の合計の上位3つを LARGE・INDEX/MATCH で出す方法。同じ金額で同じ作品が2回出る問題を RANK と COUNTIF で直し、SORT・FILTER の書き方も比べます。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/uriage-juni/">
+<meta property="og:title" content="よく売れた作品の順位を式で出す|LARGE・INDEX/MATCH で上位3つ、同じ金額でも重ならない書き方">
+<meta property="og:description" content="売上の合計の上位3つを LARGE・INDEX/MATCH で出す方法。同じ金額で同じ作品が2回出る問題を RANK と COUNTIF で直し、SORT・FILTER の書き方も比べます。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/uriage-juni/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>よく売れた作品の順位を式で出す|LARGE・INDEX/MATCH で上位3つ、同じ金額でも重ならない書き方</h1>
+<p class="date">公開日: 2026-11-11</p>
+<p>作品が増えてくると、「いちばん売れているのはどれか」を毎回目で探すのは大変です。並べ替えのボタンを押せば並びますが、記録を足すたびに押し直すことになり、作品の表の並び順もくずれます。</p>
+<p>この記事では、作品の表はそのままにして、横に「売上の合計の上位3つ」を式で出します。同じ金額の作品があるときに、同じ作品が2回出てしまう問題の直し方も説明します。</p>
+<h2>元にする作品の表</h2>
+<p><a href="../../img/20_sakuhin.png"><img alt="作品の表。ビーズのピアス・がま口ポーチ・刺しゅうブローチ・ヘアゴム・しおりの5作品に、原価・価格・作った数・売れた数・在庫・売上の合計が並ぶ" src="../../img/20_sakuhin.png" /></a></p>
+<p>売上の合計(H列)は、販売記録から SUMIFS で集めた数です(作り方は<a href="../handmade-zaiko/">在庫を販売記録から自動で減らす記事</a>と同じ形です)。この例では、ビーズのピアスと刺しゅうブローチがどちらも 6,000円で並んでいます。</p>
+<h2>まず LARGE と INDEX/MATCH で書いてみる</h2>
+<p>大きい順に k 番目の金額は <code>LARGE</code> で出せます。その金額が何行目にあるかを <code>MATCH</code> で探し、<code>INDEX</code> で作品名を引きます。</p>
+<pre><code>=INDEX($A$2:$A$201,MATCH(LARGE($H$2:$H$201,2),$H$2:$H$201,0))
+</code></pre>
+<p>1位・2位はこれで出ますが、3位も「ビーズのピアス」になります。3番目に大きい金額も 6,000円で、MATCH は 6,000円を上から探して、最初に見つかったビーズのピアスの行を返すからです。同じ金額の作品があると、2つ目の作品はいつまでも表に出てきません。</p>
+<h2>同じ金額でも重ならない「並べ替え用」の列を足す</h2>
+<p>作品の表の空いている列(この例では K列)に、作品ごとに重ならない番号を出します。</p>
+<pre><code>K2: =IF($A2=&quot;&quot;,&quot;&quot;,RANK(H2,$H$2:$H$201)+COUNTIF($H$2:H2,H2)-1)
+</code></pre>
+<ul>
+<li><code>RANK(H2,$H$2:$H$201)</code> は、大きい順で何番目かです。同じ金額の2つは、どちらも 2 になります</li>
+<li><code>COUNTIF($H$2:H2,H2)</code> は、表の上から自分の行までに、同じ金額がいくつあるかです。範囲の始まりだけを <code>$</code> で固定しているので、下の行ほど範囲がのびます。1つ目は 1、2つ目は 2 になるので、1 を引いて足すと、2つ目だけが1つ下にずれます</li>
+</ul>
+<p><a href="../../img/20_juni.png"><img alt="並べ替え用の列に 2・1・3・4・5 が並び、右の表に順位1 がま口ポーチ 8,800、2 ビーズのピアス 6,000、3 刺しゅうブローチ 6,000 が出ている" src="../../img/20_juni.png" /></a></p>
+<p>テンプレートの売上の合計は、作品名の無い行では空(<code>""</code>)になるので、RANK と COUNTIF は空の行を数えません。自分で作った表で、作品名の無い行に 0 が出る形になっているときは、0 の行も順位に入ってしまうので、その列も作品名が無ければ <code>""</code> を返す式にしておきます(在庫の少ない順で並べるときは、とくにずれます)。</p>
+<p>この例の並べ替え用は、上から 2・1・3・4・5 です。同じ 6,000円のうち、上の行のビーズのピアスが 2、刺しゅうブローチが 3 になりました。</p>
+<h2>上位3つの表</h2>
+<p>順位の列(M列)に 1・2・3 を書き、並べ替え用の番号で探します。</p>
+<pre><code>N2(作品名):     =INDEX($A$2:$A$201,MATCH(M2,$K$2:$K$201,0))
+O2(売上の合計): =INDEX($H$2:$H$201,MATCH(M2,$K$2:$K$201,0))
+</code></pre>
+<p>この例では、1位 がま口ポーチ 8,800円・2位 ビーズのピアス 6,000円・3位 刺しゅうブローチ 6,000円 です。上位5つにしたいときは、M列に 4・5 を足して、式を下へコピーします。</p>
+<ul>
+<li>同じ金額のときは、作品の表で上にある方が先になります。「売れた数が多い方を先に」のように別の決め方にしたいときは、並べ替え用の式にその条件を足します</li>
+<li>作品が3つより少ないと、MATCH が見つからずに <code>#N/A</code> になります。<code>IFERROR(…,"")</code> で囲むと空にできます</li>
+</ul>
+<h2>SORT が使えるなら1つの式で</h2>
+<p>Microsoft 365・Excel 2021 以降、Google スプレッドシート、新しい LibreOffice では、<code>SORT</code> と <code>FILTER</code> で表ごと並べ替えた形を出せます。</p>
+<pre><code>=SORT(FILTER(A2:H201,A2:A201&lt;&gt;&quot;&quot;),8,-1)
+</code></pre>
+<ul>
+<li><code>FILTER(…,A2:A201&lt;&gt;"")</code> で、作品名のある行だけにします。空の行を残したまま大きい順に並べると、空の行が上に来ることがあります</li>
+<li><code>8</code> は「範囲の8列目(売上の合計)で」、<code>-1</code> は「大きい順に」です(Excel・LibreOffice)。Google スプレッドシートでは、大きい順は <code>-1</code> ではなく <code>FALSE</code> で書きます(下の式)</li>
+<li>この例では、同じ金額のビーズのピアスが刺しゅうブローチより先になりました(LibreOffice で確かめた結果)。同じ金額のときに必ず上の行を先にしたいときは、並べ替え用の列の方法を使います</li>
+<li>結果は下と右に広がるので、その場所は空けておきます</li>
+</ul>
+<pre><code>Google スプレッドシート: =SORT(FILTER(A2:H201,A2:A201&lt;&gt;&quot;&quot;),8,FALSE)
+</code></pre>
+<p>古い Excel(2019 まで)では SORT が使えないので、ほかの人に渡す表なら、並べ替え用の列の方法にしておくと、どのソフトでも同じ結果になります。</p>
+<h2>売上のほかの順位も同じ形で</h2>
+<ul>
+<li><strong>利益の大きい順</strong>: 並べ替え用の式の H を、利益の合計の列(この例では I)に変えます</li>
+<li><strong>在庫の多い順</strong>: 在庫の列(G)に変えると、作りすぎている作品が上に来ます</li>
+<li><strong>在庫の少ない順</strong>: <code>RANK</code> の3つ目の引数に <code>1</code> を足すと小さい順になり、<code>COUNTIF</code> の部分はそのままで使えます</li>
+</ul>
+<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の作品の表は、販売記録・作品・月別・販売先別を1つにまとめたテンプレートで作りました(並べ替え用の列と上位3つの表は、この記事で足したものです)。売れた数・在庫・売上の合計が販売記録から式で出るので、表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9130345">ハンドメイド売上・在庫管理シート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../lookup-kakaku/">作品名から価格を引く式|VLOOKUP・INDEX/MATCH・XLOOKUP のどれを使うか</a></li><li><a href="../nyuuryoku-iro/">入力のまちがいを色で知らせる|登録していない名前・空欄・重なりを条件付き書式で見つける</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#shiki">式の書き方</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>
