@@ -19,14 +19,14 @@
 
 
 <p class="lead">同人・BOOTH・ハンドメイドの頒布数・在庫・イベント収支を、スプレッドシートで管理する方法をまとめています。</p>
-<nav class="cats"><a href="#doujin">同人・BOOTH の頒布と収支(8)</a> ・ <a href="#handmade">ハンドメイドの値段と利益(10)</a> ・ <a href="#zaiko">在庫・材料・委託(7)</a> ・ <a href="#dandori">新作の計画・注文・出品・SNS・お客さま対応(9)</a> ・ <a href="#shiki">式の書き方(3)</a></nav>
+<nav class="cats"><a href="#doujin">同人・BOOTH の頒布と収支(8)</a> ・ <a href="#handmade">ハンドメイドの値段と利益(10)</a> ・ <a href="#zaiko">在庫・材料・委託(7)</a> ・ <a href="#dandori">新作の計画・注文・出品・SNS・お客さま対応(9)</a> ・ <a href="#shashin">作品写真の撮り方と反応(3)</a> ・ <a href="#shiki">式の書き方(3)</a></nav>
 <h2 id="new">新しい記事</h2>
 <ul class="posts">
+<li><a href="posts/shashin-shuppinsaki/">作品写真の反応率を、minne・Creema など出品先ごとに分けて比べる</a><p>minne・Creema・Instagram で閲覧の数え方が違うため、SUMIFS に出品先の条件を足して、出品先をそろえて作品写真の反応率を比べる方法。</p></li>
+<li><a href="posts/shashin-hikari/">作品写真の光の当て方ごとに反応率を比べる(合計どうしで割る理由)</a><p>窓の自然光・撮影用ライトなど光の当て方ごとに作品写真の反応率を出し、合計どうしで割る数字と1行ずつの反応率の平均の違いを説明。</p></li>
+<li><a href="posts/shashin-haikei/">作品写真の撮り方を記録して、背景ごとに「使えた割合」と反応率を比べる</a><p>作品写真の撮影ごとに背景・光・撮った枚数・使った枚数・閲覧数・お気に入りを記録し、SUMIFS で背景ごとの使えた割合と反応率を比べる方法。</p></li>
 <li><a href="posts/sagyou-tsukibetsu/">ハンドメイドの作業時間を月別に集計して、作品に入らない時間の割合を見る</a><p>作業の記録から SUMIFS で月ごとの時間の合計・制作の時間・作品に入らない時間・作った数を出し、割合と1点あたりの制作時間を月ごとに比べる方法。</p></li>
 <li><a href="posts/dasusaki-betsu/">出す先ごとに、間に合うかと売上・利益の目安をまとめる|ハンドメイドの新作の計画</a><p>イベント・minne・Creema など出す先ごとに、作る数・残りの作業時間・1日に要る時間・間に合うかと、売上と利益の目安を SUMIFS でまとめる方法。</p></li>
-<li><a href="posts/shinsaku-keikaku/">新作をイベントや特集の日までに間に合わせる|1日に要る作業時間を式で出す</a><p>新作の作る数と1点の作業時間から残りの作業時間を出し、先に来る出す日の分も入れて、出す日までに1日に何時間作業すれば間に合うかを式で出す方法。</p></li>
-<li><a href="posts/repeater/">お客さまごとの購入回数で、リピーターを見分ける|COUNTIFS と最後の連絡からの日数</a><p>お客さまとの連絡の記録から、COUNTIFS・SUMIFS でお客さまごとの購入の回数と合計を出し、リピーター・最後の連絡からの日数・評価の平均を式で出す方法。</p></li>
-<li><a href="posts/henshin-wasure/">ハンドメイドのお客さま対応で、返信忘れを式で知らせる|minne・Creema・DM の問い合わせを1枚に</a><p>minne・Creema・DM などの問い合わせを1件1行で記録し、返信した日が空の行に未返信、目安の日数を過ぎた行に遅れと式で出す方法。窓口ごとの返信までの日数つき。</p></li>
 </ul>
 <h2 id="doujin">同人・BOOTH の頒布と収支</h2>
 <ul class="posts">
@@ -73,6 +73,12 @@
 <li><a href="posts/repeater/">お客さまごとの購入回数で、リピーターを見分ける|COUNTIFS と最後の連絡からの日数</a><p>お客さまとの連絡の記録から、COUNTIFS・SUMIFS でお客さまごとの購入の回数と合計を出し、リピーター・最後の連絡からの日数・評価の平均を式で出す方法。</p></li>
 <li><a href="posts/shinsaku-keikaku/">新作をイベントや特集の日までに間に合わせる|1日に要る作業時間を式で出す</a><p>新作の作る数と1点の作業時間から残りの作業時間を出し、先に来る出す日の分も入れて、出す日までに1日に何時間作業すれば間に合うかを式で出す方法。</p></li>
 <li><a href="posts/dasusaki-betsu/">出す先ごとに、間に合うかと売上・利益の目安をまとめる|ハンドメイドの新作の計画</a><p>イベント・minne・Creema など出す先ごとに、作る数・残りの作業時間・1日に要る時間・間に合うかと、売上と利益の目安を SUMIFS でまとめる方法。</p></li>
+</ul>
+<h2 id="shashin">作品写真の撮り方と反応</h2>
+<ul class="posts">
+<li><a href="posts/shashin-haikei/">作品写真の撮り方を記録して、背景ごとに「使えた割合」と反応率を比べる</a><p>作品写真の撮影ごとに背景・光・撮った枚数・使った枚数・閲覧数・お気に入りを記録し、SUMIFS で背景ごとの使えた割合と反応率を比べる方法。</p></li>
+<li><a href="posts/shashin-hikari/">作品写真の光の当て方ごとに反応率を比べる(合計どうしで割る理由)</a><p>窓の自然光・撮影用ライトなど光の当て方ごとに作品写真の反応率を出し、合計どうしで割る数字と1行ずつの反応率の平均の違いを説明。</p></li>
+<li><a href="posts/shashin-shuppinsaki/">作品写真の反応率を、minne・Creema など出品先ごとに分けて比べる</a><p>minne・Creema・Instagram で閲覧の数え方が違うため、SUMIFS に出品先の条件を足して、出品先をそろえて作品写真の反応率を比べる方法。</p></li>
 </ul>
 <h2 id="shiki">式の書き方</h2>
 <ul class="posts">

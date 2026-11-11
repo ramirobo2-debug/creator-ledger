@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作品写真の反応率を、minne・Creema など出品先ごとに分けて比べる|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="minne・Creema・Instagram で閲覧の数え方が違うため、SUMIFS に出品先の条件を足して、出品先をそろえて作品写真の反応率を比べる方法。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/shashin-shuppinsaki/">
+<meta property="og:title" content="作品写真の反応率を、minne・Creema など出品先ごとに分けて比べる">
+<meta property="og:description" content="minne・Creema・Instagram で閲覧の数え方が違うため、SUMIFS に出品先の条件を足して、出品先をそろえて作品写真の反応率を比べる方法。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/shashin-shuppinsaki/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>作品写真の反応率を、minne・Creema など出品先ごとに分けて比べる</h1>
+<p class="date">公開日: 2026-11-12</p>
+<p>作品写真の反応率(お気に入り ÷ 閲覧数)を背景ごとに比べると、出品先が混ざっていることに気づきます。minne の作品ページの閲覧と、Instagram の投稿が表示された回数は、同じ「閲覧」でも数え方がまったく違います。混ぜたまま比べると、閲覧の多い出品先の数字に引っぱられて、背景の良し悪しが見えにくくなります。</p>
+<p>この記事では、背景別の集計の SUMIFS に「出品先」の条件を1つ足して、minne だけの反応率を出し、全体の数字と比べます。背景別の集計のしかたは、<a href="../shashin-haikei/">背景ごとに使えた割合と反応率を比べる記事</a>で説明しています。</p>
+<h2>SUMIFS に、出品先の条件を足す</h2>
+<p>背景別の閲覧の合計(G 列)の式に、<code>撮影!$I$2:$I$2001,設定!$C$2</code> を足します。撮影のシートの I 列が出品先、設定のシートの C2 が出品先の1つ目(この例では minne)です。</p>
+<pre><code>K2(minne の閲覧):
+=SUMIFS(撮影!$J$2:$J$2001,撮影!$C$2:$C$2001,$A2,撮影!$I$2:$I$2001,設定!$C$2,撮影!$J$2:$J$2001,&quot;&gt;0&quot;,撮影!$K$2:$K$2001,&quot;&gt;=0&quot;)
+
+L2(minne のお気に入り): 合計する列を 撮影!$K$2:$K$2001 にする
+M2(minne の反応率):     =IF(N($K2)=0,&quot;&quot;,$L2/$K2)
+</code></pre>
+<ul>
+<li>出品先の名前を式の中に <code>"minne"</code> と直接書かず、設定のシートのセルを指すと、出品先の名前を書き換えても式を直さずに済みます</li>
+<li>Creema で比べたいときは <code>設定!$C$3</code> に、Instagram なら <code>設定!$C$4</code> に変えます。出品先ごとに3列ずつ足していけば、1つの表で並べて見られます</li>
+<li>SUMIFS の条件は、いくつ足しても「全部に当てはまる行」だけを足します。条件の範囲は、どれも同じ行数(2〜2001行目)にそろえます。行数がずれると、エラーになります</li>
+</ul>
+<p>テンプレートの背景別のシートは A〜J 列までです。この記事では、K〜M 列を自分で足しました。</p>
+<p><a href="../../img/40_minne.png"><img alt="背景別の表に minne だけの列を足したもの。白い板 全体 閲覧210・お気に入り18・8.6%、minne 210・18・8.6%。麻の布 全体 280・20・7.1%、minne 80・8・10.0%。木のトレー 全体 150・6・4.0%、minne 0・0・空" src="../../img/40_minne.png" /></a></p>
+<h2>全体と minne だけで、順位が入れ替わる</h2>
+<p>この例では、全体の反応率(I 列)と minne だけの反応率(M 列)で、白い板と麻の布の順位が入れ替わります。</p>
+<ul>
+<li><strong>白い板</strong>: 撮った2回とも minne に出しているので、全体も minne だけも 8.6% で同じです</li>
+<li><strong>麻の布</strong>: 全体では 7.1% ですが、minne だけでは 10.0%。全体の閲覧 280 のうち 200 は Instagram の行で、その反応率 6.0% に引っぱられていました</li>
+<li><strong>木のトレー</strong>: Creema にしか出していないので、minne の列は 0 と空になります</li>
+</ul>
+<p>つまり「麻の布は反応がいまひとつ」と見えたのは、背景のせいではなく、出品先が混ざっていたせいかもしれません。ただし、minne の麻の布は1回・閲覧 80 だけの記録です。お気に入りが1件増えるだけで 1.25 ポイント動く数なので、ここから「麻の布のほうがよい」とまでは言えません。<strong>順位が入れ替わったら、その背景を同じ出品先で何回か撮って確かめる</strong>、という使い方が確かです。</p>
+<h2>出品先を混ぜて比べてよいとき・いけないとき</h2>
+<ul>
+<li>同じ出品先の中で、背景や光を比べる → 出品先の条件をつけて比べる(この記事の形)</li>
+<li>出品先どうしを比べる(minne と Creema のどちらで反応がよいか) → 閲覧の数え方が違うので、反応率の大小より、売れた数や、同じ出品先の中での前の月との変化で見るほうが確かです</li>
+<li>記録がまだ少ないうちも、出品先は最初から分けて見ます。この例のように、混ぜた数字では順位が逆になることがあるからです。分けた結果、比べる材料が足りない背景は「まだ決めない」にしておきます</li>
+</ul>
+<p>SNS の投稿の反応を見る方法は、<a href="../sns-hannou/">SNS投稿の反応を種類別と曜日別に比べる記事</a>にあります。LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の表は、設定・撮影・背景別・光別をまとめたテンプレートで作りました(K〜M 列は記事のために足したもので、テンプレートには入っていません)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9135439">ハンドメイド作品写真の撮影設定と反応の記録シート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../shashin-haikei/">作品写真の撮り方を記録して、背景ごとに「使えた割合」と反応率を比べる</a></li><li><a href="../shashin-hikari/">作品写真の光の当て方ごとに反応率を比べる(合計どうしで割る理由)</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#shashin">作品写真の撮り方と反応</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>
