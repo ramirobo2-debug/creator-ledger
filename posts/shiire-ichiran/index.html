@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>材料ごとに一番安い店を一覧にする|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="材料の名前を入れるだけで、一番安い店・送料込みの1個あたり・買う袋の数を出す一覧の作り方。INDEX/MATCH の2条件と、同じ値段の店があるときの動き。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/shiire-ichiran/">
+<meta property="og:title" content="材料ごとに一番安い店を一覧にする">
+<meta property="og:description" content="材料の名前を入れるだけで、一番安い店・送料込みの1個あたり・買う袋の数を出す一覧の作り方。INDEX/MATCH の2条件と、同じ値段の店があるときの動き。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/shiire-ichiran/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>材料ごとに一番安い店を一覧にする</h1>
+<p class="date">公開日: 2026-11-12</p>
+<p>材料の候補の店を比べる表ができても、材料が増えると「結局、丸カンはどこで買えばいいんだっけ」と探すのに時間がかかります。買い物の前に見るのは、<strong>材料ごとに一番安い店が1行で出る一覧</strong>のほうが便利です。</p>
+<p>この記事では、比較の表から、材料の名前を入れるだけで一番安い店・送料込みの1個あたり・何袋買う行か・比べた行の数を出す一覧の作り方を説明します。比較の表の作り方は、<a href="../shiire-hikaku/">材料の仕入れ先を送料込みの1個あたりで比べる記事</a>で説明しています。</p>
+<h2>できあがり</h2>
+<p>「材料別」のシートの A 列に材料の名前を入れると、B〜E 列が自動で出ます。</p>
+<p><a href="../../img/58_zairyoubetsu.png"><img alt="材料別の一覧。丸カンは店B・2.75円・1袋・3行、ピアス金具は店A・48円・4袋・3行、レジン液は店B・1,450円・2袋・2行" src="../../img/58_zairyoubetsu.png" /></a></p>
+<p>ピアス金具の「その店で買う袋の数」が 4 になっているのは、同じ店A でも3袋の行より4袋の行(送料無料になる)のほうが安いからです。どの店で、何袋買えばよいかが1行でわかります。</p>
+<h2>2つの条件で探すための「検索用」の列</h2>
+<p>一番安い店を探すには、「材料が丸カン」で「最安」という2つの条件に合う行を見つける必要があります。配列の式を使えば INDEX と MATCH でも2つの条件で探せますが、古い Excel では入力のしかたが特別(Ctrl+Shift+Enter)になり、まちがえやすくなります。そこで、比較の表に2つをつないだ文字の列を1本足し、ふつうの MATCH で探せるようにします。</p>
+<pre><code>比較!P2(検索用): =IF($M2=&quot;最安&quot;,$A2&amp;&quot;|最安&quot;,&quot;&quot;)
+</code></pre>
+<p>最安の行だけに「(例)丸カン 0.6mm|最安」のような文字が入ります。材料別のシートでは、この文字を MATCH で探します。</p>
+<pre><code>B2(一番安い店):        =IF($A2=&quot;&quot;,&quot;&quot;,IFERROR(INDEX(比較!$B$2:$B$501,MATCH($A2&amp;&quot;|最安&quot;,比較!$P$2:$P$501,0)),&quot;(比べる行なし)&quot;))
+C2(送料込みの1個あたり): =IF($A2=&quot;&quot;,&quot;&quot;,IFERROR(INDEX(比較!$L$2:$L$501,MATCH($A2&amp;&quot;|最安&quot;,比較!$P$2:$P$501,0)),&quot;&quot;))
+D2(その店で買う袋の数):  =IF($A2=&quot;&quot;,&quot;&quot;,IFERROR(INDEX(比較!$E$2:$E$501,MATCH($A2&amp;&quot;|最安&quot;,比較!$P$2:$P$501,0)),&quot;&quot;))
+E2(比べた行の数):      =IF($A2=&quot;&quot;,&quot;&quot;,COUNTIFS(比較!$A$2:$A$501,$A2,比較!$L$2:$L$501,&quot;&gt;=0&quot;))
+</code></pre>
+<ul>
+<li>材料名に <code>*</code> <code>?</code> <code>~</code> があると、MATCH や COUNTIFS がそれを「何でもよい文字」として扱い、別の材料を拾うことがあります。材料名にはこれらの記号を使わないようにします</li>
+<li>1行を1回の注文として送料を計算しているので、一覧の店は「その材料だけを買う場合」に一番安い店です。同じ店でほかの材料もまとめて買うと、送料が1回分になって順位が変わることがあります</li>
+<li>比較の表に名前の無い材料や、入力の漏れで1個あたりが出ていない材料は、「(比べる行なし)」と出ます。条件付き書式で色をつけておくと気づけます</li>
+<li>E 列は、1個あたりが出ている行だけを数えます。比べた行が1つしかない材料は、まだ比べていないのと同じなので、ほかの店も調べる目安になります</li>
+<li>XLOOKUP が使える Excel(2021 以降・Microsoft 365)では、検索用の列を作らず <code>XLOOKUP(1,(比較!$A$2:$A$501=$A2)*(比較!$M$2:$M$501="最安"),比較!$B$2:$B$501,"(比べる行なし)")</code> の形でも書けます。古い Excel でも動くようにするなら、検索用の列の形が確実です</li>
+</ul>
+<h2>同じ値段の店が2つあるとき</h2>
+<p>1個あたりがまったく同じ店が2つあると、比較の表では両方に「最安」が付きます。MATCH は上から探して最初に見つかった行を返すので、材料別には<strong>上の行の店</strong>が出ます。</p>
+<p>たとえば、丸カンに「店D: 275円・100個入り・送料無料」(1個あたり 2.75円)を足すと、店B と店D の両方が最安になり、最安との差はどちらも 0 です。材料別には上にある店B が出て、比べた行の数は 4 になります。</p>
+<p>どちらで買っても値段は同じなので、ほかの材料とまとめて送料無料にできる店や、届くのが早い店を選びます。優先したい店を比較の表の上の行に置いておけば、材料別にはその店が出ます。</p>
+<h2>一覧を使うときの注意</h2>
+<ul>
+<li><strong>材料の名前は比較の表と同じにする</strong>: 一文字でも違うと「(比べる行なし)」になります。材料別の A 列は、比較の表の材料の列からコピーすると確実です。同じ名前を2回入れた行には、色をつけて知らせると重なりに気づけます</li>
+<li><strong>値段が変わったら比較の表を直す</strong>: 一覧は比較の表から出しているので、比較の表の値段・送料を直せば一覧も変わります。調べた日が古い行は、買う前に確かめます</li>
+<li><strong>一番安い店に、いつも全部を寄せない</strong>: 店を1つにしぼると、品切れや値上げのときに困ります。2番目に安い店も比較の表に残しておきます</li>
+</ul>
+<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の一覧は、比較・材料別のシートをまとめたテンプレートで作りました(検索用の列や、比べる行が無い材料・同じ名前の重なりに色をつける書式も入っています)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9139203">ハンドメイド 材料の仕入れ先・価格比較シート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../shiire-hikaku/">材料の仕入れ先を、送料込みの1個あたりの値段で比べる</a></li><li><a href="../souryou-muryou/">送料無料まであと何円かと、まとめ買いで1個あたりがいくら下がるかを出す</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#shiire">材料の仕入れ先・価格比較</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>
