@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>値上げの前と後で、1時間あたりに残る額を比べる|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="作品ごとの作る時間から、値上げの前と後の時給を出し、目標の時給に届く値段を逆算する方法。月の利益が減っても空く時間の見方つき。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/neage-jikyu/">
+<meta property="og:title" content="値上げの前と後で、1時間あたりに残る額を比べる">
+<meta property="og:description" content="作品ごとの作る時間から、値上げの前と後の時給を出し、目標の時給に届く値段を逆算する方法。月の利益が減っても空く時間の見方つき。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/neage-jikyu/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>値上げの前と後で、1時間あたりに残る額を比べる</h1>
+<p class="date">公開日: 2026-11-13</p>
+<p>値上げを考えるきっかけは、材料費だけではありません。「作るのに時間がかかるのに、手元に残る額が少ない」と感じたときも、値段を見直す合図です。</p>
+<p>この記事では、作品ごとの1個作る時間から、<strong>値上げの前と後で1時間あたりに残る額(時給)</strong>を出し、目標の時給に届く値段を逆算する方法を説明します。</p>
+<h2>考え方: 1個の利益 ÷ 作る時間</h2>
+<ul>
+<li><strong>時給</strong> = 1個の利益 ÷ (1個作る時間(分) ÷ 60)</li>
+<li><strong>1個の利益</strong> = 価格 − 1個の原価 − 価格 × 手数料の割合 − 送料の持ち出し(<a href="../neage-sakaime/">値上げの境目の記事</a>と同じ)</li>
+</ul>
+<p>作る時間の記録のしかたは、<a href="../sagyou-jikan/">作業時間を記録して作品ごとの時給を出す記事</a>で説明しています。</p>
+<h2>表の作り方</h2>
+<p>「作品」のシートの F 列に、1個作る時間(分)を入れます。H 列がいまの1個の利益、I 列が値上げ後の1個の利益です。</p>
+<pre><code>P2(時給・いま):     =IF(AND(ISNUMBER(H2),ISNUMBER(F2)),IF(F2&gt;0,H2/(F2/60),&quot;&quot;),&quot;&quot;)
+Q2(時給・値上げ後): =IF(AND(ISNUMBER(I2),ISNUMBER(F2)),IF(F2&gt;0,I2/(F2/60),&quot;&quot;),&quot;&quot;)
+</code></pre>
+<ul>
+<li>時間が空や 0 の行は、割り算ができないので空にします</li>
+<li>時間は「分」で入れて、式の中で 60 で割って時間に直しています。40分なら 40/60 = 0.67時間です</li>
+</ul>
+<h2>例: 3つの作品の時給</h2>
+<p>手数料 10%、送料の持ち出しなしで、前の記事と同じ3作品です(数字は説明のための架空のものです)。</p>
+<table>
+<thead>
+<tr>
+<th>作品</th>
+<th>1個作る時間</th>
+<th>1個の利益</th>
+<th>時給(いま)</th>
+<th>時給(値上げ後)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>レジンのピアス(1,200 → 1,500円)</td>
+<td>40分</td>
+<td>730 → 1,000円</td>
+<td>1,095円</td>
+<td><strong>1,500円</strong></td>
+</tr>
+<tr>
+<td>ビーズのネックレス(2,500 → 2,800円)</td>
+<td>90分</td>
+<td>1,350 → 1,620円</td>
+<td>900円</td>
+<td><strong>1,080円</strong></td>
+</tr>
+<tr>
+<td>布のヘアゴム(500 → 600円)</td>
+<td>20分</td>
+<td>300 → 390円</td>
+<td>900円</td>
+<td><strong>1,170円</strong></td>
+</tr>
+</tbody>
+</table>
+<p>ネックレスは1個の利益がいちばん大きいのに、作るのに 90分かかるので、時給で見ると 900円と、ピアスより低くなります。<strong>1個の利益だけで比べると見落とす差</strong>です。</p>
+<h2>目標の時給から、値上げ後の値段を逆算する</h2>
+<p>ネックレスも時給 1,200円にしたいときは、式を逆にたどります。</p>
+<ul>
+<li>必要な1個の利益 = 目標の時給 × 作る時間 ÷ 60 = 1,200 × 90 ÷ 60 = <strong>1,800円</strong></li>
+<li>値段 = (必要な1個の利益 + 原価 + 送料の持ち出し) ÷ (1 − 手数料の割合) = (1,800 + 900 + 0) ÷ 0.9 = <strong>3,000円</strong></li>
+</ul>
+<p>表のネックレスの値上げ後の価格を 3,000円にすると、時給は <strong>1,200円</strong>、減ってもよい割合は <strong>25.0%</strong> になりました。</p>
+<p><a href="../../img/67_jikyu.png"><img alt="作品のシート。ビーズのネックレスを3,000円にすると、値上げ後の1個の利益は1,800円、時給は1,200円、減ってもよい割合は25.0%。想定の30%減では月の利益の差は−540円で、判定は値上げで減る" src="../../img/67_jikyu.png" /></a></p>
+<p>ただし、ネックレスは売れる数が 30% 減ると置いているので、月の利益は 7,560円で、いまより <strong>540円少なく</strong>なります(全体では 3作品で +1,220円)。</p>
+<p>ここが時給で見るときの大事な点です。<strong>月の利益が少し減っても、作る数を売れる数に合わせて減らせば、その分の時間が空きます</strong>。6個から 4.2個に合わせて作れば、月に約 2.7時間(1.8個 × 90分)作る時間が減ります(いままでどおり6個作って売れ残れば、時間は減りません)。その時間を、時給の高い作品や新作に回せるなら、値上げは悪い選択ではありません。</p>
+<h2>時給を見るときの注意</h2>
+<ul>
+<li><strong>ここでの時給は、作る時間だけで割った額</strong>です。撮影・出品・梱包・発送の時間は入っていないので、全体で見るともっと下がります(<a href="../zentai-jikyu/">作品に入らない作業も入れた全体の時給の記事</a>)</li>
+<li>目標の時給は、<a href="../mokuhyou-gyakusan/">月に残したい手取りから逆算する記事</a>のように、月に作業できる時間から決めると、無理のない数字になります</li>
+<li>値段を上げても売れる数が大きく減れば、月の利益は下がります。時給と月の利益の<strong>両方を見て</strong>決めます(<a href="../neage-herou/">売れる数が減る割合を変えて比べる記事</a>)</li>
+</ul>
+<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の表は、いまの価格と値上げ後の価格から、同じ利益に必要な数・減ってもよい割合・想定の減り方での月の利益・時給まで出すテンプレートで作りました(入力の漏れや文字を赤で知らせる書式も入っています)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9140884">ハンドメイド 値上げの影響の試算シート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../neage-sakaime/">値上げしたら、売れる数が何%まで減っても利益が残るかを出す</a></li><li><a href="../neage-herou/">値上げで売れる数が減る割合を、作品ごとに変えて月の利益を比べる</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#neage">値上げ・価格の見直し</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>
