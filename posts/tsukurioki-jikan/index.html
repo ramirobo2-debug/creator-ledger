@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>在庫が何日もつかと、作り置きが作業できる時間に収まるかを出す|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="いまの在庫が何日もつかと、在庫切れ・作り足す・足りている・様子見の状態を式で出し、作り足す数を作る時間に直して作業できる時間に収まるかを確かめる方法。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/tsukurioki-jikan/">
+<meta property="og:title" content="在庫が何日もつかと、作り置きが作業できる時間に収まるかを出す">
+<meta property="og:description" content="いまの在庫が何日もつかと、在庫切れ・作り足す・足りている・様子見の状態を式で出し、作り足す数を作る時間に直して作業できる時間に収まるかを確かめる方法。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/tsukurioki-jikan/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>在庫が何日もつかと、作り置きが作業できる時間に収まるかを出す</h1>
+<p class="date">公開日: 2026-11-13</p>
+<p>作り置きの数を出したら、次は<strong>どれから作るか</strong>と、<strong>全部作る時間があるか</strong>です。作品ごとに「いまの在庫が何日もつか」を出すと、急ぐ作品がわかります。作り足す数を作る時間に直して合計すると、作業できる時間に収まるかがわかります。</p>
+<p>作り足す数の出し方は、<a href="../tsukurioki-kazu/">直近の売れ方と在庫から作り置きの数を決める記事</a>で説明しています。</p>
+<h2>在庫が何日もつか</h2>
+<pre><code>M2(在庫がもつ日数): =IF(N(H2)&gt;0,ROUNDDOWN(ROUND(D2/(H2*IF(ISNUMBER(G2),G2,設定!$B$3)),6),0),&quot;&quot;)
+</code></pre>
+<p>いまの在庫 ÷ (1日あたりの販売 × 倍率)で、売れる時期のペースで売れたら何日で在庫がなくなるかを出します。小数は切り捨てて、少なめに見ておきます。1日あたりの販売が 0 の作品は、割り算ができないので空にします。</p>
+<h2>作品ごとの状態</h2>
+<pre><code>N2(状態): =IF(H2=0,&quot;様子見&quot;,IF(D2=0,&quot;在庫切れ&quot;,IF(J2&gt;0,&quot;作り足す&quot;,&quot;足りている&quot;)))
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>状態</th>
+<th>意味</th>
+<th>色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>在庫切れ</td>
+<td>売れているのに在庫が 0</td>
+<td>赤</td>
+</tr>
+<tr>
+<td>作り足す</td>
+<td>見込みに在庫が足りない</td>
+<td>オレンジ</td>
+</tr>
+<tr>
+<td>足りている</td>
+<td>見込みより在庫が多い</td>
+<td>緑</td>
+</tr>
+<tr>
+<td>様子見</td>
+<td>直近で売れていない</td>
+<td>色なし</td>
+</tr>
+</tbody>
+</table>
+<p>色は、条件付き書式で「セルの値が "在庫切れ" に等しい」なら赤、のように付けます。在庫が少なくなったら色で知らせる方法は、<a href="../zaiko-iro/">在庫が少なくなったら色で知らせる記事</a>でも説明しています。</p>
+<p>記入例(12月の30日分・倍率1.5・予備10%、ヘアゴムだけ倍率2。架空の数字)では、こうなりました。</p>
+<table>
+<thead>
+<tr>
+<th>作品</th>
+<th>在庫</th>
+<th>もつ日数</th>
+<th>作り足す数</th>
+<th>作る時間</th>
+<th>状態</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>布のヘアゴム</td>
+<td>0</td>
+<td>0日</td>
+<td>33個</td>
+<td>11.0時間</td>
+<td><strong>在庫切れ</strong></td>
+</tr>
+<tr>
+<td>レジンのピアス</td>
+<td>3</td>
+<td>10日</td>
+<td>7個</td>
+<td>4.7時間</td>
+<td><strong>作り足す</strong></td>
+</tr>
+<tr>
+<td>ビーズのネックレス</td>
+<td>4</td>
+<td>40日</td>
+<td>0個</td>
+<td>0時間</td>
+<td>足りている</td>
+</tr>
+<tr>
+<td>刺しゅうブローチ</td>
+<td>5</td>
+<td>―</td>
+<td>0個</td>
+<td>0時間</td>
+<td>様子見</td>
+</tr>
+</tbody>
+</table>
+<p>作る順番は、<strong>在庫切れ → もつ日数が短い作り足す作品</strong>が目安です。ピアスは在庫が10日分あるので、ヘアゴム(11.0時間)とピアス(4.7時間)を合わせた15.7時間を10日のうちに作れるなら、ヘアゴムを先にしても在庫切れになりません。1日に作業できる時間が短いときは、ピアスを数個先に作って、在庫が尽きる日を延ばします。</p>
+<h2>作業できる時間に収まるか</h2>
+<p>「設定」のシートで合計を出し、B5 に入れた作業できる時間と比べます。</p>
+<pre><code>B7(作り足す数の合計): =SUM(作品!J2:J101)
+B8(作る時間の合計):   =SUM(作品!K2:K101)
+B9(材料費の合計):     =SUM(作品!L2:L101)
+B12(時間に収まるか):  =IF(B8&lt;=B5,&quot;収まる&quot;,&quot;足りない(あと &quot;&amp;TEXT(B8-B5,&quot;0.0&quot;)&amp;&quot; 時間)&quot;)
+</code></pre>
+<p>合計は 40個・15.7時間・材料費 7,400円です。作業できる時間が40時間なら「収まる」、10時間しかなければ次のように出ます。</p>
+<p><a href="../../img/64_tarinai.png"><img alt="設定のシート。作り置きする日数30日・倍率1.5・予備10%・作業できる時間10時間で、作り足す数の合計40個・作る時間15.7時間・材料費7,400円・在庫切れ1件・作り足す作品2件、時間に収まるかは「足りない(あと 5.7 時間)」" src="../../img/64_tarinai.png" /></a></p>
+<p>実際に使う表では、作品の行に入力の漏れがあるときや、1個作る時間が空の作品があるときは、合計が少なく出て「収まる」と見えてしまうので、判定の代わりに「入力が足りない作品があります」のように出す形にしています。</p>
+<h2>足りないときの動かし方</h2>
+<ul>
+<li><strong>作り置きする日数を短くする</strong>: 12月の1か月分をまとめて作らず、前半の15日分だけ作り、売れ方を見て後半の分を作ります。記入例で15日分にすると、19個・7.0時間・材料費 3,250円で、10時間に収まりました</li>
+<li><strong>倍率・予備を見直す</strong>: 根拠の弱い倍率を下げると、作る時間がいちばん大きく減ります(<a href="../tsukurioki-bairitsu/">倍率と予備の記事</a>)</li>
+<li><strong>1個作る時間を短くする</strong>: 同じ作業をまとめてする(パーツを先にまとめて作る)と、1個あたりの時間が縮むことがあります。作業時間の記録は<a href="../sagyou-jikan/">作品ごとの時給を出す記事</a>の表が使えます</li>
+</ul>
+<p>出てくる数と時間は、売れ方と作る時間が見込みどおりだったときの目安です。発送・梱包・写真の時間は入っていないので、その分は作業できる時間から先に引いておきます。</p>
+<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の表は、在庫がもつ日数・状態の色・作り足す数の合計と作業できる時間に収まるかまで出すテンプレートで作りました。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9140650">ハンドメイド 作り置き・再販の数を決めるシート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../tsukurioki-kazu/">直近の売れ方といまの在庫から、作り置きする数を決める</a></li><li><a href="../tsukurioki-bairitsu/">12月の売れ方の倍率と予備の割合で、作り置きの数を調整する</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#tsukurioki">作り置き・再販の数</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>直近の売れ方といまの在庫から、作り置きする数を決める|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="直近の販売数と日数から1日あたりの売れ方を出し、作り置きする日数・倍率・予備をかけた見込みから在庫を引いて、作品ごとに作り足す数を ROUNDUP で出す方法。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/tsukurioki-kazu/">
+<meta property="og:title" content="直近の売れ方といまの在庫から、作り置きする数を決める">
+<meta property="og:description" content="直近の販売数と日数から1日あたりの売れ方を出し、作り置きする日数・倍率・予備をかけた見込みから在庫を引いて、作品ごとに作り足す数を ROUNDUP で出す方法。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/tsukurioki-kazu/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>直近の売れ方といまの在庫から、作り置きする数を決める</h1>
+<p class="date">公開日: 2026-11-13</p>
+<p>「売れる時期の前に、どの作品をいくつ作っておけばいい?」は、感覚で決めると、売れる作品が足りなくなったり、売れない作品が残ったりしがちです。作り置きの数は、<strong>直近の売れ方</strong>と<strong>いまの在庫</strong>から逆に数えると、作品ごとにはっきり決まります。</p>
+<p>この記事では、作品ごとの販売数と在庫から「あと何個作っておけばよいか」を式で出す方法を説明します。</p>
+<h2>考え方: 1日あたりの売れ方 → 見込み → 作り足す数</h2>
+<ol>
+<li><strong>1日あたりの販売</strong> = 直近の販売数 ÷ その日数(例: 90日で18個なら 0.2個)</li>
+<li><strong>見込みの販売数</strong> = 1日あたり × 作り置きする日数 × 季節の倍率 × (1 + 予備の割合)</li>
+<li><strong>作り足す数</strong> = 見込み − いまの在庫(小数は切り上げ、マイナスなら 0)</li>
+</ol>
+<p>直近の販売数は、売上の記録から作品ごとに数えます。販売記録から在庫を減らしていく表は、<a href="../handmade-zaiko/">販売記録から在庫を減らす記事</a>で説明しています。季節の倍率と予備の決め方は、<a href="../tsukurioki-bairitsu/">12月の倍率と予備の記事</a>にまとめました。</p>
+<h2>表の作り方</h2>
+<p>「設定」のシートに、B2 作り置きする日数・B3 季節の倍率・B4 予備の割合を入れます。「作品」のシートは1行1作品で、A 作品・B 直近の販売数・C その日数・D いまの在庫・E 1個作る時間(分)・F 1個の原価・G この作品だけの倍率(空なら設定の倍率)を入れます。</p>
+<pre><code>H2(1日あたりの販売): =B2/C2
+I2(見込みの販売数):   =H2*設定!$B$2*IF(ISNUMBER(G2),G2,設定!$B$3)*(1+N(設定!$B$4))
+J2(作り足す数):       =MAX(0,ROUNDUP(ROUND(I2-D2,6),0))
+K2(作る時間):         =J2*E2/60
+L2(材料費):           =J2*F2
+</code></pre>
+<ul>
+<li><code>ROUND(…,6)</code> は、割り算でできる小さな誤差で、ちょうど 7 のはずが 7.0000000001 になり、切り上げで 8 になるのを防ぐためです</li>
+<li><code>MAX(0,…)</code> で、在庫が見込みより多い作品は 0 にします</li>
+<li>予備の割合は 10% のように数として入れます(<code>N()</code> は空も文字も 0 にするので、文字で入っていると予備なしになります)</li>
+<li>実際に使う表では、販売数・日数・在庫のどれかが空や文字の行で <code>#DIV/0!</code> や <code>#VALUE!</code> が出ないよう、H 列を「入力がそろっているときだけ」計算し、I 列から先は前の列が数のときだけ計算する形(<code>IF(ISNUMBER(...),…,"")</code>)にしています</li>
+</ul>
+<h2>例: 12月の1か月分を、いつもの1.5倍・予備10%で</h2>
+<p>作り置きする日数 30日、倍率 1.5、予備 10% とします。ヘアゴムはギフトでよく出るので、この作品だけ倍率を 2 にしました(数字は説明のための架空のものです)。</p>
+<p><a href="../../img/62_tsukurioki.png"><img alt="作品のシート。レジンのピアスは見込み9.9個・在庫3で作り足す7個、ビーズのネックレスは見込み3.3個・在庫4で足りている、布のヘアゴムは見込み33個・在庫0で在庫切れ、刺しゅうブローチは売れていないので様子見" src="../../img/62_tsukurioki.png" /></a></p>
+<table>
+<thead>
+<tr>
+<th>作品</th>
+<th>直近の販売</th>
+<th>1日あたり</th>
+<th>見込み</th>
+<th>在庫</th>
+<th>作り足す数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>レジンのピアス</td>
+<td>90日で18個</td>
+<td>0.20</td>
+<td>9.9</td>
+<td>3</td>
+<td><strong>7個</strong></td>
+</tr>
+<tr>
+<td>ビーズのネックレス</td>
+<td>90日で6個</td>
+<td>0.07</td>
+<td>3.3</td>
+<td>4</td>
+<td><strong>0個</strong>(足りている)</td>
+</tr>
+<tr>
+<td>布のヘアゴム</td>
+<td>90日で45個</td>
+<td>0.50</td>
+<td>33.0</td>
+<td>0</td>
+<td><strong>33個</strong>(在庫切れ)</td>
+</tr>
+<tr>
+<td>刺しゅうブローチ</td>
+<td>90日で0個</td>
+<td>0.00</td>
+<td>0.0</td>
+<td>5</td>
+<td><strong>0個</strong>(様子見)</td>
+</tr>
+</tbody>
+</table>
+<p>ピアスは 0.2 × 30 × 1.5 × 1.1 = 9.9 個売れる見込みで、在庫が3個あるので、9.9 − 3 = 6.9 を切り上げて <strong>7個</strong>です。合計で<strong>40個・作る時間 15.7時間・材料費 7,400円</strong>になりました。</p>
+<h2>数を見るときの注意</h2>
+<ul>
+<li><strong>直近の日数は長めにとる</strong>: 30日だと、たまたま売れた週に引っぱられます。90日くらいで見ると、ならした売れ方になります。ただし、去年の12月のように時期で売れ方が変わる場合は、それを倍率で足します</li>
+<li><strong>出た数は「売れ方が同じように続いたら」の目安</strong>: 売れる数を約束するものではありません。新作や、特集に載った直後の作品は、直近の数が当てになりにくいので、少なめに作って様子を見ます</li>
+<li><strong>売れていない作品は作り足さない</strong>: 直近の販売が 0 の作品は、見込みも 0 になります。在庫が残っているなら、まず値段や写真を見直す合図です(<a href="../urenai-sakuhin/">しばらく売れていない作品を見つける記事</a>)</li>
+</ul>
+<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
+<p>次は、<a href="../tsukurioki-jikan/">在庫が何日もつかと、作り置きが作業できる時間に収まるか</a>を出します。</p>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の表は、直近の売れ方と在庫から作り足す数・作る時間・材料費まで出すテンプレートで作りました(入力の漏れや文字を赤で知らせる書式も入っています)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9140650">ハンドメイド 作り置き・再販の数を決めるシート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../tsukurioki-bairitsu/">12月の売れ方の倍率と予備の割合で、作り置きの数を調整する</a></li><li><a href="../tsukurioki-jikan/">在庫が何日もつかと、作り置きが作業できる時間に収まるかを出す</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#tsukurioki">作り置き・再販の数</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>
