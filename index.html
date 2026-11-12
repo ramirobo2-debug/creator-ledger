@@ -19,14 +19,14 @@
 
 
 <p class="lead">同人・BOOTH・ハンドメイドの頒布数・在庫・イベント収支を、スプレッドシートで管理する方法をまとめています。</p>
-<nav class="cats"><a href="#doujin">同人・BOOTH の頒布と収支(8)</a> ・ <a href="#handmade">ハンドメイドの値段と利益(11)</a> ・ <a href="#zaiko">在庫・材料・委託(7)</a> ・ <a href="#dandori">新作の計画・注文・出品・SNS・お客さま対応(10)</a> ・ <a href="#shashin">作品写真の撮り方と反応(4)</a> ・ <a href="#shiki">式の書き方(3)</a></nav>
+<nav class="cats"><a href="#doujin">同人・BOOTH の頒布と収支(8)</a> ・ <a href="#handmade">ハンドメイドの値段と利益(11)</a> ・ <a href="#zaiko">在庫・材料・委託(7)</a> ・ <a href="#dandori">新作の計画・注文・出品・SNS・お客さま対応(10)</a> ・ <a href="#shashin">作品写真の撮り方と反応(4)</a> ・ <a href="#hassou">発送・送料と梱包資材(3)</a> ・ <a href="#shiki">式の書き方(3)</a></nav>
 <h2 id="new">新しい記事</h2>
 <ul class="posts">
+<li><a href="posts/souryou-komi/">送料込みと送料別で、出品先ごとの「持ち出し」を比べる</a><p>minne・Creema・Instagram など出品先ごとに送料と資材費・受け取った送料をまとめ、送料別と送料込みの持ち出しの読み方と、送料込みの価格の決め方を説明。</p></li>
+<li><a href="posts/konpou-shizai/">梱包資材の1個あたりの値段と、残りの数を式で出す</a><p>まとめ買いした封筒・緩衝材・箱の1個あたりの値段を出し、発送の記録から資材ごとの使った数・費用・残りの目安を SUMIFS で出す方法。買い足したときの書き方つき。</p></li>
+<li><a href="posts/hassou-mochidashi/">ハンドメイドの発送で、送料と梱包資材費を記録して「持ち出し」を出す</a><p>発送1回を1行で記録し、封筒・緩衝材などの資材費を VLOOKUP で出して、受け取った送料との差(持ち出し)を発送方法ごとに SUMIFS でまとめる方法。</p></li>
 <li><a href="posts/shashin-camera/">作品写真の反応率を、スマホとカメラで比べるときの注意</a><p>撮影の記録からカメラ・スマホごとの使えた割合と反応率を出す表の作り方と、背景・光・出品先・作品の違いが混ざるときの比べ方の注意。</p></li>
 <li><a href="posts/shinsaku-pace/">作った数の記録から、新作が出す日に間に合うかを「いまのペース」で見る</a><p>制作の記録から直近7日に作った数を SUMIFS で出し、1日のペース・終わるまでの日数・見込みの完成日を式で出して、見積もりの判定と比べる方法。</p></li>
-<li><a href="posts/sagyou-wariai/">ハンドメイドの作業時間を、種類ごとの割合で全期間と直近30日で比べる</a><p>制作・撮影・梱包・SNS などの作業時間を種類ごとの割合にして、全期間と直近30日で並べて比べる方法。直近30日の割合の式と読み方の注意つき。</p></li>
-<li><a href="posts/shashin-shuppinsaki/">作品写真の反応率を、minne・Creema など出品先ごとに分けて比べる</a><p>minne・Creema・Instagram で閲覧の数え方が違うため、SUMIFS に出品先の条件を足して、出品先をそろえて作品写真の反応率を比べる方法。</p></li>
-<li><a href="posts/shashin-hikari/">作品写真の光の当て方ごとに反応率を比べる(合計どうしで割る理由)</a><p>窓の自然光・撮影用ライトなど光の当て方ごとに作品写真の反応率を出し、合計どうしで割る数字と1行ずつの反応率の平均の違いを説明。</p></li>
 </ul>
 <h2 id="doujin">同人・BOOTH の頒布と収支</h2>
 <ul class="posts">
@@ -82,6 +82,12 @@
 <li><a href="posts/shashin-hikari/">作品写真の光の当て方ごとに反応率を比べる(合計どうしで割る理由)</a><p>窓の自然光・撮影用ライトなど光の当て方ごとに作品写真の反応率を出し、合計どうしで割る数字と1行ずつの反応率の平均の違いを説明。</p></li>
 <li><a href="posts/shashin-shuppinsaki/">作品写真の反応率を、minne・Creema など出品先ごとに分けて比べる</a><p>minne・Creema・Instagram で閲覧の数え方が違うため、SUMIFS に出品先の条件を足して、出品先をそろえて作品写真の反応率を比べる方法。</p></li>
 <li><a href="posts/shashin-camera/">作品写真の反応率を、スマホとカメラで比べるときの注意</a><p>撮影の記録からカメラ・スマホごとの使えた割合と反応率を出す表の作り方と、背景・光・出品先・作品の違いが混ざるときの比べ方の注意。</p></li>
+</ul>
+<h2 id="hassou">発送・送料と梱包資材</h2>
+<ul class="posts">
+<li><a href="posts/hassou-mochidashi/">ハンドメイドの発送で、送料と梱包資材費を記録して「持ち出し」を出す</a><p>発送1回を1行で記録し、封筒・緩衝材などの資材費を VLOOKUP で出して、受け取った送料との差(持ち出し)を発送方法ごとに SUMIFS でまとめる方法。</p></li>
+<li><a href="posts/konpou-shizai/">梱包資材の1個あたりの値段と、残りの数を式で出す</a><p>まとめ買いした封筒・緩衝材・箱の1個あたりの値段を出し、発送の記録から資材ごとの使った数・費用・残りの目安を SUMIFS で出す方法。買い足したときの書き方つき。</p></li>
+<li><a href="posts/souryou-komi/">送料込みと送料別で、出品先ごとの「持ち出し」を比べる</a><p>minne・Creema・Instagram など出品先ごとに送料と資材費・受け取った送料をまとめ、送料別と送料込みの持ち出しの読み方と、送料込みの価格の決め方を説明。</p></li>
 </ul>
 <h2 id="shiki">式の書き方</h2>
 <ul class="posts">
