@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>月の実績から、売上目標の達成率と目標との差を出す|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="月ごとの手取りの実績から達成率・目標との差・1個あたりの手取りを式で出し、届いた月を緑、届かなかった月をオレンジにする方法と、次の月への返し方。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/mokuhyou-tassei/">
+<meta property="og:title" content="月の実績から、売上目標の達成率と目標との差を出す">
+<meta property="og:description" content="月ごとの手取りの実績から達成率・目標との差・1個あたりの手取りを式で出し、届いた月を緑、届かなかった月をオレンジにする方法と、次の月への返し方。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/mokuhyou-tassei/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>月の実績から、売上目標の達成率と目標との差を出す</h1>
+<p class="date">公開日: 2026-11-13</p>
+<p>目標を立てたら、月が終わるたびに<strong>届いたかどうか</strong>を数字で見ておくと、次の月の目標の立て方が変わります。見るのは「達成率」と「目標との差」、それに「1個あたりの手取り」の3つで十分です。</p>
+<p>この記事では、月ごとの実績を1行ずつ書いて、達成率と差を式で出し、届いた月を緑・届かなかった月をオレンジにする方法を説明します。目標の立て方は、<a href="../mokuhyou-gyakusan/">月に何個売ればよいかを逆算する記事</a>で説明しています。</p>
+<h2>表の作り方</h2>
+<p>1行に1か月で、A 月・B 手取りの目標・C 売れた数・D 売上・E 手取り(固定費を引いたあと)を入れます。</p>
+<pre><code>F2(達成率):          =IF(AND(ISNUMBER(B2),B2&gt;0,ISNUMBER(E2)),E2/B2,&quot;&quot;)
+G2(目標との差):       =IF(AND(ISNUMBER(B2),ISNUMBER(E2)),E2-B2,&quot;&quot;)
+H2(1個あたりの手取り): =IF(AND(ISNUMBER(C2),C2&gt;0,ISNUMBER(E2)),E2/C2,&quot;&quot;)
+</code></pre>
+<ul>
+<li>目標は<strong>手取り</strong>で比べます。売上で比べると、手数料や材料が増えた月でも「達成」に見えてしまいます</li>
+<li>手取りの目標(B 列)は、その月に立てた目標を書き写しておきます。あとで目標を変えても、過去の月の判定が変わらないようにするためです</li>
+<li>A 列の月は、日付(その月の1日)で入れて、表示を <code>yyyy/mm</code> にすると並べ替えやグラフに使えます</li>
+</ul>
+<p>色は条件付き書式で、F〜G 列に2つ足します。</p>
+<ul>
+<li>緑: <code>=AND(ISNUMBER($F2),$F2&gt;=1)</code></li>
+<li>オレンジ: <code>=AND(ISNUMBER($F2),$F2&lt;1)</code></li>
+</ul>
+<h2>例: 2か月分</h2>
+<p><a href="../../img/61_jisseki.png"><img alt="月の実績のシート。1か月目は手取り44,800円で達成率89.6%・目標との差−5,200円でオレンジ、2か月目は53,900円で107.8%・+3,900円で緑" src="../../img/61_jisseki.png" /></a></p>
+<table>
+<thead>
+<tr>
+<th>月</th>
+<th>目標</th>
+<th>売れた数</th>
+<th>手取り</th>
+<th>達成率</th>
+<th>差</th>
+<th>1個あたりの手取り</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1か月目</td>
+<td>50,000</td>
+<td>41個</td>
+<td>44,800</td>
+<td><strong>89.6%</strong></td>
+<td>−5,200</td>
+<td>約1,093</td>
+</tr>
+<tr>
+<td>2か月目</td>
+<td>50,000</td>
+<td>50個</td>
+<td>53,900</td>
+<td><strong>107.8%</strong></td>
+<td>+3,900</td>
+<td>1,078</td>
+</tr>
+</tbody>
+</table>
+<p>逆算した数は月48個でした。1か月目は41個で届かず、2か月目は50個で届いています。</p>
+<h2>結果を、次の月の目標に返す</h2>
+<ul>
+<li><strong>届かなかった月は「数」と「1個あたり」のどちらが原因かを、計画と比べて見る</strong>: 逆算の表の計画では、48個売ると利益が 54,930円(切り上げのぶん目標より少し多い)、固定費を引いた手取りは 51,930円で、1個あたり約1,082円です。1か月目の1個あたりは約1,093円と計画を下回っていないので、足りなかったのは主に売れた数(48個の計画に対して41個)と見られます。告知の回数や出品の数を見直します。1個あたりが計画より低い月は、値段・原価・作品の売れ方の比率を確かめます</li>
+<li><strong>1個あたりの手取りが下がっていないかを見る</strong>: 固定費が同じなら、売れた数が増えるほど1個あたりの固定費の負担は薄まり、1個あたりの手取りは上がるはずです。2か月目は数が増えたのに、1個あたりは少し下がりました(1,093円 → 1,078円)。利益の少ない作品の割合が増えたか、送料の持ち出しや材料費が増えたかを確かめます。原因が送料なら、<a href="../hassou-mochidashi/">送料と梱包資材の持ち出しを出す記事</a>の表で見られます</li>
+<li><strong>3か月続けて届かないなら、目標か値段を見直す</strong>: 逆算の表で、手取りの目標・割合・値段を変えて、作業できる時間に収まる組み合わせを探します(<a href="../mokuhyou-jikan/">作る時間に収まるかを確かめる記事</a>)</li>
+</ul>
+<p>月の売上と手取りそのものは、<a href="../handmade-tsukibetsu/">売上を月別に集計する記事</a>の表から月ごとに拾って書き写すと手間がかかりません。</p>
+<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の表は、目標の逆算と月の実績の達成率をひとつにまとめたテンプレートで作りました(届いた月を緑、届かなかった月をオレンジにする書式も入っています)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9140204">ハンドメイド 売上目標の逆算シート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../mokuhyou-gyakusan/">月に残したい手取りから、作品ごとに月に何個売ればよいかを逆算する</a></li><li><a href="../mokuhyou-jikan/">目標の数を作る時間に直して、作業できる時間に収まるかを確かめる</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#mokuhyou">売上目標の逆算と達成率</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>

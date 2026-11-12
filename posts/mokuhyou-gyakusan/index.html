@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>月に残したい手取りから、作品ごとに月に何個売ればよいかを逆算する|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="月に残したい手取りと固定費から必要な利益を出し、作品ごとの1個の利益と割合で、月に何個売ればよいか・売上はいくらかを ROUNDUP で逆算する方法。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/mokuhyou-gyakusan/">
+<meta property="og:title" content="月に残したい手取りから、作品ごとに月に何個売ればよいかを逆算する">
+<meta property="og:description" content="月に残したい手取りと固定費から必要な利益を出し、作品ごとの1個の利益と割合で、月に何個売ればよいか・売上はいくらかを ROUNDUP で逆算する方法。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/mokuhyou-gyakusan/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>月に残したい手取りから、作品ごとに月に何個売ればよいかを逆算する</h1>
+<p class="date">公開日: 2026-11-13</p>
+<p>「ハンドメイドで月に5万円」と目標を立てても、売上で5万円なのか、手元に残る額で5万円なのかで、売る数はまったく変わります。目標を<strong>手元に残したい額</strong>で決めて、そこから<strong>作品ごとに月に何個売ればよいか</strong>を逆に数えると、毎月の動き方が具体的になります。</p>
+<p>この記事では、作品ごとの1個の利益と「目標のうちこの作品で稼ぐ割合」から、月に売る数と売上を式で出す方法を説明します。</p>
+<h2>考え方: 手取り → 必要な利益 → 作品ごとの数</h2>
+<ol>
+<li><strong>必要な利益</strong> = 月に残したい手取り + 月の固定費(出店料・ショップの月額・道具のサブスクなど)</li>
+<li><strong>1個の利益</strong> = 販売価格 − 1個の原価 − 販売価格 × 手数料の率 − 1個あたりの送料の持ち出し</li>
+<li><strong>この作品で稼ぐ利益</strong> = 必要な利益 × 割合</li>
+<li><strong>月に売る数</strong> = この作品で稼ぐ利益 ÷ 1個の利益(小数は切り上げ)</li>
+</ol>
+<p>固定費は売れた数に関係なく出ていくので、手取りに足してから割り振ります。1個の原価の出し方は、<a href="../handmade-genka/">ハンドメイド作品の原価の出し方</a>で説明しています。</p>
+<h2>表の作り方</h2>
+<p>「目標」のシートの B2 に手取り、B3 に固定費を入れ、B7 で必要な利益を出します。</p>
+<pre><code>目標!B7(必要な利益): =IF(AND(ISNUMBER(B2),ISNUMBER(B3)),B2+B3,&quot;&quot;)
+</code></pre>
+<p>「作品」のシートは1行1作品で、A 作品・B 販売価格・C 1個の原価・D 手数料の率・E 送料の持ち出し・F 割合・G 1個作る時間(分)を入れます。H 列から先が式です。</p>
+<pre><code>H2(1個の利益):        =B2-C2-B2*D2-N(E2)
+J2(この作品で稼ぐ利益): =目標!$B$7*F2
+K2(月に売る数):        =ROUNDUP(J2/H2,0)
+L2(売上):             =K2*B2
+N2(1週あたりの数):     =ROUNDUP(K2*7/30,0)
+</code></pre>
+<ul>
+<li>送料をお客さまからいただいている作品は、E 列を空か 0 にします(<code>N()</code> で空を 0 として扱います)</li>
+<li>1個の利益が 0 以下の作品は、何個売っても目標に近づかないので、数を出さずに赤にしておくと気づけます</li>
+<li>実際に使う表では、入力が欠けている行や1個の利益が 0 以下の行で <code>#DIV/0!</code> やマイナスの数が出ないよう、J 列を「H が正の数で、割合が入っているときだけ」計算し、K 列から先は J が数のときだけ計算する形(<code>IF(ISNUMBER(...),…,"")</code>)にしています</li>
+</ul>
+<h2>例: 手取り5万円・固定費3,000円</h2>
+<p>必要な利益は 53,000円です。3つの作品に、5割・3割・2割で割り振ります(手数料はどれも10%とした架空の数字です)。</p>
+<p><a href="../../img/59_sakuhin.png"><img alt="作品のシート。レジンのピアスは1個の利益1,270円で月21個・売上37,800円、ビーズのネックレスは1,920円で9個・25,200円、布のヘアゴムは610円で18個・16,200円" src="../../img/59_sakuhin.png" /></a></p>
+<table>
+<thead>
+<tr>
+<th>作品</th>
+<th>価格</th>
+<th>1個の利益</th>
+<th>割合</th>
+<th>稼ぐ利益</th>
+<th>月に売る数</th>
+<th>売上</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>レジンのピアス</td>
+<td>1,800</td>
+<td>1,270</td>
+<td>50%</td>
+<td>26,500</td>
+<td><strong>21個</strong></td>
+<td>37,800</td>
+</tr>
+<tr>
+<td>ビーズのネックレス</td>
+<td>2,800</td>
+<td>1,920</td>
+<td>30%</td>
+<td>15,900</td>
+<td><strong>9個</strong></td>
+<td>25,200</td>
+</tr>
+<tr>
+<td>布のヘアゴム</td>
+<td>900</td>
+<td>610</td>
+<td>20%</td>
+<td>10,600</td>
+<td><strong>18個</strong></td>
+<td>16,200</td>
+</tr>
+</tbody>
+</table>
+<p>ピアスは 26,500 ÷ 1,270 = 20.9 なので、切り上げて 21個です。合計で<strong>月に48個・売上 79,200円</strong>。手取り5万円のために必要な売上は、5万円よりかなり多くなることがわかります。1週あたりにすると、ピアス5個・ネックレス3個・ヘアゴム5個が目安です。</p>
+<h2>割合の決め方と注意</h2>
+<ul>
+<li><strong>割合は合計を100%にする</strong>: 合計が 90% だと、残りの 10% の分が誰にも割り振られず、目標に届かない数が出ます。合計を別のセルで出し(<code>=SUM(作品!F2:F101)</code>)、100% でなければ「割合の合計を100%にしてください」と出すようにしておくと安心です</li>
+<li><strong>迷ったら、いま稼げている利益の比で分ける</strong>: 割合は「利益」の割合なので、売れた数の比ではなく、作品ごとの「売れた数 × 1個の利益」の比にします(1個の利益が作品ごとに違うため、数の比をそのまま使うと実績からずれます)。実績に近い割合のほうが、出た数が現実的になります。月ごとの売れ方は、<a href="../handmade-tsukibetsu/">売上を月別に集計する記事</a>の表から拾えます</li>
+<li><strong>出た数は「これだけ売れれば届く」目安</strong>: 売れる数を約束するものではありません。数が多すぎると感じたら、値段か割合か目標を見直す合図です</li>
+</ul>
+<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
+<p>次は、この数を<strong>作る時間</strong>に直して、作業できる時間に収まるかを確かめます(<a href="../mokuhyou-jikan/">目標の数を作るのに何時間かかるかを出す記事</a>)。</p>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の表は、月に残したい手取りから作品ごとの数・売上・作る時間まで出すテンプレートで作りました(割合の合計や入力の漏れを赤で知らせる書式も入っています)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9140204">ハンドメイド 売上目標の逆算シート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../mokuhyou-jikan/">目標の数を作る時間に直して、作業できる時間に収まるかを確かめる</a></li><li><a href="../mokuhyou-tassei/">月の実績から、売上目標の達成率と目標との差を出す</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#mokuhyou">売上目標の逆算と達成率</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>
