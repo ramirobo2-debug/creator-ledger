@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>棚卸しで、帳簿の数と数えた数の差を金額で見る|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="棚卸しで帳簿の数と数えた数が合わないとき、差を金額に直して確かめる順番を決める方法。g と個がまざるときの知らせる差の大きさの決め方つき。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/tanaoroshi-sa/">
+<meta property="og:title" content="棚卸しで、帳簿の数と数えた数の差を金額で見る">
+<meta property="og:description" content="棚卸しで帳簿の数と数えた数が合わないとき、差を金額に直して確かめる順番を決める方法。g と個がまざるときの知らせる差の大きさの決め方つき。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/tanaoroshi-sa/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>棚卸しで、帳簿の数と数えた数の差を金額で見る</h1>
+<p class="date">公開日: 2026-11-13</p>
+<p>「記録では 60個あるはずの金具が 54個しかない」。在庫を記録している人は、棚卸しで <strong>帳簿の数(記録上の数)と数えた数の差</strong> が出ます。差は個数のまま見るより、<strong>差 × 1個あたりの原価</strong> で金額にすると、どれから確かめるかを決めやすくなります。</p>
+<h2>考え方</h2>
+<ol>
+<li><strong>帳簿との差</strong> = 数えた数 − 帳簿の数(マイナスなら足りない、プラスなら多い)</li>
+<li><strong>差の金額</strong> = 帳簿との差 × 1個あたりの原価</li>
+<li>差が <strong>知らせる差の大きさ</strong> 以上なら「帳簿より多い / 少ない」と出す。0 なら「帳簿どおり」、0 ではないが小さいときは「差は小さい」</li>
+<li>帳簿の数が空の品目(記録していない材料)は比べずに「帳簿なし」</li>
+</ol>
+<p>在庫の金額の出し方は<a href="../tanaoroshi-kingaku/">棚卸しの記事</a>、帳簿の数を販売記録から減らす表は<a href="../handmade-zaiko/">在庫を販売記録から減らす記事</a>と<a href="../zairyou-zaiko/">材料の在庫の記事</a>で作っています。</p>
+<h2>表の作り方</h2>
+<p>「在庫」のシートの C に帳簿の数、D に数えた数、F に1個あたりの原価があるとします。「設定」の B3 に知らせる差の大きさを入れます(0.01 以上。空なら 1 として扱います)。</p>
+<pre><code>I2(帳簿との差):  =IF(AND(ISNUMBER(C2),ISNUMBER(D2)),D2-C2,&quot;&quot;)
+M2(差の金額):    =IF(ISNUMBER(I2),I2*F2,&quot;&quot;)
+N2(判定):        =IF(NOT(ISNUMBER(I2)),&quot;帳簿なし&quot;,
+                  IF(ROUND(I2,6)&gt;=IF(設定!$B$3=&quot;&quot;,1,設定!$B$3),&quot;帳簿より多い&quot;,
+                  IF(ROUND(-I2,6)&gt;=IF(設定!$B$3=&quot;&quot;,1,設定!$B$3),&quot;帳簿より少ない&quot;,
+                  IF(ROUND(I2,6)=0,&quot;帳簿どおり&quot;,&quot;差は小さい&quot;))))
+設定!B14(差の金額の合計): =SUM(在庫!M2:M201)
+</code></pre>
+<ul>
+<li><code>IF(設定!$B$3="",1,…)</code> がないと、B3 が空のとき 0 と比べることになり、差が 0 でも「帳簿より多い」と出ます。B3 に 0 やマイナスを入れたときも同じなので、入力の規則で 0.01 以上に限っておきます</li>
+<li>ここに載せた式は考え方を見せるための形です。実際に使う表では、数えた数や原価が空・文字の行は I 列から先を空にし、そういう行があるあいだは合計を「未確定」と出す形にしています</li>
+<li><code>ROUND(…,6)</code> は、12.5 − 12.3 のような小数の引き算で出る小さな誤差で判定がずれるのを防ぎます</li>
+<li>「帳簿より多い / 少ない」の行に色をつける(条件付き書式)と、確かめる品目がひと目でわかります。色のつけ方は<a href="../zaiko-iro/">色で知らせる記事</a>と同じ形です</li>
+</ul>
+<h2>例: 差の金額で見ると、確かめる順番が変わる</h2>
+<p>数字は説明のための架空のものです。知らせる差の大きさは 1 です。</p>
+<table>
+<thead>
+<tr>
+<th>品目</th>
+<th>帳簿 → 数えた数</th>
+<th>差</th>
+<th>差の金額</th>
+<th>判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>レジン液(g)</td>
+<td>300 → 280</td>
+<td>−20</td>
+<td><strong>−80円</strong></td>
+<td>帳簿より少ない</td>
+</tr>
+<tr>
+<td>ピアス金具(個)</td>
+<td>60 → 54</td>
+<td>−6</td>
+<td><strong>−150円</strong></td>
+<td>帳簿より少ない</td>
+</tr>
+<tr>
+<td>リボン(m)</td>
+<td>(記録なし)→ 12.5</td>
+<td></td>
+<td></td>
+<td>帳簿なし</td>
+</tr>
+<tr>
+<td>レジンのピアス(個)</td>
+<td>15 → 16</td>
+<td>+1</td>
+<td><strong>+350円</strong></td>
+<td>帳簿より多い</td>
+</tr>
+</tbody>
+</table>
+<p>数だけ見るとレジン液の「−20」がいちばん大きく見えますが、金額では 80円です。いちばん大きいのは、完成品のピアスが1個多い +350円でした。帳簿より多いときは、作った分を記録し忘れた、返品やキャンセルで戻った分を記録していない、などを先に疑います(売れた分の記録し忘れなら、逆に帳簿より少なく出ます)。差の金額の合計は +120円ですが、<strong>プラスとマイナスが打ち消し合う</strong> ので、合計が小さくても品目ごとの差は見ておきます。</p>
+<h2>知らせる差の大きさは「数」で決まる</h2>
+<p>知らせる差の大きさは、円ではなく <strong>数(個・g・m)</strong> で比べます。g で数える品目と個で数える品目がまざっているときに大きくしすぎると、金額の大きい差が隠れます。</p>
+<p><a href="../../img/75_sa.png"><img alt="知らせる差の大きさを10にした在庫のシート。レジン液の −20g(−80円)は「帳簿より少ない」のまま、ピアス金具の −6個(−150円)とレジンのピアスの +1個(+350円)は「差は小さい」になる" src="../../img/75_sa.png" /></a></p>
+<p>上の例で大きさを 10 にすると、レジン液の −20g(80円)だけが知らせる側に残り、金具の −6個(150円)とピアスの +1個(350円)は「差は小さい」になります。</p>
+<ul>
+<li>個で数える品目が多いなら、大きさは <strong>1</strong> のまま(1個でもずれたら知らせる)</li>
+<li>液や布を小数で量る品目があるなら、たとえば <strong>0.5</strong> にすると「0.5 未満の差は知らせない」になります(1 より小さくするので、知らせる差は増えます)。どの大きさも g・m・個に共通なので、単位ごとに誤差を変えたいときは、知らせる大きさにたよらず差の金額の列を見て決めます</li>
+<li>「差は小さい」の行も差の金額には入るので、合計の金額は大きさを変えても同じです(この例はどちらも +120円)</li>
+</ul>
+<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の表は、帳簿との差・差の金額・判定を、在庫の金額や使えない分とあわせて出すテンプレートで作りました(知らせる差の大きさを設定で変えられ、入力の漏れは赤で知らせます)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9142728">ハンドメイド 在庫の棚卸しシート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../tanaoroshi-tsukaenai/">使えない材料・売れない作品の金額を、棚卸しで分けて出す</a></li><li><a href="../tanaoroshi-kingaku/">年末の棚卸しで、材料・作りかけ・完成品の在庫の金額を出す</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#tanaoroshi">年末の棚卸し・在庫の金額</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>

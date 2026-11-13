@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>年末の棚卸しで、材料・作りかけ・完成品の在庫の金額を出す|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="ハンドメイドの年末の棚卸しで、材料・作りかけ・完成品の数に1個あたりの原価をかけ、区分ごとの在庫の金額と合計を SUMIFS で出す方法。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/tanaoroshi-kingaku/">
+<meta property="og:title" content="年末の棚卸しで、材料・作りかけ・完成品の在庫の金額を出す">
+<meta property="og:description" content="ハンドメイドの年末の棚卸しで、材料・作りかけ・完成品の数に1個あたりの原価をかけ、区分ごとの在庫の金額と合計を SUMIFS で出す方法。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/tanaoroshi-kingaku/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>年末の棚卸しで、材料・作りかけ・完成品の在庫の金額を出す</h1>
+<p class="date">公開日: 2026-11-13</p>
+<p>「年末に在庫を数えたけれど、全部でいくら分あるのかまとめられない」。ハンドメイドの在庫は、レジン液のように g で量る材料、金具のように個で数える材料、途中まで作った作品、売れ残った完成品がまざっています。数えた数に <strong>1個(1g・1m)あたりの原価</strong> をかければ、区分ごとの金額にそろえられます。</p>
+<p>この記事は、在庫の数と金額をまとめる表の作り方です。確定申告で在庫をどう評価するか、どれを在庫に入れるかは、税務署や税理士に確かめてください。</p>
+<h2>考え方: 在庫の金額 = 数えた数 × 1個あたりの原価</h2>
+<ol>
+<li>品目ごとに <strong>区分</strong>(材料・作りかけ・完成品)、<strong>数えた数</strong>、<strong>1個あたりの原価</strong> を入れる</li>
+<li><strong>在庫の金額</strong> = 数えた数 × 1個あたりの原価</li>
+<li>区分ごとに合計し、全部を足して <strong>在庫の金額の合計</strong> を出す</li>
+</ol>
+<p>単位は品目ごとにそろっていればかまいません。レジン液なら「g と 1g あたりの値段」、リボンなら「m と 1m あたりの値段」です。1個あたりの原価の出し方は<a href="../handmade-genka/">原価の記事</a>、材料の1個あたりの値段は<a href="../zairyou-tanka/">材料の単価の記事</a>で説明しています。この記事の例では、作りかけは「そこまでに使った材料の分」だけを1個あたりの原価にしています。これは手元の金額をつかむための簡単な形で、確定申告で使う在庫の評価のしかたとは別です。</p>
+<h2>表の作り方</h2>
+<p>「在庫」のシートは1行1品目で、A 品目・B 区分・C 帳簿の数(記録上の数。なければ空)・D 数えた数・E うち使えない・売れない数・F 1個あたりの原価 を入れます。</p>
+<pre><code>J2(在庫の金額):     =D2*F2
+設定!B6(材料):      =SUMIFS(在庫!J2:J201,在庫!B2:B201,&quot;材料&quot;)
+設定!B7(作りかけ):  =SUMIFS(在庫!J2:J201,在庫!B2:B201,&quot;作りかけ&quot;)
+設定!B8(完成品):    =SUMIFS(在庫!J2:J201,在庫!B2:B201,&quot;完成品&quot;)
+設定!B9(合計):      =SUM(在庫!J2:J201)
+</code></pre>
+<ul>
+<li>区分は入力の規則(リスト)で「材料・作りかけ・完成品」から選ぶ形にすると、「材料 」のような打ち間違いで SUMIFS から漏れるのを防げます</li>
+<li>実際に使う表では、区分や数が足りない行・数の欄に文字がある行は J 列を空にし、そういう行が1つでもあるあいだは合計を「未確定」と出す形にしています(黙って合計から抜けるのを防ぐため)</li>
+<li>帳簿の数との差と、使えない分の金額も同じ表で出しています(下の2本の記事)</li>
+</ul>
+<h2>例: 6品目を数えて金額にする</h2>
+<p>数字は説明のための架空のものです。</p>
+<p><a href="../../img/74_tanaoroshi.png"><img alt="在庫のシート。レジン液 280g×4円=1,120円、ピアス金具 54個×25円=1,350円、リボン 12.5m×30円=375円、作りかけのピアス 8個×180円=1,440円、レジンのピアス 16個×350円=5,600円、布のヘアゴム 20個×150円=3,000円" src="../../img/74_tanaoroshi.png" /></a></p>
+<table>
+<thead>
+<tr>
+<th>区分</th>
+<th>品目と計算</th>
+<th>金額</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>材料</td>
+<td>レジン液 280g × 4円 / 金具 54個 × 25円 / リボン 12.5m × 30円</td>
+<td><strong>2,845円</strong></td>
+</tr>
+<tr>
+<td>作りかけ</td>
+<td>ピアス(花)8個 × 180円</td>
+<td><strong>1,440円</strong></td>
+</tr>
+<tr>
+<td>完成品</td>
+<td>レジンのピアス 16個 × 350円 / 布のヘアゴム 20個 × 150円</td>
+<td><strong>8,600円</strong></td>
+</tr>
+<tr>
+<td>合計</td>
+<td></td>
+<td><strong>12,885円</strong></td>
+</tr>
+</tbody>
+</table>
+<p><a href="../../img/74_goukei.png"><img alt="設定のシート。材料 2,845円・作りかけ 1,440円・完成品 8,600円・合計 12,885円、うち使えない・売れない分 450円、使える分 12,435円" src="../../img/74_goukei.png" /></a></p>
+<p>完成品が合計の3分の2を占めています。材料より、売れ残った作品のほうが金額は大きくなりやすいので、完成品は数え漏れがないよう、置き場所(在庫箱・イベント用の箱・委託先)ごとに数えます。委託先に預けている分は<a href="../itaku-azuke/">委託販売の記事</a>の表から数を写すと早いです。</p>
+<h2>数えるときの注意</h2>
+<ul>
+<li><strong>原価は売る値段ではなく、かかった費用で入れます</strong>。完成品を販売価格で入れると、在庫の金額が大きく出すぎます</li>
+<li>量で数える材料(液・布・糸)は、空の容器の重さを引いてから量るか、目盛りで読みます。小数のままで入れてかまいません</li>
+<li>数える日を決めて、その日に売れた分・作った分を先に記録しておくと、帳簿の数と比べやすくなります(<a href="../tanaoroshi-sa/">帳簿との差の記事</a>)</li>
+<li>劣化したレジン液や、色あせて売れない作品は「使えない数」に分けておくと、使える分の金額が別に出ます(<a href="../tanaoroshi-tsukaenai/">使えない分の記事</a>)</li>
+</ul>
+<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の表は、品目ごとの数と原価から、区分ごとの在庫の金額・合計・帳簿との差・使えない分の金額まで出すテンプレートで作りました(入力の漏れや文字を赤で知らせる書式も入っています)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9142728">ハンドメイド 在庫の棚卸しシート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../tanaoroshi-sa/">棚卸しで、帳簿の数と数えた数の差を金額で見る</a></li><li><a href="../tanaoroshi-tsukaenai/">使えない材料・売れない作品の金額を、棚卸しで分けて出す</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#tanaoroshi">年末の棚卸し・在庫の金額</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>
