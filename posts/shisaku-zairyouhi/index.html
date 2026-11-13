@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>試作の材料費を1個分に割り、失敗や余った材料は「試作の費用」として分けて記録する|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="まとめ買いした材料を1個に使う量で割って原価に入れ、失敗した分や使わなかった材料は試作の費用として分け、何個売れれば取り戻せるかを出す。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/shisaku-zairyouhi/">
+<meta property="og:title" content="試作の材料費を1個分に割り、失敗や余った材料は「試作の費用」として分けて記録する">
+<meta property="og:description" content="まとめ買いした材料を1個に使う量で割って原価に入れ、失敗した分や使わなかった材料は試作の費用として分け、何個売れれば取り戻せるかを出す。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/shisaku-zairyouhi/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>試作の材料費を1個分に割り、失敗や余った材料は「試作の費用」として分けて記録する</h1>
+<p class="date">公開日: 2026-11-14</p>
+<p>新作の試作では、材料をひと袋・1本単位で買うので、レシートの金額をそのまま1個の原価にすると、とても高い値段になってしまいます。値段を決めるときは <strong>1個に使う分だけの材料費</strong> を使い、失敗した分や使わなかった材料は <strong>試作の費用</strong> として別に記録します。こうすると、値段は高くなりすぎず、試作にかかったお金をいつ取り戻せるかも分かります。</p>
+<h2>1個分の材料費の出し方</h2>
+<pre><code>1個分の材料費 = 買った値段 ÷ 入っている量 × 1個に使う量
+</code></pre>
+<p>数字は説明のための架空のものです。</p>
+<table>
+<thead>
+<tr>
+<th>材料</th>
+<th>買った値段</th>
+<th>入っている量</th>
+<th>1個に使う量</th>
+<th>1個分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>レジン液</td>
+<td>1,200円</td>
+<td>40g</td>
+<td>6g</td>
+<td><strong>180円</strong></td>
+</tr>
+<tr>
+<td>金具</td>
+<td>300円</td>
+<td>10個</td>
+<td>2個</td>
+<td><strong>60円</strong></td>
+</tr>
+<tr>
+<td>個包装の袋</td>
+<td>1枚 15円</td>
+<td>1枚</td>
+<td>1枚</td>
+<td><strong>15円</strong></td>
+</tr>
+<tr>
+<td>合計</td>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>255円</strong></td>
+</tr>
+</tbody>
+</table>
+<p>レシートの合計は 1,515円 ですが、1個の原価に入れるのは <strong>255円</strong> です。</p>
+<h2>失敗した分・使わなかった材料は「試作の費用」に</h2>
+<p>試作で失敗した1個分(255円)と、試しに買ったけれど <strong>この先も使う予定のない</strong> 色のレジン(1,200円)は、作品の原価には入れず、<strong>試作の費用</strong> として1行にまとめます。あとでほかの作品に使う材料は、ここには入れず材料の在庫に残します(使う作品の原価に入るので、ここにも入れると二重に数えることになります)。</p>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>金額</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>失敗した1個分の材料</td>
+<td>255円</td>
+</tr>
+<tr>
+<td>使わなかった色のレジン</td>
+<td>1,200円</td>
+</tr>
+<tr>
+<td>試作の費用の合計</td>
+<td><strong>1,455円</strong></td>
+</tr>
+</tbody>
+</table>
+<h2>何個売れれば試作の費用を取り戻せるか</h2>
+<pre><code>1個の利益 = 値段 − 手数料 − 1個分の材料費 − 送料の持ち出しと資材
+取り戻す個数 = 試作の費用 ÷ 1個の利益(小数は切り上げ)
+</code></pre>
+<p>値段 1,800円、手数料 10%(180円)、送料の持ち出しと資材 165円 なら、1個の利益は 1,800 − 180 − 255 − 165 = <strong>1,200円</strong> です。1,455 ÷ 1,200 = 1.21… なので、<strong>2個</strong> 売れれば試作にかかった材料のお金を取り戻せます(試作に使った時間の分は入っていません)。</p>
+<p>試作の費用を値段に上乗せするのではなく、「何個で取り戻せるか」で見ておくと、値段を上げずに済み、取り戻す個数が多すぎる新作は見送る、という判断にも使えます。新作を採用するかの判定は、<a href="../shisaku-hantei/">試作を1個の利益と時給と点数で判定する記事</a>にまとめています。</p>
+<h2>作る時間は「2個目以降」で入れ直す</h2>
+<p>試作の1個目は、手順を考えながら作るので時間がかかります。時給は、慣れた2個目以降の時間で出すほうが実際に近くなります。ここでの時給は作る時間だけで割った目安で、梱包や注文のやりとりの時間は入っていません。</p>
+<table>
+<thead>
+<tr>
+<th>作る時間</th>
+<th>時給(1個の利益 1,200円 ÷ 時間)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1個目 90分</td>
+<td>800円</td>
+</tr>
+<tr>
+<td>2個目以降 50分</td>
+<td><strong>1,440円</strong></td>
+</tr>
+</tbody>
+</table>
+<p>1個目の時間で時給を出すと、本当は採用してよい新作を見送ってしまうことがあります。目標の時給から値段や時間の上限を出す方法は、<a href="../shisaku-nedan/">新作の値段を目標の時給から逆算する記事</a>をご覧ください。</p>
+<h2>気をつけること</h2>
+<ul>
+<li>1個に使う量は、こぼした分・型に残る分も含めて、何個か作った平均で入れると原価が低く出すぎません</li>
+<li>1個の利益は、表に入れた費用だけを引いた目安です。作る時間や、ショップ全体の固定費は入っていません</li>
+</ul>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の考え方は、新作の試作ごとに1個の利益・時給・点数を並べて、採用するかを判定するテンプレートの考え方と同じです。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9145942">ハンドメイド 新作の試作記録と採用判定シート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../shisaku-hantei/">新作の試作を、1個の利益と時給と点数で採用するか判定する</a></li><li><a href="../shisaku-nedan/">新作の値段を目標の時給から逆算し、届かないときは作る時間の上限を出す</a></li><li><a href="../shisaku-tensuu/">見た目・作りやすさ・まわりの反応を点数にして、出す新作を選ぶ</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#shisaku">新作の試作・採用の判定</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>
