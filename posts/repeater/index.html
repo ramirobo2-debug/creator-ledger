@@ -3,66 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>お客さまごとの購入回数で、リピーターを見分ける|COUNTIFS と最後の連絡からの日数|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="お客さまとの連絡の記録から、COUNTIFS・SUMIFS でお客さまごとの購入の回数と合計を出し、リピーター・最後の連絡からの日数・評価の平均を式で出す方法。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/repeater/">
-<meta property="og:title" content="お客さまごとの購入回数で、リピーターを見分ける|COUNTIFS と最後の連絡からの日数">
-<meta property="og:description" content="お客さまとの連絡の記録から、COUNTIFS・SUMIFS でお客さまごとの購入の回数と合計を出し、リピーター・最後の連絡からの日数・評価の平均を式で出す方法。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/repeater/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/repeater/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/repeater/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>お客さまごとの購入回数で、リピーターを見分ける|COUNTIFS と最後の連絡からの日数</h1>
-<p class="date">公開日: 2026-11-11</p>
-<p>何度も買ってくれているお客さまが誰か、すぐに思い出せるでしょうか。販売サービスが分かれていると、同じ方が minne でもイベントでも買ってくれていることに気づきにくくなります。</p>
-<p>この記事では、お客さまとの連絡の記録から、お客さまごとの購入の回数・合計・リピーターかどうか・最後の連絡からの日数・評価の平均を式で出す方法を説明します。</p>
-<p>連絡の記録のつけ方と、返信忘れの知らせ方は、<a href="../henshin-wasure/">返信忘れを式で知らせる記事</a>で説明しています。この記事はその表の続きです。</p>
-<h2>お客さまの表に、購入の回数と合計を出す</h2>
-<p>お客さまの表には、呼び名と好みのメモだけを書きます。残りの列は、対応の記録(お客さま・購入・金額・評価の列)から式で集めます。</p>
-<p><a href="../../img/34_okyakusama.png"><img alt="お客さまの表。Aさん 連絡3件・購入2回・合計2,600円・リピーター・最後の連絡から10日・評価の平均5、Bさん 2件・1回・2,500円・1回購入・8日・評価4、Cさん 2件・1回・3,800円・1回購入・3日・未返信1、Dさん 1件・0回・まだ購入なし・0日・未返信1" src="../../img/34_okyakusama.png" /></a></p>
-<pre><code>C2(連絡の件数): =IF($A2=&quot;&quot;,&quot;&quot;,COUNTIFS(対応!$B$2:$B$3001,$A2))
-D2(購入の回数): =IF($A2=&quot;&quot;,&quot;&quot;,COUNTIFS(対応!$B$2:$B$3001,$A2,対応!$H$2:$H$3001,&quot;はい&quot;))
-E2(購入の合計): =IF($A2=&quot;&quot;,&quot;&quot;,SUMIFS(対応!$I$2:$I$3001,対応!$B$2:$B$3001,$A2,対応!$H$2:$H$3001,&quot;はい&quot;))
-F2(区分):       =IF($A2=&quot;&quot;,&quot;&quot;,IF($D2&gt;=2,&quot;リピーター&quot;,IF($D2=1,&quot;1回購入&quot;,&quot;まだ購入なし&quot;)))
-</code></pre>
-<ul>
-<li>購入は、対応の行の「購入」の列に「はい」と金額を書いたものだけを数えます。1回の購入は1行にだけ書きます(問い合わせの行と、届いたあとのお礼の行の両方に書くと、2回と数えます)</li>
-<li>この例の Aさん は、minne で1回、イベントで1回買っているので、窓口が違ってもリピーターになります。窓口ごとに名前を変えて書くと別の人として数えるので、同じ方だと確かめられたら1つの呼び名にそろえます。反対に、別の方が同じニックネームのときは1人として合わさるので、「Aさん(minne)」のように重ならない呼び名を付けて分けます</li>
-<li>リピーターの境目は2回にしています。3回以上をリピーターにしたいときは、<code>$D2&gt;=2</code> を <code>$D2&gt;=3</code> に変え、2回の人の分かれ目も足します(例: <code>IF($D2&gt;=3,"リピーター",IF($D2&gt;=1,"購入あり","まだ購入なし"))</code>)。<code>2</code> を <code>3</code> に変えるだけだと、2回の人が「まだ購入なし」になります</li>
-</ul>
-<h2>最後の連絡からの日数と、評価の平均</h2>
-<pre><code>G2(最後の連絡):
-=IF($A2=&quot;&quot;,&quot;&quot;,IF(SUMPRODUCT(MAX((対応!$B$2:$B$3001=$A2)*対応!$N$2:$N$3001))=0,&quot;&quot;,
- SUMPRODUCT(MAX((対応!$B$2:$B$3001=$A2)*対応!$N$2:$N$3001))))
-H2(最後の連絡からの日数): =IF(OR($A2=&quot;&quot;,$G2=&quot;&quot;),&quot;&quot;,TODAY()-$G2)
-I2(評価の平均):
-=IF($A2=&quot;&quot;,&quot;&quot;,IFERROR(AVERAGEIFS(対応!$J$2:$J$3001,対応!$B$2:$B$3001,$A2,
- 対応!$J$2:$J$3001,&quot;&gt;=1&quot;,対応!$J$2:$J$3001,&quot;&lt;=5&quot;),&quot;&quot;))
-</code></pre>
-<ul>
-<li>対応の N 列は、受けた日が日付ならその日、そうでなければ 0 を入れておく作業用の列です(<code>=IF(ISNUMBER($A2),$A2,0)</code>)。文字の入ったセルを掛け算に使わないようにするためです</li>
-<li>G 列は、お客さまが一致する行だけ日付が残るように掛け算し、その最大を取っています。MAXIFS が使える Excel 2019 以降や Google スプレッドシートなら <code>=MAXIFS(対応!$A$2:$A$3001,対応!$B$2:$B$3001,$A2)</code> でも同じ日付が出ます(連絡が1件も無いと 0 になるので、外側の IF で 0 を空にする形は残します)</li>
-<li>評価は 1〜5 の数だけを平均します。打ちまちがいの 0 や 50 が平均を動かさないようにするためです</li>
-</ul>
-<p>最後の連絡からの日数が長いリピーターは、新作のお知らせを送る相手の候補になります(各サービスのメッセージの決まりの範囲で送ります)。</p>
-<h2>種類別に、購入を書いた件数を見る</h2>
-<p>種類別のシートでは、連絡の種類ごとに件数と、その行に書いた購入の件数・金額を出します。その連絡が購入のきっかけだったかまでは式では分からないので、目安として見ます。</p>
-<p><a href="../../img/34_shurui.png"><img alt="種類別の表。作品の問い合わせ 3件・購入2件・3,900円、オーダーの相談 1件・購入1件・3,800円、発送・お届けの連絡 1件・未返信1・遅れ1、レビュー 2件・評価の平均4.5、お礼・感想 1件・購入1件・1,200円" src="../../img/34_shurui.png" /></a></p>
-<p>この例では、作品の問い合わせ3件のうち2件の行に購入を書いています。同じ質問が何度も来ているのに購入が少ないときは、内容のメモを見返して、説明文に答えを先に書いておく、といった直し方を考える目安になります(どの作品の問い合わせかは、内容のメモに作品名を書いておくと追えます)。購入を「どの行に書くか」で数え方が変わるので、たとえば「購入につながった問い合わせの行に書く」のように、書く場所を決めておきます。</p>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、設定・お客さま・対応・窓口別・種類別をまとめたテンプレートで作りました。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9133913">ハンドメイド作家のお客さま対応の記録シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../shinsaku-keikaku/">新作をイベントや特集の日までに間に合わせる|1日に要る作業時間を式で出す</a></li><li><a href="../dasusaki-betsu/">出す先ごとに、間に合うかと売上・利益の目安をまとめる|ハンドメイドの新作の計画</a></li><li><a href="../shinsaku-pace/">作った数の記録から、新作が出す日に間に合うかを「いまのペース」で見る</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#dandori">新作の計画・注文・出品・SNS・お客さま対応</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/repeater/">https://masumedo.com/posts/repeater/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

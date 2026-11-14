@@ -3,67 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>送料無料まであと何円かと、まとめ買いで1個あたりがいくら下がるかを出す|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="送料無料まであと何円かを式で出し、送料より少ない行に色をつけて、袋の数を変えた行と1個あたりを比べ、まとめ買いが得かを決める方法。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/souryou-muryou/">
-<meta property="og:title" content="送料無料まであと何円かと、まとめ買いで1個あたりがいくら下がるかを出す">
-<meta property="og:description" content="送料無料まであと何円かを式で出し、送料より少ない行に色をつけて、袋の数を変えた行と1個あたりを比べ、まとめ買いが得かを決める方法。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/souryou-muryou/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/souryou-muryou/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/souryou-muryou/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>送料無料まであと何円かと、まとめ買いで1個あたりがいくら下がるかを出す</h1>
-<p class="date">公開日: 2026-11-12</p>
-<p>ネットの店で材料を買うとき、「あと少しで送料無料」という表示を見て、つい何かを足してしまうことがあります。足したほうが本当に得かどうかは、<strong>送料無料まであと何円か</strong>と、<strong>足したあとの1個あたりの値段</strong>を並べると、すぐにわかります。</p>
-<p>この記事では、比較の表に「送料無料まで」の列を足し、同じ店で袋の数を変えた行と比べて、まとめ買いの得と損を式で出す方法を説明します。表の作り方そのものは、<a href="../shiire-hikaku/">材料の仕入れ先を送料込みの1個あたりで比べる記事</a>で説明しています。</p>
-<h2>送料無料まであと何円かを出す</h2>
-<p>品代(1袋の値段 × 袋の数)が、送料無料になる金額に届いていなければ、その差を出します。</p>
-<pre><code>O2(送料無料まで): =IF(AND(ISNUMBER($I2),N($G2)&gt;0),IF($I2&lt;$G2,$G2-$I2,&quot;&quot;),&quot;&quot;)
-</code></pre>
-<ul>
-<li>送料無料の金額が空の店(いつも送料がかかる店・いつも無料の店)は、空のままにします</li>
-<li>品代が無料の金額以上なら、もう送料無料なので空にします</li>
-</ul>
-<p>さらに、<strong>あと何円が送料より少ない行</strong>をオレンジにします(条件付き書式で、O 列が数で、O2 &lt; F2 のとき)。「買い足す検討をしてよい」という目印です。</p>
-<p>ただし、オレンジでも支払いが減るとは限りません。実際に足す商品の値段は、あと何円ちょうどにはならないからです。支払いが減るのは、<strong>実際に足す金額が送料より少ないとき</strong>だけです(同じなら支払いは変わりません)。送料より多く足すときは、足した分を使い切れるか、近いうちに買う予定のものかで決めます。</p>
-<h2>例: ピアス金具を3袋か4袋か</h2>
-<p>1袋 480円・10ペア入りのピアス金具を、送料 250円・1,500円以上で送料無料の店で買う場合です。</p>
-<p><a href="../../img/57_matomegai.png"><img alt="比較の表。ピアス金具を3袋買う行は送料無料まであと60円でオレンジ。4袋の行は送料0円・1個あたり48円で最安。レジン液は4本の行が1,280円で最安" src="../../img/57_matomegai.png" /></a></p>
-<ul>
-<li><strong>3袋</strong>: 品代 1,440円 + 送料 250円 = 1,690円。30ペアで1ペアあたり <strong>56.33円</strong>。送料無料まであと <strong>60円</strong>(送料 250円より少ないのでオレンジ)</li>
-<li><strong>4袋</strong>: 品代 1,920円で送料無料 = 1,920円。40ペアで1ペアあたり <strong>48.00円</strong></li>
-</ul>
-<p>あと 60円でも、足せるのは1袋 480円なので、支払いは 230円増えます(480円足して、送料 250円が要らなくなる)。そのかわり10ペア多く手に入り、1ペアあたりは 8.33円下がります。ピアス金具のようにいつも使う材料なら、4袋のほうが得です。</p>
-<h2>例: レジン液を2本か4本か</h2>
-<p>1本 1,280円のレジン液を、送料 520円・3,980円以上で送料無料の店で買う場合です。</p>
-<ul>
-<li><strong>2本</strong>: 2,560円 + 520円 = 3,080円。1本あたり <strong>1,540円</strong>。送料無料まであと <strong>1,420円</strong>(送料より多いので色はつきません)</li>
-<li><strong>4本</strong>: 5,120円で送料無料。1本あたり <strong>1,280円</strong></li>
-<li>別の店B(送料無料・1本 1,450円)で2本: 2,900円。1本あたり <strong>1,450円</strong></li>
-</ul>
-<p>4本買えば1本あたりは一番安くなりますが、支払いは 2,900円から 5,120円に増えます。3本(3,840円)では無料の線に届かないので、得になるのは4本からです。</p>
-<p>ここで足す前に確かめたいのが、<strong>その数を使い切れるか</strong>です。レジン液のように使える期間がある材料や、流行りの色のパーツは、使い切れずに残った分がそのまま損になります。買い足す数の目安は、<a href="../zairyou-zaiko/">材料の在庫と買い足しの時期を出す記事</a>の「1か月に使う数」から決めると外れにくくなります。</p>
-<h2>足すかどうかの決め方</h2>
-<ol>
-<li><strong>オレンジの行(あと何円 &lt; 送料)</strong>: 近いうちに使う予定の材料で、足す金額が送料より少なければ、支払いも減ります。同じ材料を足すなら、袋の数を増やした行を作って1個あたりを比べる</li>
-<li><strong>色のない行(あと何円 ≥ 送料)</strong>: 予定のないものを足すと、送料を払うより支払いが増えます。使い切れる見込みがあるときだけ、まとめ買いの行を作って比べる</li>
-<li><strong>ほかの材料も同じ店で買うとき</strong>: 送料無料の判定は、ふつう注文全体の品代で決まります。この表は1行を1回の注文として計算しているので、同じ店でまとめて買うなら、その店の品代を足し合わせてあと何円かを見ます</li>
-<li><strong>別の店のほうが安いとき</strong>: 送料無料にするために高い店で足すより、最安の店で必要な分だけ買うほうが安いことがあります。「最安」の列で確かめます</li>
-</ol>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、送料無料まであと何円かと最安を出すテンプレートで作りました(送料より少ない金額で届く行をオレンジにする書式も入っています)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9139203">ハンドメイド 材料の仕入れ先・価格比較シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../shiire-ichiran/">材料ごとに一番安い店を一覧にする</a></li><li><a href="../kaidashi-yosan/">材料の買い出しを「必須」と「あれば」に分けて、袋の数と予算内に収まるかを出す</a></li><li><a href="../shiire-hikaku/">材料の仕入れ先を、送料込みの1個あたりの値段で比べる</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#shiire">材料の仕入れ先・価格比較</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/souryou-muryou/">https://masumedo.com/posts/souryou-muryou/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

@@ -3,75 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ハンドメイドのお客さま対応で、返信忘れを式で知らせる|minne・Creema・DM の問い合わせを1枚に|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="minne・Creema・DM などの問い合わせを1件1行で記録し、返信した日が空の行に未返信、目安の日数を過ぎた行に遅れと式で出す方法。窓口ごとの返信までの日数つき。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/henshin-wasure/">
-<meta property="og:title" content="ハンドメイドのお客さま対応で、返信忘れを式で知らせる|minne・Creema・DM の問い合わせを1枚に">
-<meta property="og:description" content="minne・Creema・DM などの問い合わせを1件1行で記録し、返信した日が空の行に未返信、目安の日数を過ぎた行に遅れと式で出す方法。窓口ごとの返信までの日数つき。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/henshin-wasure/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/henshin-wasure/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/henshin-wasure/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>ハンドメイドのお客さま対応で、返信忘れを式で知らせる|minne・Creema・DM の問い合わせを1枚に</h1>
-<p class="date">公開日: 2026-11-11</p>
-<p>minne のメッセージ、Creema の問い合わせ、Instagram の DM、イベントで受けた相談。窓口がばらばらだと、「あの問い合わせ、返信したっけ?」がどうしても起きます。</p>
-<p>この記事では、連絡を1件1行で記録し、返信した日が空の行に「未返信」、返信の目安の日数を過ぎた行に「遅れ」と式で出す方法を説明します。レビューやお礼のように返信の要らない連絡は「返信不要」にして、数に入れないようにします。</p>
-<h2>連絡を1件1行で記録する</h2>
-<p>列は、受けた日・お客さま・窓口・連絡の種類・内容のメモ・返信した日です。購入や評価もあとで集計に使うので、同じ行に書いておきます。</p>
-<p><a href="../../img/33_taiou.png"><img alt="対応の記録。8件のうち、返信した日のある行は「返信済み」と返信までの日数 0・2・1、レビューとお礼・感想は「返信不要」、3日前の発送・お届けの連絡は「遅れ」(オレンジ)、今日の作品の問い合わせは「未返信」" src="../../img/33_taiou.png" /></a></p>
-<p>お客さまは、各サービスのニックネームなどの呼び名で書きます。住所・電話番号・本名はこの表に入れず、発送先は各サービスの取引画面で確かめるようにしておくと、ファイルを扱うときの心配が減ります。</p>
-<h2>状態を式で出す</h2>
-<p>設定のシートに、連絡の種類と「返信が要るか(はい/いいえ)」、返信の目安の日数(F2。この例は 1日)を書いておきます。L 列の式はこうです。</p>
-<pre><code>L2(状態):
-=IF(NOT(OR($A2&lt;&gt;&quot;&quot;,$B2&lt;&gt;&quot;&quot;,$C2&lt;&gt;&quot;&quot;,$D2&lt;&gt;&quot;&quot;,$E2&lt;&gt;&quot;&quot;,$F2&lt;&gt;&quot;&quot;,$H2&lt;&gt;&quot;&quot;,$I2&lt;&gt;&quot;&quot;,$J2&lt;&gt;&quot;&quot;)),&quot;&quot;,
- IF(ISNUMBER($F2),&quot;返信済み&quot;,
- IF(IFERROR(VLOOKUP($D2,設定!$C$2:$D$13,2,FALSE),&quot;はい&quot;)=&quot;いいえ&quot;,&quot;返信不要&quot;,
- IF(AND(ISNUMBER($A2),TODAY()-$A2&gt;IF(ISNUMBER(設定!$F$2),設定!$F$2,1)),&quot;遅れ&quot;,&quot;未返信&quot;))))
-
-M2(返信までの日数):
-=IF(AND(ISNUMBER($A2),ISNUMBER($F2)),IF($F2&gt;=$A2,$F2-$A2,&quot;&quot;),&quot;&quot;)
-</code></pre>
-<p>上から順に判定しています。</p>
-<ol>
-<li>入力する列(A〜F・H〜J)がすべて空なら、何も出さない</li>
-<li>返信した日に日付(数)が入っていれば「返信済み」。「11月3日」のように文字で入ってしまった日付は数として扱われず、未返信のままになります</li>
-<li>連絡の種類が、設定で「いいえ」になっていれば「返信不要」。設定に無い種類は IFERROR で「はい」として扱うので、知らない種類が返信不要になって見落とすことはありません</li>
-<li>受けた日から目安の日数を過ぎていれば「遅れ」、そうでなければ「未返信」</li>
-</ol>
-<p>この例では、3日前に受けた「発送・お届けの連絡」が遅れ、今日受けた作品の問い合わせが未返信です。TODAY を使うので、未返信の行は日がたつと自動で遅れに変わります。</p>
-<ul>
-<li>返信した日が受けた日より前になっている(打ちまちがい)ときは、返信までの日数を空にして、平均に入れないようにしています。ただし状態は「返信済み」になるので、テンプレートではその返信した日を赤にして気づけるようにしています</li>
-<li>「遅れ」の行は、条件付き書式で <code>$L2="遅れ"</code> のときにオレンジにしています</li>
-<li>一度返信しても、相手からまた連絡が来たら、新しい行として書きます。1行を書き換え続けると、返信を待っている連絡が「返信済み」のまま隠れてしまいます</li>
-</ul>
-<h2>窓口ごとに、未返信と返信までの日数をまとめる</h2>
-<p>窓口別のシートでは、COUNTIFS と AVERAGEIFS で、窓口ごとの件数・未返信・遅れ・返信までの日数の平均を出します。</p>
-<p><a href="../../img/33_madoguchi.png"><img alt="窓口別の表。minne 2件・未返信0、Creema 2件・未返信1・うち遅れ1・返信までの日数の平均1、BOOTH 1件・未返信1、Instagram の DM 2件・未返信0・平均2、イベント 1件" src="../../img/33_madoguchi.png" /></a></p>
-<pre><code>B2(件数):               =IF($A2=&quot;&quot;,&quot;&quot;,COUNTIFS(対応!$C$2:$C$3001,$A2))
-C2(未返信(遅れを含む)): =IF($A2=&quot;&quot;,&quot;&quot;,COUNTIFS(対応!$C$2:$C$3001,$A2,対応!$L$2:$L$3001,&quot;未返信&quot;)
-                                     +COUNTIFS(対応!$C$2:$C$3001,$A2,対応!$L$2:$L$3001,&quot;遅れ&quot;))
-D2(うち遅れ):           =IF($A2=&quot;&quot;,&quot;&quot;,COUNTIFS(対応!$C$2:$C$3001,$A2,対応!$L$2:$L$3001,&quot;遅れ&quot;))
-E2(返信までの日数の平均): =IF($A2=&quot;&quot;,&quot;&quot;,IFERROR(AVERAGEIFS(対応!$M$2:$M$3001,対応!$C$2:$C$3001,$A2),&quot;&quot;))
-</code></pre>
-<ul>
-<li>COUNTIFS は「または」を1つの式で書けないので、未返信と遅れを別々に数えて足しています</li>
-<li>AVERAGEIFS は、M 列の空のセル(返信した日が無い行)を平均に入れません。返信不要の種類でも、返信した日を書いた行は平均に入ります。1件も返信していない窓口はエラーになるので、IFERROR で空にしています</li>
-</ul>
-<p>この例では、Instagram の DM の返信が平均2日と、ほかより遅めです。DM は通知を見落としやすいので、確認する時間を決めておく、といった手を打つ目安になります。</p>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、設定・お客さま・対応・窓口別・種類別をまとめたテンプレートで作りました。お客さまごとの購入回数とリピーターの見分け方は、<a href="../repeater/">お客さまごとの購入回数でリピーターを見分ける記事</a>で説明しています。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9133913">ハンドメイド作家のお客さま対応の記録シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../repeater/">お客さまごとの購入回数で、リピーターを見分ける|COUNTIFS と最後の連絡からの日数</a></li><li><a href="../shinsaku-keikaku/">新作をイベントや特集の日までに間に合わせる|1日に要る作業時間を式で出す</a></li><li><a href="../dasusaki-betsu/">出す先ごとに、間に合うかと売上・利益の目安をまとめる|ハンドメイドの新作の計画</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#dandori">新作の計画・注文・出品・SNS・お客さま対応</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/henshin-wasure/">https://masumedo.com/posts/henshin-wasure/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

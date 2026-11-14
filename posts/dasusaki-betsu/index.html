@@ -3,69 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>出す先ごとに、間に合うかと売上・利益の目安をまとめる|ハンドメイドの新作の計画|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="イベント・minne・Creema など出す先ごとに、作る数・残りの作業時間・1日に要る時間・間に合うかと、売上と利益の目安を SUMIFS でまとめる方法。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/dasusaki-betsu/">
-<meta property="og:title" content="出す先ごとに、間に合うかと売上・利益の目安をまとめる|ハンドメイドの新作の計画">
-<meta property="og:description" content="イベント・minne・Creema など出す先ごとに、作る数・残りの作業時間・1日に要る時間・間に合うかと、売上と利益の目安を SUMIFS でまとめる方法。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/dasusaki-betsu/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/dasusaki-betsu/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/dasusaki-betsu/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>出す先ごとに、間に合うかと売上・利益の目安をまとめる|ハンドメイドの新作の計画</h1>
-<p class="date">公開日: 2026-11-12</p>
-<p>イベント・minne の特集・Creema のセールと、出す先がいくつも重なる時期は、「どこに何をいくつ出すか」と「それで間に合うか」を一度に見たくなります。</p>
-<p>この記事では、作品ごとの計画から、出す先ごとに作る数・残りの数・残りの作業時間・1日に要る作業時間・状態、売上と利益の目安をまとめる表の作り方を説明します。作品ごとの計算は、<a href="../shinsaku-keikaku/">新作を出す日までに間に合わせる1日の作業時間の記事</a>で説明した計画の表を使います。</p>
-<h2>出す先ごとの一覧</h2>
-<p>出す先別のシートは、設定に書いた出す先を上から順に並べ、計画の表から SUMIFS で集めます。</p>
-<p><a href="../../img/36_dasusaki.png"><img alt="出す先別の表。minne のクリスマス特集 2作品・目標15・作った11・残り4・1日0.27時間・間に合う・売上の目安 27,500円・利益 22,000円、冬のハンドメイドイベント 2作品・90・24・66・この日までに要る 20.5時間・1日1.03時間・きびしい(オレンジ)・108,000円・88,500円、Creema の新春セール 1作品・20・0・20・28.8時間・0.64時間・間に合う・24,000円・20,000円" src="../../img/36_dasusaki.png" /></a></p>
-<pre><code>A2(出す先):       =IF(設定!$A2=&quot;&quot;,&quot;&quot;,設定!$A2)
-B2(出す日):       =IF(OR($A2=&quot;&quot;,NOT(ISNUMBER(設定!$B2))),&quot;&quot;,設定!$B2)
-C2(作品の数):     =IF($A2=&quot;&quot;,&quot;&quot;,COUNTIFS(計画!$B$2:$B$201,$A2,計画!$A$2:$A$201,&quot;?*&quot;))
-D2(作る数の目標): =IF($A2=&quot;&quot;,&quot;&quot;,SUMIFS(計画!$C$2:$C$201,計画!$B$2:$B$201,$A2,計画!$A$2:$A$201,&quot;?*&quot;))
-F2(残りの数):     =IF($A2=&quot;&quot;,&quot;&quot;,SUMIFS(計画!$J$2:$J$201,計画!$B$2:$B$201,$A2))
-G2(残りの作業時間): =IF($A2=&quot;&quot;,&quot;&quot;,SUMIFS(計画!$K$2:$K$201,計画!$B$2:$B$201,$A2))
-</code></pre>
-<ul>
-<li>作品の数と目標は、作品名が入っている行だけを数えます。条件の <code>"?*"</code> は「1文字以上の文字」という意味で、作品名を消した行が残っていても数に入りません</li>
-<li>作った数(E列)も同じ形で、計画の「作った数」の列を集めます</li>
-</ul>
-<h2>「この日までに要る作業時間」は、その出す先の分だけではない</h2>
-<p>G列の残りの作業時間は、その出す先の作品だけの合計です。でも、間に合うかを決めるのは、その日までに作り終えるもの全部です。H列では、出す日がその日以前で今日以降の作品の時間を、出す先に関係なく足します。</p>
-<pre><code>H2(この日までに要る作業時間): =IF(OR($A2=&quot;&quot;,$B2=&quot;&quot;),&quot;&quot;,SUMIFS(計画!$K$2:$K$201,計画!$H$2:$H$201,&quot;&lt;=&quot;&amp;$B2,計画!$H$2:$H$201,&quot;&gt;=&quot;&amp;TODAY()))
-I2(使える日数):               =IF(OR($A2=&quot;&quot;,$B2=&quot;&quot;),&quot;&quot;,$B2-TODAY())
-J2(1日に要る作業時間):         =IF(OR($H2=&quot;&quot;,$I2=&quot;&quot;),&quot;&quot;,IF($I2&lt;0,&quot;&quot;,IF($I2=0,$H2,$H2/$I2)))
-K2(状態):
-=IF($A2=&quot;&quot;,&quot;&quot;,IF($C2=0,&quot;作品なし&quot;,IF($F2=0,&quot;完成&quot;,IF($B2=&quot;&quot;,&quot;出す日なし&quot;,IF($I2&lt;0,&quot;過ぎた&quot;,
- IF(OR(AND($I2=0,$H2&gt;0),$J2&gt;IF(AND(ISNUMBER(設定!$E$2),設定!$E$2&gt;0),設定!$E$2,1)),&quot;きびしい&quot;,&quot;間に合う&quot;))))))
-</code></pre>
-<p>この例では、冬のイベントの作品だけなら 17.8時間ですが、その前の minne の特集の 2.7時間も同じ期間に作るので、20.5時間 ÷ 20日 = 1日 1.03時間です。設定の「1日に制作できる時間」(1時間)をこえるので「きびしい」になります。出す日が今日の出す先は、使える日数が0なので、この日までに要る作業時間をそのまま出し、残りがあれば「きびしい」にしています。計画の表で1点の作業時間が空の作品(状態が「入力を確認」)は、時間が0として足されるので、出す先別の「間に合う」も少なめの見積もりになります。計画の表に「入力を確認」が無いかを先に見てください。</p>
-<p>G列と H列を並べておくと、「自分の分は少ないのに、前の出す先の分に押されている」のか、「この出す先そのものが多すぎる」のかが見分けられます。</p>
-<h2>売上と利益の目安</h2>
-<p>計画の表で、作品ごとに「作る数 × 価格」と「作る数 ×(価格 − 1点の材料費)」を出しておき、出す先ごとに SUMIFS で足します。</p>
-<pre><code>計画 O2(売上の目安): =IF(OR($A2=&quot;&quot;,NOT(ISNUMBER($C2)),NOT(ISNUMBER($E2))),&quot;&quot;,$C2*$E2)
-計画 P2(利益の目安): =IF($O2=&quot;&quot;,&quot;&quot;,$C2*($E2-IF(ISNUMBER($F2),$F2,0)))
-出す先別 L2:         =IF($A2=&quot;&quot;,&quot;&quot;,SUMIFS(計画!$O$2:$O$201,計画!$B$2:$B$201,$A2))
-出す先別 M2:         =IF($A2=&quot;&quot;,&quot;&quot;,SUMIFS(計画!$P$2:$P$201,計画!$B$2:$B$201,$A2))
-</code></pre>
-<p>この例の合計は、売上の目安 159,500円、利益の目安 130,500円です。どちらも「作った分が全部売れたとき」の数字で、販売手数料・送料・出店料は入っていません。手数料を入れた利益は、<a href="../hanbaisaki-betsu/">販売先ごとの売上を手数料込みで集計する記事</a>の考え方で出せます。</p>
-<h2>減らす数を、売上と時間の両方で決める</h2>
-<p>「きびしい」の冬のイベントで、1点15分・900円のヘアゴムを 60個から 40個に減らすと、1日に要る時間は 0.78時間になり「間に合う」に変わります。そのかわり、イベントの売上の目安は 108,000円から 90,000円、利益の目安は 88,500円から 73,500円に下がります。</p>
-<p>同じイベントの雪の結晶のピアスは、1点20分で 1,800円です。1時間あたりの売上で比べると、ヘアゴムは 3,600円、ピアスは 5,400円。時間が足りないときは、1時間あたりの売上が低いものから数を減らすと、売上の目安の下がり方を小さくできます。ただし、まとめ買いのお客さまが多い作品など、数字に出ない理由もあるので、目安として使ってください。</p>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、設定・計画・制作・出す先別をまとめたテンプレートで作りました。マルシェに持っていく数そのものの決め方は、<a href="../mochikomi-kazu/">マルシェに何個持っていくかの記事</a>で説明しています。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9134920">ハンドメイド作家の新作の制作・販売計画シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../shinsaku-pace/">作った数の記録から、新作が出す日に間に合うかを「いまのペース」で見る</a></li><li><a href="../mochimono-check/">出店の持ち物チェックリストをスプレッドシートで作る|「済」を選ぶと行の色が変わる</a></li><li><a href="../order-nouki/">オーダーメイドの注文を、納期の近い順に並べる表|発送済みを除いて SMALL・INDEX/MATCH で</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#dandori">新作の計画・注文・出品・SNS・お客さま対応</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/dasusaki-betsu/">https://masumedo.com/posts/dasusaki-betsu/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

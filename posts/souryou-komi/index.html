@@ -3,62 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>送料込みと送料別で、出品先ごとの「持ち出し」を比べる|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="minne・Creema・Instagram など出品先ごとに送料と資材費・受け取った送料をまとめ、送料別と送料込みの持ち出しの読み方と、送料込みの価格の決め方を説明。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/souryou-komi/">
-<meta property="og:title" content="送料込みと送料別で、出品先ごとの「持ち出し」を比べる">
-<meta property="og:description" content="minne・Creema・Instagram など出品先ごとに送料と資材費・受け取った送料をまとめ、送料別と送料込みの持ち出しの読み方と、送料込みの価格の決め方を説明。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/souryou-komi/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/souryou-komi/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/souryou-komi/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>送料込みと送料別で、出品先ごとの「持ち出し」を比べる</h1>
-<p class="date">公開日: 2026-11-12</p>
-<p>minne・Creema では送料を別にいただき、Instagram の DM で受けた注文は送料込みの価格にしている、というように、出品先によって送料の扱いが違うことはよくあります。そのとき「どの出品先で、発送にいくら持ち出しているか」は、送料と資材費を記録して出品先ごとにまとめると見えてきます。</p>
-<p>発送1回の記録の書き方と、資材費・送料の差の式は、<a href="../hassou-mochidashi/">送料と梱包資材費の持ち出しの記事</a>で説明しています。</p>
-<h2>出品先ごとにまとめる</h2>
-<p>出品先のシートは、発送方法別と同じ形で、条件の列を出品先(発送のシートの C 列)にします。</p>
-<pre><code>B2(発送した回数):       =COUNTIFS(発送!$C$2:$C$2001,$A2)
-C2(払った送料の合計):   =SUMIFS(発送!$F$2:$F$2001,発送!$C$2:$C$2001,$A2,発送!$F$2:$F$2001,&quot;&gt;=0&quot;)
-D2(1回あたりの送料):   =IF(N($J2)=0,&quot;&quot;,$C2/$J2)
-G2(受け取った送料の合計): =SUMIFS(発送!$G$2:$G$2001,発送!$C$2:$C$2001,$A2,発送!$G$2:$G$2001,&quot;&gt;=0&quot;)
-H2(送料の差の合計):     =SUMIFS(発送!$P$2:$P$2001,発送!$C$2:$C$2001,$A2)
-J2(送料を入れた回数):   =COUNTIFS(発送!$C$2:$C$2001,$A2,発送!$F$2:$F$2001,&quot;&gt;=0&quot;)
-</code></pre>
-<ul>
-<li>1回あたりの送料は、送料を入れた行の数(J 列)で割ります。まだ送料を書いていない発送があっても、平均が下がりません</li>
-<li>送料込みで売った発送は、受け取った送料を 0 と書きます。空にすると、受け取った送料も差も出ないので、持ち出しから外れてしまいます</li>
-</ul>
-<p><a href="../../img/46_shuppinsaki.png"><img alt="出品先別の表。minne 3回・送料1,210・1回あたり403・資材費166・合計1,376・受け取った送料1,160・差 −216・持ち出し3回。Creema 2回・610・305・35・645・650・+5・0回。Instagram 1回・430・430・14・444・0・−444・1回" src="../../img/46_shuppinsaki.png" /></a></p>
-<h2>数字の読み方</h2>
-<ul>
-<li><strong>minne(送料別)</strong>: 3回とも持ち出しで、合計 −216 円。そのうち −178 円はクリスマスのリース(宅配便・60サイズ)で、受け取った送料 800 円に対して、送料 850 円+箱や緩衝材 128 円がかかっています。大きい作品の送料の設定が、実際より低くなっています</li>
-<li><strong>Creema(送料別)</strong>: 2回で +5 円。受け取った送料を少し多めにしていて、資材費まで入っています</li>
-<li><strong>Instagram(送料込み)</strong>: 受け取った送料は 0 なので、送料 430 円+資材 14 円の 444 円がまるごと差に出ます。作品の価格に送料を入れてあれば、これは価格の中から払った送料です。この表は作品の価格を見ていないので、入れてあるかどうかは価格の側で確かめます</li>
-</ul>
-<h2>送料込みの価格は、発送にかかった合計の平均から決める</h2>
-<p>送料込みで売るなら、価格に足す送料は「1回あたりの送料」ではなく「発送にかかった合計(送料+資材費)」の平均で見ます。この例の Instagram の1回なら 444 円です。送料別の価格に資材費を入れていなかったなら、444 円を足しておけば(資材費をすでに入れていたなら、送料の 430 円だけを足せば)、送料込みにしても、手数料の増える分を除けば、手元に残る額は変わりません。</p>
-<ul>
-<li>手数料まで入れて、いまと同じ利益が残る送料込みの価格をぴったり出す方法は、<a href="../freeship-kakaku/">送料無料にするときの価格の記事</a>で説明しています</li>
-<li>1回だけの記録では、作品の大きさで大きく変わります。発送方法ごとに分けて平均を見ると、送料込みの価格を作品のサイズごとに決めやすくなります</li>
-<li>出品先の手数料は、送料込みの価格にもかかります。送料のぶん価格が上がると、手数料もそのぶん増えます(販売先ごとの手数料の出し方は<a href="../hanbaisaki-betsu/">販売先ごとに集計する記事</a>)</li>
-<li>送料込みで持ち出しが大きい出品先ほど、セット・まとめ割で発送を1回にまとめたときに浮く額が大きくなります(<a href="../matomewari-souryou/">送料の持ち出しとまとめ割の記事</a>)</li>
-<li>送料別でも、資材費は作品の価格に入れるか、送料に少し上乗せするかのどちらかで回収します。minne の例のように、送料をちょうどの額にしていると、資材費のぶんだけ毎回持ち出しになります</li>
-</ul>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。作品の値段に送料や梱包をどう入れるかは、<a href="../handmade-nedan/">ハンドメイド作品の値段の決め方</a>でも説明しています。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、発送の記録と発送方法別・出品先別・資材別の集計をまとめたテンプレートで作りました。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9136112">ハンドメイド 発送・送料と梱包資材の記録シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../konpou-mikomi/">12月の発送の見込みから、梱包資材を買い足す数を出す</a></li><li><a href="../hassou-mochidashi/">ハンドメイドの発送で、送料と梱包資材費を記録して「持ち出し」を出す</a></li><li><a href="../konpou-shizai/">梱包資材の1個あたりの値段と、残りの数を式で出す</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#hassou">発送・送料と梱包資材</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/souryou-komi/">https://masumedo.com/posts/souryou-komi/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

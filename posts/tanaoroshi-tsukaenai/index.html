@@ -3,105 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>使えない材料・売れない作品の金額を、棚卸しで分けて出す|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="劣化した材料や色あせた作品を「うち使えない数」として分け、棚卸しで使える分と使えない分の在庫の金額を別に出す方法。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/tanaoroshi-tsukaenai/">
-<meta property="og:title" content="使えない材料・売れない作品の金額を、棚卸しで分けて出す">
-<meta property="og:description" content="劣化した材料や色あせた作品を「うち使えない数」として分け、棚卸しで使える分と使えない分の在庫の金額を別に出す方法。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/tanaoroshi-tsukaenai/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/tanaoroshi-tsukaenai/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/tanaoroshi-tsukaenai/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>使えない材料・売れない作品の金額を、棚卸しで分けて出す</h1>
-<p class="date">公開日: 2026-11-13</p>
-<p>「固まりかけたレジン液や、色あせた作品も在庫に数えていいの?」。棚卸しで数えた中には、<strong>もう使えない材料や、そのままでは売れない作品</strong> がまざっています。数えた数はそのまま残しておき、<strong>うち使えない・売れない数</strong> を別の列に入れると、使える分の金額と使えない分の金額が分けて出ます。</p>
-<p>使えない分を確定申告の在庫から外してよいか、どう評価するかは、税務署や税理士に確かめてください。この記事は、その判断に使う数と金額を分けておく方法です。</p>
-<h2>考え方</h2>
-<ol>
-<li><strong>使える数</strong> = 数えた数 − うち使えない数</li>
-<li><strong>使えない分の金額</strong> = うち使えない数 × 1個あたりの原価</li>
-<li><strong>使える分の金額</strong> = 在庫の金額(数えた数 × 原価)− 使えない分の金額</li>
-</ol>
-<p>在庫の金額の出し方は<a href="../tanaoroshi-kingaku/">棚卸しの記事</a>で説明しています。</p>
-<h2>表の作り方</h2>
-<p>「在庫」のシートの D に数えた数、E にうち使えない・売れない数(なければ空)、F に1個あたりの原価があるとします。</p>
-<pre><code>H2(使える数):          =D2-N(E2)
-J2(在庫の金額):        =D2*F2
-K2(使えない分の金額):  =N(E2)*F2
-L2(使える分の金額):    =J2-K2
-設定!B10(使えない分の合計): =SUM(在庫!K2:K201)
-設定!B11(使える分の合計):   =設定!B9-設定!B10
-</code></pre>
-<ul>
-<li><code>N(E2)</code> は、E が空なら 0 として計算します。ただし E に文字が入っていても 0 になり、この式のままでは気づけません。ここに載せた式は考え方を見せるための形で、実際に使う表では、文字や「数えた数より多い使えない数」がある行は計算せず赤で知らせ、そのあいだ合計を「未確定」と出す形にしています</li>
-<li>使えない数は、数えた数の <strong>うち</strong> の数です。数えた数から先に引いてしまうと、帳簿の数との比べ(<a href="../tanaoroshi-sa/">帳簿との差の記事</a>)で、使えない分まで「足りない」と出てしまいます</li>
-</ul>
-<h2>例: 使えない分を入れると</h2>
-<p>数字は説明のための架空のものです。固まりかけのレジン液 40g、短い切れ端のリボン 2.5m、色あせた布のヘアゴム 3個を「使えない」に入れました(金具 4個・ピアス 1個は記入例のまま)。</p>
-<p><a href="../../img/76_tsukaenai.png"><img alt="使えない数を入れた在庫のシート。レジン液 40g→160円、ピアス金具 4個→100円、リボン 2.5m→75円、レジンのピアス 1個→350円、布のヘアゴム 3個→450円。使える分はそれぞれ 960・1,250・300・5,250・2,550円" src="../../img/76_tsukaenai.png" /></a></p>
-<table>
-<thead>
-<tr>
-<th>品目</th>
-<th>数えた数 → うち使えない</th>
-<th>使えない分の金額</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>レジン液</td>
-<td>280g → 40g</td>
-<td>160円</td>
-</tr>
-<tr>
-<td>ピアス金具</td>
-<td>54個 → 4個</td>
-<td>100円</td>
-</tr>
-<tr>
-<td>リボン</td>
-<td>12.5m → 2.5m</td>
-<td>75円</td>
-</tr>
-<tr>
-<td>レジンのピアス</td>
-<td>16個 → 1個</td>
-<td>350円</td>
-</tr>
-<tr>
-<td>布のヘアゴム</td>
-<td>20個 → 3個</td>
-<td>450円</td>
-</tr>
-<tr>
-<td><strong>合計</strong></td>
-<td></td>
-<td><strong>1,135円</strong></td>
-</tr>
-</tbody>
-</table>
-<p>在庫の金額の合計 12,885円のうち、使える分は <strong>11,750円</strong> になります。使えない分を入れる前(450円)と比べると、ヘアゴムの3個だけで 450円増えています。</p>
-<p>金額で並べると、色あせた完成品のほうが、劣化した材料より大きいことがわかります。売れないまま残っている作品は、<a href="../urenai-sakuhin/">しばらく売れていない作品の記事</a>の形で、年内に値下げや福袋(<a href="../fukubukuro-nedan/">福袋の値段の記事</a>)に回すかを先に決めておくと、使えない側に入る数を減らせます。</p>
-<h2>分けるときの注意</h2>
-<ul>
-<li><strong>使えない数は、捨てる・作り直すと決めた分だけ</strong> にします。「たぶん売れない」程度の作品まで入れると、使える分の金額が小さく出すぎます</li>
-<li>使えない分は、捨てたときに帳簿の数からも減らしておきます。減らさないと、次の棚卸しで「帳簿より少ない」と出ます</li>
-<li>材料が劣化しやすいもの(レジン液・接着剤)は、使えない分の金額を毎年見ておくと、買う量を見直す目安になります(<a href="../zairyou-zaiko/">材料の在庫と買い足しの記事</a>)</li>
-</ul>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、数えた数と使えない数から、使える分・使えない分の金額を区分ごとの在庫の金額や帳簿との差とあわせて出すテンプレートで作りました(使えない数が数えた数より多いときなどは赤で知らせます)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9142728">ハンドメイド 在庫の棚卸しシート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../tanaoroshi-zure-itaku/">棚卸しの日の前後に売れた分・作った分と、委託先の在庫を数えに入れる</a></li><li><a href="../tanaoroshi-kingaku/">年末の棚卸しで、材料・作りかけ・完成品の在庫の金額を出す</a></li><li><a href="../tanaoroshi-sa/">棚卸しで、帳簿の数と数えた数の差を金額で見る</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#tanaoroshi">年末の棚卸し・在庫の金額</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/tanaoroshi-tsukaenai/">https://masumedo.com/posts/tanaoroshi-tsukaenai/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

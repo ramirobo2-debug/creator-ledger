@@ -3,69 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ハンドメイドのラッピングの原価を、資材費と作業時間で出す|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="ギフト袋・リボン・箱などの資材費に、包む時間を時給で足してラッピングの原価を出し、受け取ったラッピング代との差を式で見る方法。無料ラッピングの本当の負担がわかります。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/wrapping-genka/">
-<meta property="og:title" content="ハンドメイドのラッピングの原価を、資材費と作業時間で出す">
-<meta property="og:description" content="ギフト袋・リボン・箱などの資材費に、包む時間を時給で足してラッピングの原価を出し、受け取ったラッピング代との差を式で見る方法。無料ラッピングの本当の負担がわかります。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/wrapping-genka/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/wrapping-genka/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/wrapping-genka/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>ハンドメイドのラッピングの原価を、資材費と作業時間で出す</h1>
-<p class="date">公開日: 2026-11-12</p>
-<p>12月が近づくと、「プレゼント用に包んでもらえますか」というご注文が増えます。ラッピングを無料にしている方も、100円・300円といただいている方もいると思いますが、その金額で本当に足りているかは、袋やリボンの代金と、包む時間を足してみないとわかりません。</p>
-<p>この記事では、ラッピング1回を1行で記録して、資材費・作業の分・原価・1個あたりの原価・いただいたラッピング代との差を式で出す表を作ります。</p>
-<h2>1回のラッピングを1行で書く</h2>
-<p>ラッピングのシートには、次の列を用意します。</p>
-<ul>
-<li>日付・注文/作品・出品先・包み方・包んだ数</li>
-<li>受け取ったラッピング代(無料なら 0)</li>
-<li>使った資材と数(3種類まで。資材1・数、資材2・数、資材3・数)</li>
-<li>作業時間(分)</li>
-</ul>
-<p>資材の1個あたりの値段は、設定のシートに「買った値段 ÷ 入っていた数」で出しておきます。ギフト袋20枚入り 300円なら 1枚 15円、リボン 10m 分 220円を 1m ずつ使うなら 1本 22円です(資材の値段の出し方は<a href="../konpou-shizai/">梱包資材の1個あたりの値段の記事</a>と同じ考え方です)。</p>
-<p><a href="../../img/47_wrapping.png"><img alt="ラッピングのシート。5回のラッピングの包み方・包んだ数・受け取ったラッピング代・資材と数・作業時間と、資材費・作業の分・原価の合計・1個あたりの原価・差。差がマイナスの行はオレンジ" src="../../img/47_wrapping.png" /></a></p>
-<h2>資材費・作業の分・原価・差の式</h2>
-<pre><code>N2(資材費):
-=IF(AND($G2&lt;&gt;&quot;&quot;,ISNUMBER($H2)),IFERROR(VLOOKUP($G2,設定!$C$2:$F$31,4,FALSE)*$H2,0),0)
- + 資材2(I・J 列)・資材3(K・L 列)の同じ形
-O2(作業の分):   =IF(AND(ISNUMBER($M2),N($M2)&gt;=0),$M2/60*N(設定!$H$2),0)
-P2(原価の合計): =N($N2)+N($O2)
-Q2(1個あたり):  =IF(AND(ISNUMBER($P2),ISNUMBER($E2),N($E2)&gt;0),$P2/$E2,&quot;&quot;)
-R2(差):         =IF(AND(ISNUMBER($F2),ISNUMBER($P2)),$F2-$P2,&quot;&quot;)
-</code></pre>
-<ul>
-<li>テンプレートの N2〜P2 は、行が空のときは空になるように全体を IF で包んでいます。上の式は、計算の部分だけを抜き出したものです</li>
-<li>作業の分は「分 ÷ 60 × 時給」です。設定の H2 に自分の時給(例は 1,000 円)を入れます。時給を空にすると作業の分は 0 になり、資材費だけの原価になります</li>
-<li>R 列がマイナスの行は、条件付き書式でオレンジにしています</li>
-<li><strong>無料のときも、受け取ったラッピング代に 0 を入れます</strong>。空のままだと差が出ず、持ち出しの合計と回数から抜けてしまいます</li>
-<li>IFERROR で、設定に無い資材名は 0 円になります。打ちまちがいがあると原価が少なく出るので、テンプレートでは設定に無い資材名や、資材と数の片方だけの欄を、条件付き書式で赤にしています。赤が残っているうちは、原価を確定した数字として使わないようにします</li>
-</ul>
-<p>1行目のピアスは、無料ラッピングで、ギフト袋 15円・リボン 22円・シール 4円の資材費 41円に、5分の作業 83円を足して、原価は約 124円です。受け取ったラッピング代が 0 なので、差は −124円になります。</p>
-<h2>作業時間を入れる理由</h2>
-<p>資材費だけなら 41円で「無料でもたいしたことはない」と見えます。でも、包むのに5分かかっているなら、その5分は作品を作る時間から出ています。月に20回包めば 100分、時給 1,000円なら約 1,700円分です。</p>
-<p>作業の分は、実際に払うお金ではありません。「ラッピングにこれだけの時間を使っている」ことを、お金の単位で見るための数字です。時給の考え方は<a href="../sagyou-jikan/">作品ごとの時給を出す記事</a>でも説明しています。</p>
-<h2>読み方の注意</h2>
-<ul>
-<li><strong>包んだ数で割る</strong>: 3点を1つの袋にまとめたのか、3つ別々に包んだのかで、1個あたりは大きく変わります。包んだ数には「包んだ袋・箱の数」を入れます</li>
-<li><strong>作業時間は、だいたいでよい</strong>: ストップウォッチで測らなくても、5分・10分の単位で十分です。毎回入れることのほうが大切です</li>
-<li><strong>資材は使った分だけ</strong>: ギフトボックス5個入り 550円を買っても、1回に使うのは 1個 110円分です。12月に向けて資材をいくつ買い足すかは、<a href="../wrapping-kaitashi/">ラッピング資材を買い足す数の記事</a>で出せます</li>
-</ul>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。ラッピング代を作品の値段に入れる考え方は、<a href="../handmade-nedan/">ハンドメイド作品の値段の決め方</a>もあわせてご覧ください。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、設定・ラッピング・包み方別・出品先別・資材別をまとめたテンプレートで作りました。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9136810">ハンドメイド ラッピング・ギフト包装の原価記録シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../wrapping-ryoukin/">包み方ごとの1個あたりの原価から、ラッピング代を決める</a></li><li><a href="../muryou-wrapping/">無料ラッピングを続けるかを、出品先ごとの持ち出しで決める</a></li><li><a href="../wrapping-kaitashi/">ラッピング資材の残りと、12月に買い足す数を式で出す</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#wrapping">ラッピング・ギフト包装</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/wrapping-genka/">https://masumedo.com/posts/wrapping-genka/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

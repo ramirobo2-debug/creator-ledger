@@ -3,106 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>12月の売れ方の倍率と予備の割合で、作り置きの数を調整する|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="クリスマス・年末の作り置きを、去年の12月とふだんの月の比から出す倍率と、予備の割合で調整する方法。設定を変えたときの作る数と時間の比較つき。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/tsukurioki-bairitsu/">
-<meta property="og:title" content="12月の売れ方の倍率と予備の割合で、作り置きの数を調整する">
-<meta property="og:description" content="クリスマス・年末の作り置きを、去年の12月とふだんの月の比から出す倍率と、予備の割合で調整する方法。設定を変えたときの作る数と時間の比較つき。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/tsukurioki-bairitsu/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/tsukurioki-bairitsu/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/tsukurioki-bairitsu/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>12月の売れ方の倍率と予備の割合で、作り置きの数を調整する</h1>
-<p class="date">公開日: 2026-11-13</p>
-<p>作り置きの数を、ふだんの時期の売れ方(直近90日など)から出すと、ふだんのペースの数になります。クリスマスや年末のように売れる時期の前は、そこに<strong>季節の倍率</strong>(いつもの何倍売れそうか)と<strong>予備の割合</strong>(見込みより少し多めに作る分)をかけて調整します。</p>
-<p>この記事では、倍率と予備をどう決めるかと、それで作り置きの数がどれくらい変わるかを、同じ作品で比べます。式の全体は<a href="../tsukurioki-kazu/">直近の売れ方と在庫から作り置きの数を決める記事</a>で説明しています。</p>
-<h2>式のどこに入るか</h2>
-<pre><code>見込みの販売数 = 1日あたりの販売 × 作り置きする日数 × 倍率 × (1 + 予備の割合)
-I2: =H2*設定!$B$2*IF(ISNUMBER(G2),G2,設定!$B$3)*(1+N(設定!$B$4))
-</code></pre>
-<ul>
-<li>倍率は「設定」の B3 に全体の値を入れ、G 列に入れた作品だけはその値を使います(<code>IF(ISNUMBER(G2),G2,設定!$B$3)</code>)</li>
-<li>予備の割合は B4 に 10% のように数として入れます。空なら <code>N()</code> で 0 として扱います。ただし <code>N()</code> は文字も 0 にするので、文字で入ってしまうと予備なしで計算されます。実際に使う表では、B4 が空か 0 以上 1 未満の数のときだけ計算し、文字なら見込みを空にして気づけるようにしています</li>
-</ul>
-<h2>倍率の決め方: 去年の同じ時期と、ふだんの月を比べる</h2>
-<p>去年の記録があれば、<strong>去年の12月の販売数 ÷ 去年の9〜11月の月平均</strong>で、その作品が12月にいつもの何倍売れたかがわかります。たとえば9〜11月が月平均6個で12月が9個なら、9 ÷ 6 = 1.5 倍です。月別の販売数は、<a href="../handmade-tsukibetsu/">売上を月別に集計して去年と比べる記事</a>の表から拾えます。</p>
-<ul>
-<li><strong>作品によって倍率は違う</strong>: ギフトに選ばれやすい作品(ヘアゴム・アクセサリーの小物など)は12月に大きく伸び、自分用に買われる作品はあまり変わらないことがあります。差が大きい作品だけ、G 列に作品ごとの倍率を入れます</li>
-<li><strong>直近の期間と倍率の比べ元をそろえる</strong>: 直近の販売数をとった期間に、すでに売れる時期(11月の特集など)が入っていると、その上に12月の倍率をかけて多く見すぎます。倍率を「ふだんの月との比」で出したなら、直近の販売数もふだんの期間でとります</li>
-<li><strong>去年の記録がなければ 1 から始める</strong>: 根拠のない大きな倍率は、作りすぎのもとです。1〜1.2 くらいで始め、12月の前半の売れ方を見て作り足すほうが、残りにくくなります</li>
-</ul>
-<h2>予備の割合の決め方</h2>
-<p>予備は、見込みどおりに売れても在庫切れにならないための「余裕」です。</p>
-<ul>
-<li><strong>作るのに時間がかかる作品・材料の取り寄せに日数がかかる作品が多い</strong>ときは、売り切れてから作り足すのが間に合わないので、予備を多めにします</li>
-<li><strong>すぐ作れる作品・季節もの</strong>(年が明けると売れにくいもの)が中心なら、予備を少なめか 0 にします</li>
-</ul>
-<p>この表の予備の割合は、全部の作品に同じ値がかかります。作品ごとに変えたいときは、予備の列を作品のシートに足し、I 列の <code>設定!$B$4</code> をその列に置き換えます(または、その作品だけ倍率を少し大きめにして調整します)。</p>
-<h2>例: 同じ4作品で、倍率と予備を変えて比べる</h2>
-<p>作り置きする日数は30日、ヘアゴムだけ作品の倍率を2にしています(数字は説明のための架空のものです)。</p>
-<table>
-<thead>
-<tr>
-<th>設定</th>
-<th>ピアス</th>
-<th>ネックレス</th>
-<th>ヘアゴム</th>
-<th>合計</th>
-<th>作る時間</th>
-<th>材料費</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ふだん(倍率1・予備なし・作品の倍率なし)</td>
-<td>3個</td>
-<td>0個</td>
-<td>15個</td>
-<td>18個</td>
-<td>7.0時間</td>
-<td>3,300円</td>
-</tr>
-<tr>
-<td>倍率1.5(ヘアゴムは2)・予備なし</td>
-<td>6個</td>
-<td>0個</td>
-<td>30個</td>
-<td>36個</td>
-<td>14.0時間</td>
-<td>6,600円</td>
-</tr>
-<tr>
-<td>倍率1.5(ヘアゴムは2)・予備10%</td>
-<td><strong>7個</strong></td>
-<td><strong>0個</strong></td>
-<td><strong>33個</strong></td>
-<td><strong>40個</strong></td>
-<td><strong>15.7時間</strong></td>
-<td><strong>7,400円</strong></td>
-</tr>
-</tbody>
-</table>
-<p><a href="../../img/63_fudan.png"><img alt="ふだんどおりの設定にした作品のシート。レジンのピアスは見込み6個・在庫3で作り足す3個、ビーズのネックレスは見込み2個で足りている、布のヘアゴムは見込み15個で在庫切れ" src="../../img/63_fudan.png" /></a></p>
-<p>ふだんどおりなら18個で済むところ、12月の倍率を入れると36個、予備を足すと40個になりました。作る時間も 7時間から 15.7時間へと倍以上です。倍率を上げると作り足す数が増え、そのぶん作る時間も増えるので、<a href="../tsukurioki-jikan/">作業できる時間に収まるか</a>をあわせて確かめます。</p>
-<p>ネックレスは、倍率をかけても見込み(3.3個)が在庫(4個)より少ないので、どの設定でも作り足す数は 0 です。在庫が多い作品は、倍率を上げても作業は増えません。</p>
-<h2>注意</h2>
-<ul>
-<li>出てくる数は、去年や直近と同じように売れたときの目安で、売れる数を約束するものではありません</li>
-<li>予備の割合は 0〜99% の範囲で入れます。50% のように大きな値を入れるくらいなら、倍率のほうを見直したほうが、作品ごとの差が残ります</li>
-</ul>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の比べ方は、作品ごとの倍率と全体の予備の割合を入れるだけで作り足す数・作る時間・材料費が変わるテンプレートで作りました。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9140650">ハンドメイド 作り置き・再販の数を決めるシート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../tsukurioki-jikan/">在庫が何日もつかと、作り置きが作業できる時間に収まるかを出す</a></li><li><a href="../tsukurioki-kazu/">直近の売れ方といまの在庫から、作り置きする数を決める</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#tsukurioki">作り置き・再販の数</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/tsukurioki-bairitsu/">https://masumedo.com/posts/tsukurioki-bairitsu/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

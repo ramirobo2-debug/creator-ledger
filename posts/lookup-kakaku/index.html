@@ -3,74 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>作品名から価格を引く式|VLOOKUP・INDEX/MATCH・XLOOKUP のどれを使うか|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="作品名から価格や原価を引く式を、VLOOKUP・INDEX/MATCH・XLOOKUP の3つで比べる。見つからないときの IFERROR、空白で見つからないときの TRIM も。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/lookup-kakaku/">
-<meta property="og:title" content="作品名から価格を引く式|VLOOKUP・INDEX/MATCH・XLOOKUP のどれを使うか">
-<meta property="og:description" content="作品名から価格や原価を引く式を、VLOOKUP・INDEX/MATCH・XLOOKUP の3つで比べる。見つからないときの IFERROR、空白で見つからないときの TRIM も。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/lookup-kakaku/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/lookup-kakaku/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/lookup-kakaku/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>作品名から価格を引く式|VLOOKUP・INDEX/MATCH・XLOOKUP のどれを使うか</h1>
-<p class="date">公開日: 2026-11-11</p>
-<p>販売の記録を1行ずつ書くとき、作品名を入れたら価格や原価が自動で入ると、打ちまちがいも手間も減ります。表から値を引く式には、VLOOKUP・INDEX と MATCH の組み合わせ・XLOOKUP の3つの書き方があります。</p>
-<p>この記事では、作品の表から価格を引く式を3つの書き方で並べ、見つからないときの扱いと、どれを使うと困りにくいかを、例の表で説明します。</p>
-<h2>例の作品の表</h2>
-<p>「作品」のシートに、作品名・分類・1点の原価・ふだんの価格・作った数を書いておきます。</p>
-<p><a href="../../img/16_sakuhin.png"><img alt="作品の表。ピアス 原価150円・価格1,500円、ブローチ 300円・2,000円、しおり 50円・400円、ヘアゴム 120円・800円" src="../../img/16_sakuhin.png" /></a></p>
-<p>ここから、作品名(この例では「ブローチ」)の「ふだんの価格」(D列)を引きます。</p>
-<h2>3つの書き方</h2>
-<p>別のシートの A2 に作品名が入っているとして、式は次のとおりです。</p>
-<pre><code>VLOOKUP:     =VLOOKUP(A2,作品!$A$2:$D$201,4,FALSE)
-INDEX/MATCH: =INDEX(作品!$D$2:$D$201,MATCH(A2,作品!$A$2:$A$201,0))
-XLOOKUP:     =XLOOKUP(A2,作品!$A$2:$A$201,作品!$D$2:$D$201)
-</code></pre>
-<p><a href="../../img/16_hiku.png"><img alt="3つの書き方と、見つからないとき・空白が混じったときの結果。ブローチはどの書き方でも2,000、リングは #N/A・空・未登録、後ろに空白のブローチは #N/A、TRIM で 2,000" src="../../img/16_hiku.png" /></a></p>
-<p>どれも結果は 2,000 で同じです。違いは書き方と、使えるソフトです。</p>
-<ul>
-<li><strong>VLOOKUP</strong> は、表のいちばん左の列(作品名)で探し、左から数えて4列目を返します。最後の <code>FALSE</code> を省くと「近い値」を探す動きになり、表が並べ替えられていないと別の作品の価格が返ることがあります。作品名で探すときは、必ず <code>FALSE</code>(または <code>0</code>)を付けます。また、表に列を1つ挿入すると「4列目」がずれて、別の列の値が返ります</li>
-<li><strong>INDEX/MATCH</strong> は、<code>MATCH</code> で作品名が何行目にあるかを探し(最後の <code>0</code> は「完全に同じもの」)、<code>INDEX</code> でその行の価格を取り出します。探す列と返す列を別々に書くので、列を挿入してもずれず、作品名の列より左の列も返せます</li>
-<li><strong>XLOOKUP</strong> は、探す列と返す列を書くだけで、完全に同じものを探すのが初めからの動きです。いちばん読みやすい書き方ですが、使えるのは Excel 2021 以降・Microsoft 365 と、Google スプレッドシート、LibreOffice の 24.8 以降です。Excel 2019 以前で開くと、式がエラーになります</li>
-</ul>
-<p>作品名に <code>*</code> や <code>?</code> が入っていると、VLOOKUP の <code>FALSE</code> や MATCH の <code>0</code> でも、Excel と Google スプレッドシートではワイルドカード(どんな文字にも当たる記号)として扱われ、別の作品に当たることがあります(LibreOffice では、オプションの設定によります)。作品名には <code>*</code> <code>?</code> <code>~</code> を使わないのが無難です。</p>
-<p>LibreOffice で、式の区切りが <code>,</code> ではなく <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
-<h2>価格を変えたとき、過去の記録も変わる</h2>
-<p>販売記録の価格を作品の表から式で引いていると、作品の表で値上げをしたとき、過去の行の価格も新しい値段で計算し直されます。原価も同じです。過去の売上を変えたくないときは、売れたときの価格を記録の行に数字で書いておき(式で引いた値をコピーして「値として貼り付け」する方法もあります)、作品の表は「次に入力するときの初めの値」として使ってください。</p>
-<h2>見つからないときの扱い</h2>
-<p>表に無い作品名(この例では「リング」)を探すと、VLOOKUP と INDEX/MATCH は <code>#N/A</code> のエラーになります。そのまま合計の式で足すと、合計まで <code>#N/A</code> になります。</p>
-<pre><code>空にする:           =IFERROR(VLOOKUP(A2,作品!$A$2:$D$201,4,FALSE),&quot;&quot;)
-XLOOKUP で書く場合: =XLOOKUP(A2,作品!$A$2:$A$201,作品!$D$2:$D$201,&quot;未登録&quot;)
-</code></pre>
-<ul>
-<li><code>IFERROR(式,"")</code> は、エラーのときに空にします。INDEX/MATCH でも同じように包めます</li>
-<li>XLOOKUP は、4つ目に「見つからないときの値」を書けます</li>
-</ul>
-<p>ただし、エラーを空や 0 にすると、作品名の打ちまちがいに気づきにくくなります。売上の計算に使うときは、0 にせず「未登録」のような目に見える文字にするか、<a href="../handmade-zaiko/">在庫を販売記録から減らす記事</a>のように、表に無い名前を数えて確かめる列を作っておくと安心です。</p>
-<h2>見た目は同じなのに見つからないとき</h2>
-<p>「ブローチ」が表にあるのに <code>#N/A</code> になるときは、名前の後ろや前に空白が入っていることがよくあります。この例の8行目は、「ブローチ 」と後ろに空白が1つ入っているので見つかりません。</p>
-<pre><code>=VLOOKUP(TRIM(A2),作品!$A$2:$D$201,4,FALSE)
-</code></pre>
-<p><code>TRIM</code> で前後の空白を除いてから探すと、2,000 が返ります。ただし、Excel の TRIM が除くのは半角の空白で、全角の空白(「ブローチ　」)は残ることがあります。また、この式で直せるのは探す側の名前だけで、作品の表の側に空白が入っているときは、表の名前を直します。全角と半角のちがい(「ﾌﾞﾛｰﾁ」と「ブローチ」など)は TRIM では直らないので、作品名はプルダウン(入力規則)で作品の表から選ぶようにしておくと、こうしたずれが起きません。</p>
-<h2>どれを使うか</h2>
-<ul>
-<li><strong>自分だけが Excel 2021 以降・Microsoft 365・Google スプレッドシートで使う</strong>なら、XLOOKUP がいちばん読みやすく、まちがえにくい書き方です</li>
-<li><strong>ほかの人に配る表や、古い Excel でも開く表</strong>なら、INDEX/MATCH が無難です。Excel 2007 以降・Google スプレッドシート・LibreOffice のどれでも動き、列の挿入でもずれません</li>
-<li>VLOOKUP は広く知られていて読める人が多いので、既にある表を直すときはそのままでもかまいません。その場合は <code>FALSE</code> を付け忘れていないかだけ確かめてください</li>
-</ul>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の画面は、販売記録・月別・販売先別の集計と、作品ごとの在庫までを1つにまとめたテンプレートで作りました。このテンプレートは、配った先の Excel の版を選ばないよう、手数料率や原価を引く式に INDEX/MATCH を使っています。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9130345">ハンドメイド売上・在庫管理シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../nyuuryoku-iro/">入力のまちがいを色で知らせる|登録していない名前・空欄・重なりを条件付き書式で見つける</a></li><li><a href="../uriage-juni/">よく売れた作品の順位を式で出す|LARGE・INDEX/MATCH で上位3つ、同じ金額でも重ならない書き方</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#shiki">式の書き方</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/lookup-kakaku/">https://masumedo.com/posts/lookup-kakaku/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

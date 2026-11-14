@@ -3,62 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>受けた注文ごとに、作り始めの締切と間に合うかを出す|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="受けた注文を1件1行で書き、作り始めの締切と発送の締切、間に合う・今すぐ作る・間に合わない・発送済みの状態を式で出す方法。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/chuumon-joutai/">
-<meta property="og:title" content="受けた注文ごとに、作り始めの締切と間に合うかを出す">
-<meta property="og:description" content="受けた注文を1件1行で書き、作り始めの締切と発送の締切、間に合う・今すぐ作る・間に合わない・発送済みの状態を式で出す方法。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/chuumon-joutai/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/chuumon-joutai/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/chuumon-joutai/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>受けた注文ごとに、作り始めの締切と間に合うかを出す</h1>
-<p class="date">公開日: 2026-11-12</p>
-<p>12月は、届けたい日がばらばらの注文が重なります。注文を受けた順に作っていると、あとから入った「来週届けてほしい」注文が間に合わなくなることがあります。</p>
-<p>この記事では、受けた注文を1件1行で書き、届けたい日から「作り始めの締切」と「発送の締切」を出して、いまの状態(間に合う・今すぐ作る・間に合わない・発送済み)を表で見る方法を説明します。</p>
-<h2>1件1行で書く</h2>
-<p>注文のシートには、注文日・作品・出品先・届けたい日・発送方法・作る日数・発送した日を書きます。右の3列は式で出します。</p>
-<p><a href="../../img/55_chuumon.png"><img alt="注文の表。届けたい日と発送方法・作る日数から、作り始めの締切と発送の締切を出し、状態に「間に合う」「今すぐ作る」「発送済み」を出している" src="../../img/55_chuumon.png" /></a></p>
-<pre><code>I2(発送の締切):     =WORKDAY.INTL($D2-VLOOKUP($E2,設定!$A$2:$B$31,2,FALSE)+1,-1,設定!$H$2,設定!$D$2:$D$61)
-H2(作り始めの締切): =IF(ISNUMBER($I2),WORKDAY.INTL($I2,-$F2,設定!$H$2,設定!$D$2:$D$61),&quot;&quot;)
-J2(状態):           =IF(ISNUMBER($G2),&quot;発送済み&quot;,IF(NOT(ISNUMBER($I2)),&quot;&quot;,IF(TODAY()&gt;$I2,&quot;間に合わない&quot;,IF(TODAY()&gt;$H2,&quot;今すぐ作る&quot;,&quot;間に合う&quot;))))
-</code></pre>
-<p>(読みやすくするため、入力の誤りを調べる部分は省いています)</p>
-<ul>
-<li>発送の締切は、<a href="../uketsuke-shimekiri/">受付の締切を逆算する記事</a>と同じ式です。休みの日と定休の曜日の飛ばし方は、<a href="../nenmatsu-kyuujitsu/">年末年始の休みを飛ばす記事</a>で説明しています</li>
-<li>作り始めの締切は、発送の締切から作る日数をさかのぼった日です。この日までに作り始めれば、発送の締切に間に合う目安です</li>
-<li>状態は、発送した日が入っていれば「発送済み」、今日が発送の締切を過ぎていれば「間に合わない」、作り始めの締切を過ぎていれば「今すぐ作る」、それ以外は「間に合う」です</li>
-</ul>
-<h2>例の読み方</h2>
-<p>画面は 11/12 に作ったものです。</p>
-<ul>
-<li><strong>名入れのキーホルダー</strong>(11/15 に届けたい・宅配便・作る2日): 発送の締切は 11/13、作り始めの締切は 11/11 で、もう過ぎています。決めた日数どおりに作ると発送の締切に間に合わないので、作る時間を詰めるか、届く日をお客さまに相談します。「今すぐ作る」は、こうした「急いで手を打つ」注文の目印です</li>
-<li><strong>クリスマスのリース</strong>(12/24・宅配便・作る4日): 作り始めの締切は 12/18 なので、いまはほかの注文を先にしてもかまいません</li>
-<li><strong>干支のチャーム</strong>(1/5・ゆうパケット・作る3日): 年末年始の休み 12/29〜1/3 を飛ばすので、発送の締切は 12/28、作り始めは 12/25 です</li>
-</ul>
-<p>「今すぐ作る」の行を先に片づけ、あとは作り始めの締切の早い順に作れば、届けたい日の遅い注文に時間をとられて、近い注文が遅れることを防げます。並べ替えの方法は、<a href="../order-nouki/">オーダーメイドの注文を納期の近い順に並べる記事</a>で説明しています。</p>
-<h2>気をつけること</h2>
-<ul>
-<li><strong>作る日数は1件ずつの日数で、重なりは見ていない</strong>: 式は、注文が重なって同じ日に2件作ることは考えていません。「間に合う」が多く並んでいても、作り始めの締切が同じ日に集まっているときは、前の日から始めます</li>
-<li><strong>受付の締切の「作る日数」とは別のもの</strong>: <a href="../uketsuke-shimekiri/">受付の締切の記事</a>では、注文の重なりを見込んで作る日数を多めに入れます。この注文の表では、その1件を作るのにかかる日数を入れます。両方を同じ数にすると、受付の締切が遅すぎるか、作り始めの締切が早すぎるかのどちらかになります</li>
-<li><strong>状態は今日の日付で変わる</strong>: TODAY を使っているので、ファイルを開いた日で状態が変わります。毎朝開いて、「今すぐ作る」の行を確かめる使い方が向いています</li>
-<li><strong>発送した日は、送ったらすぐ入れる</strong>: 入れ忘れると、送った注文が「間に合わない」と出て、まぎらわしくなります</li>
-<li><strong>締切を過ぎて発送したものも分かるようにする</strong>: 発送した日が発送の締切より後なら「発送済み(締切後)」と出すようにしておくと、遅れた件数をあとで振り返れます</li>
-</ul>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、設定・締切・注文をまとめたテンプレートで作りました(状態ごとに色が変わる書式も入っています)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9138291">ハンドメイド 年末年始・クリスマスの受注締切と発送予定表</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../shimekiri-kokuchi/">受付締切の告知をいつ・何回出すかと、発送方法ごとの締切を決める</a></li><li><a href="../uketsuke-shimekiri/">クリスマスに届けるための受付の締切を、届けたい日から逆算する</a></li><li><a href="../nenmatsu-kyuujitsu/">年末年始の休みと定休日を飛ばして、発送の締切を出す</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#shimekiri">受注締切・年末年始の発送</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/chuumon-joutai/">https://masumedo.com/posts/chuumon-joutai/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

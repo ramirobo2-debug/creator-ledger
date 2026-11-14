@@ -3,63 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>作品写真の反応率を、スマホとカメラで比べるときの注意|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="撮影の記録からカメラ・スマホごとの使えた割合と反応率を出す表の作り方と、背景・光・出品先・作品の違いが混ざるときの比べ方の注意。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/shashin-camera/">
-<meta property="og:title" content="作品写真の反応率を、スマホとカメラで比べるときの注意">
-<meta property="og:description" content="撮影の記録からカメラ・スマホごとの使えた割合と反応率を出す表の作り方と、背景・光・出品先・作品の違いが混ざるときの比べ方の注意。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/shashin-camera/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/shashin-camera/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/shashin-camera/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>作品写真の反応率を、スマホとカメラで比べるときの注意</h1>
-<p class="date">公開日: 2026-11-12</p>
-<p>「ミラーレスを買ったら、作品写真の反応はよくなるのか」は、気になるところです。撮影のたびに、使ったカメラやスマホを記録しておけば、背景や光と同じように、カメラごとの使えた割合と反応率が出せます。ただし、カメラの比べ方には、背景や光より大きな落とし穴があります。</p>
-<p>撮影の記録の書き方と、背景ごとの集計は、<a href="../shashin-haikei/">背景ごとに使えた割合と反応率を比べる記事</a>で説明しています。</p>
-<h2>カメラ別の表を作る</h2>
-<p>撮影のシートの E 列(カメラ/スマホ)で集計する「カメラ別」のシートを足しました。A 列に、E 列に書いているのと同じ名前(スマホ・ミラーレスなど)を手で書きます。式は背景別の表と同じ形で、条件の列だけを E 列にします。</p>
-<pre><code>B2(撮った回数): =IF($A2=&quot;&quot;,&quot;&quot;,COUNTIFS(撮影!$E$2:$E$2001,$A2))
-C2(撮った枚数): =IF($A2=&quot;&quot;,&quot;&quot;,SUMIFS(撮影!$G$2:$G$2001,撮影!$E$2:$E$2001,$A2,撮影!$H$2:$H$2001,&quot;&gt;=0&quot;))
-D2(使った枚数): =IF($A2=&quot;&quot;,&quot;&quot;,SUMIFS(撮影!$H$2:$H$2001,撮影!$E$2:$E$2001,$A2,撮影!$G$2:$G$2001,&quot;&gt;0&quot;))
-E2(使えた割合): =IF(OR($A2=&quot;&quot;,N($C2)=0),&quot;&quot;,$D2/$C2)
-G2(閲覧の合計):
-=IF($A2=&quot;&quot;,&quot;&quot;,SUMIFS(撮影!$J$2:$J$2001,撮影!$E$2:$E$2001,$A2,撮影!$J$2:$J$2001,&quot;&gt;0&quot;,撮影!$K$2:$K$2001,&quot;&gt;=0&quot;))
-H2(お気に入りの合計): G2 の合計する列を 撮影!$K$2:$K$2001 にする
-I2(反応率):     =IF(OR($A2=&quot;&quot;,N($G2)=0),&quot;&quot;,$H2/$G2)
-</code></pre>
-<ul>
-<li>F 列(閲覧を記録した回数)は、G2 の SUMIFS を COUNTIFS にして、合計する列を外した形です</li>
-<li>E 列は、テンプレートでは自由に書く欄です。「スマホ」「iPhone」「スマートフォン」と書き分けると、別のものとして数えられます。名前は1つに決めて書きます</li>
-</ul>
-<p><a href="../../img/43_camera.png"><img alt="カメラ別の表。スマホ 撮った回数5・撮った枚数133・使った枚数23・使えた割合17.3%・閲覧を記録した回数4・閲覧550・お気に入り35・反応率6.4%。ミラーレス 1回・35枚・8枚・22.9%・1回・90・9・10.0%" src="../../img/43_camera.png" /></a></p>
-<h2>数字だけ見ると、ミラーレスのほうがよく見える</h2>
-<p>この例では、ミラーレスは使えた割合 22.9%・反応率 10.0%、スマホは 17.3%・6.4% です。どちらもミラーレスが上です。けれど、ここから「ミラーレスにすれば反応がよくなる」とは言えません。</p>
-<ul>
-<li><strong>1回だけの記録</strong>: ミラーレスは1回・閲覧 90 だけです。お気に入りが1件ちがうだけで、反応率が1ポイント以上動きます</li>
-<li><strong>ほかの条件もちがう</strong>: ミラーレスの1回は「白い板・撮影用ライト・minne」で撮っています。スマホの5回には、Instagram の行や、反応率の低い木のトレーの行が入っています。カメラの差なのか、背景・光・出品先の差なのか、この表では分けられません</li>
-<li><strong>作品もちがう</strong>: ミラーレスで撮ったのは干支のチャームだけです。作品そのものの人気の差も混ざります</li>
-</ul>
-<h2>カメラを比べるなら、ほかの条件をそろえる</h2>
-<p>カメラの差を見たいときは、カメラ以外をできるだけ同じにして撮ります。</p>
-<ul>
-<li>同じ作品を、同じ背景・同じ光で、スマホとカメラの両方で撮る。使った枚数(使えた割合)は、これで比べられます</li>
-<li>反応率は、同じ出品先で比べます。出品先をまたぐと閲覧の数え方が違うためです(くわしくは<a href="../shashin-shuppinsaki/">出品先ごとに分けて比べる記事</a>)</li>
-<li>1つの出品に使える写真は1組なので、反応率までカメラで比べるには、作品を変えて何回か交互に撮ることになります。作品を変えると作品の人気の差が残るので、同じ作品での比べを何回か重ね、出品した時期や閲覧を数えた期間もそろえます。数が少ないうちは、使えた割合と、撮るのにかかった手間で決めるほうが確かです</li>
-</ul>
-<p>SUMIFS に条件を足して「白い板・撮影用ライトのときだけ」のカメラ別も出せます。条件を足すほど比べやすくなりますが、そのぶん当てはまる行は減ります。背景別・光別の表とあわせて、どの条件の数が足りていないかを見ます。LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、設定・撮影・背景別・光別をまとめたテンプレートで作りました(カメラ別のシートは記事のために足したもので、テンプレートには入っていません)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9135439">ハンドメイド作品写真の撮影設定と反応の記録シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../shashin-haikei/">作品写真の撮り方を記録して、背景ごとに「使えた割合」と反応率を比べる</a></li><li><a href="../shashin-hikari/">作品写真の光の当て方ごとに反応率を比べる(合計どうしで割る理由)</a></li><li><a href="../shashin-shuppinsaki/">作品写真の反応率を、minne・Creema など出品先ごとに分けて比べる</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#shashin">作品写真の撮り方と反応</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/shashin-camera/">https://masumedo.com/posts/shashin-camera/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

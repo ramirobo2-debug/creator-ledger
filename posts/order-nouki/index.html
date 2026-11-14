@@ -3,77 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>オーダーメイドの注文を、納期の近い順に並べる表|発送済みを除いて SMALL・INDEX/MATCH で|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="オーダーメイドの注文から、発送済み・キャンセルを除いて納期の近い順に並べる表の作り方。TODAY・SMALL・INDEX/MATCH と SORT・FILTER の書き方つき。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/order-nouki/">
-<meta property="og:title" content="オーダーメイドの注文を、納期の近い順に並べる表|発送済みを除いて SMALL・INDEX/MATCH で">
-<meta property="og:description" content="オーダーメイドの注文から、発送済み・キャンセルを除いて納期の近い順に並べる表の作り方。TODAY・SMALL・INDEX/MATCH と SORT・FILTER の書き方つき。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/order-nouki/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/order-nouki/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/order-nouki/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>オーダーメイドの注文を、納期の近い順に並べる表|発送済みを除いて SMALL・INDEX/MATCH で</h1>
-<p class="date">公開日: 2026-11-11</p>
-<p>名入れやセミオーダーの注文が重なってくると、「次にどれを作るか」を決めるのに、注文の一覧を上から全部見ることになります。注文の表は受け付けた順に並んでいるので、納期の近い注文が下のほうに埋もれがちです。</p>
-<p>この記事では、注文の表はそのままにして、別のシートに「まだ発送していない注文だけを、納期の近い順に」式で並べます。並べ替えのボタンを押さなくても、注文を足したり状態を変えたりするたびに並び直ります。</p>
-<h2>注文の表に書くこと</h2>
-<p>1件の注文を1行にして、注文番号・受付日・お客様・窓口・内容・代金・納期・状態を書きます。状態は、入力規則のプルダウンで「相談中・前金待ち・制作中・完成・発送済み・キャンセル」から選ぶようにしておくと、書き方がそろいます(プルダウンの作り方は<a href="../nyuuryoku-iro/">入力のまちがいを色で知らせる記事</a>でも触れています)。</p>
-<p><a href="../../img/23_chumon.png"><img alt="注文の表。0001 名入れのキーホルダー 発送済み、0002 リングピロー 制作中、0003 ペットの刺しゅうブローチ 制作中、0004 名入れのがま口 完成、0005 ベビーシューズ 相談中、0006 名入れのキーホルダー 制作中、0007 刺しゅうブローチ キャンセル。納期が7日以内の行がオレンジ" src="../../img/23_chumon.png" /></a></p>
-<p>この例は、今日から見て納期が 2日後(0004)・3日後(0003 と 0006)・10日後(0002)・14日後(0005)の注文が残っている形です。0001 は発送済み、0007 はキャンセルです。</p>
-<h2>手順1: 納期まで何日かを TODAY で出す</h2>
-<p>注文の表の右の空いた列に、まだ終わっていない注文だけ、納期までの日数を出します。</p>
-<pre><code>V2(納期まで): =IF(AND($A2&lt;&gt;&quot;&quot;,$I2&lt;&gt;&quot;&quot;,$J2&lt;&gt;&quot;発送済み&quot;,$J2&lt;&gt;&quot;キャンセル&quot;),$I2-TODAY(),&quot;&quot;)
-</code></pre>
-<ul>
-<li>日付どうしの引き算は日数になります。納期が過ぎるとマイナスになります</li>
-<li>発送済み・キャンセルの行と、納期が空の行は <code>""</code>(空)にして、並べる対象から外します</li>
-<li><code>TODAY()</code> はファイルを開くたびに今日の日付に変わるので、毎日開くだけで日数が進みます</li>
-</ul>
-<h2>手順2: 同じ納期でも重ならない「並べ替え用」の数</h2>
-<p>納期が同じ注文が2つあると、次の手順の MATCH が同じ行を2回返してしまいます(同じ金額で順位が重なる問題は<a href="../uriage-juni/">よく売れた作品の順位の記事</a>と同じです)。そこで、納期の日付に、行の番号をとても小さくして足した数を作ります。</p>
-<pre><code>W2(並べ替え用): =IF(AND($A2&lt;&gt;&quot;&quot;,$I2&lt;&gt;&quot;&quot;,$J2&lt;&gt;&quot;発送済み&quot;,$J2&lt;&gt;&quot;キャンセル&quot;),$I2+ROW()/100000,&quot;&quot;)
-</code></pre>
-<p>日付は1日が 1 なので、<code>ROW()/100000</code> を足しても日付の順は変わりません。同じ納期の 0003(4行目)と 0006(7行目)は、上の行の 0003 が少しだけ小さくなり、先に並びます。</p>
-<h2>手順3: 予定のシートに、小さい順に引いてくる</h2>
-<p>予定のシートの J列(並べ替え用)に、k 番目に小さい数が注文の表の何行目かを出し、ほかの列は INDEX でその行を引きます。</p>
-<pre><code>J2: =IFERROR(MATCH(SMALL(注文!$W$2:$W$501,1),注文!$W$2:$W$501,0),&quot;&quot;)
-J3: =IFERROR(MATCH(SMALL(注文!$W$2:$W$501,2),注文!$W$2:$W$501,0),&quot;&quot;)
-A2(納期):    =IF($J2=&quot;&quot;,&quot;&quot;,INDEX(注文!$I$2:$I$501,$J2))
-C2(注文番号): =IF($J2=&quot;&quot;,&quot;&quot;,INDEX(注文!$A$2:$A$501,$J2))
-</code></pre>
-<ul>
-<li><code>SMALL(範囲,k)</code> は、空(<code>""</code>)の行を数えないので、発送済み・キャンセルの注文は出てきません</li>
-<li>SMALL の2つ目の数(1・2・3…)は、行ごとに書き換えます。下へコピーするだけで増えるようにしたいときは、<code>SMALL(注文!$W$2:$W$501,ROWS($J$2:J2))</code> と書くと、J2 で 1、J3 で 2 … になります</li>
-<li>残っている注文より k が大きくなると SMALL がエラーになり、<code>IFERROR</code> で空になります。テンプレートの予定の表は60行ぶんなので、まだ発送していない注文が61件以上になると、61件目からは出ません。注文の表も 501行目までを見ているので、それより多くなるときは範囲を広げます</li>
-</ul>
-<p><a href="../../img/23_yotei.png"><img alt="予定の表。納期の近い順に 0004 名入れのがま口(2日・完成)、0003 ペットの刺しゅうブローチ(3日)、0006 名入れのキーホルダー(3日)、0002 リングピロー(10日)、0005 ベビーシューズ(14日・相談中)。7日以内の3件がオレンジ" src="../../img/23_yotei.png" /></a></p>
-<p>この例では、0004・0003・0006・0002・0005 の順に並びました。発送済みの 0001 とキャンセルの 0007 は出ていません。0006 を発送して状態を「発送済み」に変えると、予定の表から消えて、0002 が3番目に上がります。</p>
-<h2>納期が近い注文を色で知らせる</h2>
-<p>テンプレートでは、条件付き書式で、納期まで7日以内の行をオレンジ、納期を過ぎた行を赤にしています。予定の表なら、B列(納期まで)を見て決めます。</p>
-<pre><code>オレンジ: =AND($J2&lt;&gt;&quot;&quot;,N($B2)&gt;=0,N($B2)&lt;=7)
-赤:       =AND($J2&lt;&gt;&quot;&quot;,N($B2)&lt;0)
-</code></pre>
-<p>7日の部分を 3 にすれば、3日以内だけに色が付きます。作るのに何日かかる注文が多いかで決めてください。条件付き書式の設定の手順は、<a href="../zaiko-iro/">在庫が少なくなったら色で知らせる記事</a>で、Excel・Google スプレッドシート・LibreOffice のそれぞれを説明しています。</p>
-<h2>SORT と FILTER が使えるなら</h2>
-<p>Microsoft 365・Excel 2021 以降、Google スプレッドシート、新しい LibreOffice では、1つの式で並べた表を出せます。</p>
-<pre><code>=SORT(FILTER(注文!A2:I501,注文!V2:V501&lt;&gt;&quot;&quot;),9,1)
-</code></pre>
-<p><code>FILTER</code> で納期までの日数がある行(まだ終わっていない注文)だけにし、<code>SORT</code> で9列目(納期)の小さい順に並べます。この例でも、手順3と同じ 0004・0003・0006・0002・0005 の順になりました(LibreOffice で確かめた結果)。Google スプレッドシートでは、小さい順は <code>1</code> の代わりに <code>TRUE</code> で書きます。古い Excel(2019 まで)では使えないので、ほかの人と共有する表なら、SMALL と INDEX/MATCH の形にしておくと、どのソフトでも同じ結果になります。</p>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
-<p>12月のように「届けたい日」で注文を受けるときは、届くまでの日数と作る日数から作り始めの締切を出しておくと、どの注文から手をつけるかがはっきりします。<a href="../chuumon-joutai/">受けた注文ごとに作り始めの締切と間に合うかを出す記事</a>で説明しています。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、設定・注文・入金・経費・予定・月別を1つにまとめたテンプレートで作りました。納期の近い順の予定と色分けのほか、前金・残金の入金や、1件ごとの利益と時給も式で出ます(時給の出し方は<a href="../order-jikyu/">受注制作の時給の記事</a>で説明しています)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9131072">ハンドメイド受注制作管理シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../shuppin-junbi/">ハンドメイド作品の出品準備を表で管理する|進み具合と「次にやる作業」を式で出す</a></li><li><a href="../sns-hannou/">SNS 投稿の反応を記録して、種類別・曜日別に平均で比べる|AVERAGEIFS と反応率の出し方</a></li><li><a href="../sns-yotei/">SNS の投稿予定を表で管理する|「遅れ」「今日」を色で出し、最後に投稿してからの日数を MAXIFS で</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#dandori">新作の計画・注文・出品・SNS・お客さま対応</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/order-nouki/">https://masumedo.com/posts/order-nouki/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

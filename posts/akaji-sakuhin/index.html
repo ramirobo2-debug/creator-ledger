@@ -3,96 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>赤字の作品を見つけて、赤字にならない値段と資材の額を逆算する|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="1年の利益がマイナスの作品を1個あたりに直し、手数料を含めて赤字にならない値段の下限と、送料・資材をいくらまで減らせばよいかを逆算する。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/akaji-sakuhin/">
-<meta property="og:title" content="赤字の作品を見つけて、赤字にならない値段と資材の額を逆算する">
-<meta property="og:description" content="1年の利益がマイナスの作品を1個あたりに直し、手数料を含めて赤字にならない値段の下限と、送料・資材をいくらまで減らせばよいかを逆算する。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/akaji-sakuhin/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/akaji-sakuhin/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/akaji-sakuhin/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>赤字の作品を見つけて、赤字にならない値段と資材の額を逆算する</h1>
-<p class="date">公開日: 2026-11-13</p>
-<p>1年の売れ方を作品ごとに計算すると、売上はあるのに <strong>利益がマイナス</strong> の作品が見つかることがあります。大きな作品・受注の作品は、材料が高く、送料の持ち出しや梱包の資材もかさむので、値段を決めたときの見込みより費用が増えていることがよくあります。</p>
-<p>この記事では、赤字の作品を見つけたあと、<strong>赤字にならない値段の下限</strong> と、<strong>資材・送料をいくらまで減らせば赤字でなくなるか</strong> を逆算します。</p>
-<h2>考え方: 1個あたりで見る</h2>
-<p>1年の合計のままだと見えにくいので、1個あたりに直します。</p>
-<pre><code>1個あたりの利益 = 値段 − 1個あたりの原価 − 値段 × 手数料の割合 − 1個あたりの送料の持ち出し・資材
-赤字にならない値段の下限 = (1個あたりの原価 + 1個あたりの送料の持ち出し・資材) ÷ (1 − 手数料の割合)
-</code></pre>
-<p>ここでの「下限」は、表に入れた費用(原価・手数料・送料の持ち出し・資材)だけを引いた下限です。作る時間や、作品に分けていない道具・出店料などの費用は入っていません。</p>
-<p>手数料は値段にかかるので、値段を上げると手数料も少し増えます。そのため、足りない額をそのまま値段に足すのではなく、(1 − 手数料の割合)で割ります。</p>
-<h2>例: 帆布のバッグ 3個</h2>
-<p>数字は説明のための架空のものです。1年で 1個 5,000円のバッグが3個売れました(売上 15,000円)。</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>3個の合計</th>
-<th>1個あたり</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>売上</td>
-<td>15,000円</td>
-<td>5,000円</td>
-</tr>
-<tr>
-<td>原価</td>
-<td>11,400円</td>
-<td>3,800円</td>
-</tr>
-<tr>
-<td>手数料(10%)</td>
-<td>1,500円</td>
-<td>500円</td>
-</tr>
-<tr>
-<td>送料の持ち出し・資材</td>
-<td>2,400円</td>
-<td>800円</td>
-</tr>
-<tr>
-<td><strong>利益</strong></td>
-<td><strong>−300円</strong></td>
-<td><strong>−100円</strong></td>
-</tr>
-</tbody>
-</table>
-<p><a href="../../img/77_abc.png"><img alt="作品のシート。帆布の大きなバッグは売れた数3・売上15,000円・原価3,800円・送料の持ち出しと資材2,400円で、利益 −300円、1個あたり −100円、ランクは赤字" src="../../img/77_abc.png" /></a></p>
-<p>1個売れるたびに 100円ずつ持ち出している状態です。ほかの作品の利益で埋まっているので、合計だけ見ていると気づきません。</p>
-<h3>値段で直す</h3>
-<p>赤字にならない値段の下限は (3,800 + 800) ÷ (1 − 0.1) = <strong>約 5,112円</strong> です。</p>
-<p><a href="../../img/79_bag.png"><img alt="バッグを5,120円にした作品のシート。手数料 1,536円・利益 24円・1個あたり 8円、ランクは C" src="../../img/79_bag.png" /></a></p>
-<ul>
-<li><strong>5,120円</strong>(3個で 15,360円)にすると、利益は <strong>+24円</strong>(1個あたり 8円)で赤字ではなくなります</li>
-<li><strong>5,110円</strong>(3個で 15,330円)では、利益は <strong>−3円</strong> でまだ赤字です</li>
-</ul>
-<p>ただし、赤字にならないだけでは、作る時間の分は何も残りません。大きな作品ほど作る時間も長いので、実際の値段は下限より上で、時給も考えて決めます(<a href="../order-jikyu/">受注制作の時給の記事</a>・<a href="../handmade-nedan/">値段の決め方の記事</a>)。</p>
-<h3>送料・資材で直す</h3>
-<p>値段を変えずに、送料の持ち出しと資材を3個で 2,400円 → <strong>1,500円</strong>(1個あたり 800円 → 500円)に減らすと、利益は <strong>+600円</strong> になります。大きな作品は、箱のサイズを1つ下げる・配送方法を変えるだけで送料が数百円変わることがあります(<a href="../souryou-komi/">送料の持ち出しの記事</a>)。</p>
-<h2>赤字の作品をどうするか</h2>
-<ul>
-<li><strong>受注のみ・数が少ない作品</strong>: 値段を下限より上に上げて、注文が減っても値上げ後の利益の合計が上がるかで決めます。この作品をきっかけにほかの作品も買われているなら、その分も合わせて見ます</li>
-<li><strong>ほかの作品と一緒に買われる作品</strong>: 単品では赤字でも、同じ発送で他の作品が売れているなら、送料の分をまとめて見ます(<a href="../matomewari-souryou/">まとめ割と送料の記事</a>)</li>
-<li><strong>値段も費用も動かせない作品</strong>: やめる候補にします。作っていた時間を、利益の大きい作品(<a href="../abc-bunseki/">A・B・C の記事</a>)の作り置きに回せます</li>
-</ul>
-<p>利益がちょうど 0円の作品も、時間の分だけ持ち出しているのと同じなので、赤字と同じように見直します。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、作品ごとの売れた数・売上・原価・送料の持ち出しから利益とランクを出し、赤字・利益なしの作品を赤で知らせるテンプレートで作りました。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9143810">ハンドメイド 売れ筋・利益のABC分析シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../sakuhin-yameru-jikan/">見直し候補の作品をやめて、空いた時間を主力の作品に回すと利益がいくら変わるかを出す</a></li><li><a href="../abc-bunseki/">売上ではなく利益で作品を A・B・C に分けて、主力と見直し候補を決める</a></li><li><a href="../urekazu-rieki/">よく売れているのに利益が少ない作品を、売れた数の順と利益の順で見つける</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#abc">売れ筋・利益の振り返り(ABC分析)</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/akaji-sakuhin/">https://masumedo.com/posts/akaji-sakuhin/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

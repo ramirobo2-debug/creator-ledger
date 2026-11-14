@@ -3,71 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ハンドメイドの発送で、送料と梱包資材費を記録して「持ち出し」を出す|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="発送1回を1行で記録し、封筒・緩衝材などの資材費を VLOOKUP で出して、受け取った送料との差(持ち出し)を発送方法ごとに SUMIFS でまとめる方法。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/hassou-mochidashi/">
-<meta property="og:title" content="ハンドメイドの発送で、送料と梱包資材費を記録して「持ち出し」を出す">
-<meta property="og:description" content="発送1回を1行で記録し、封筒・緩衝材などの資材費を VLOOKUP で出して、受け取った送料との差(持ち出し)を発送方法ごとに SUMIFS でまとめる方法。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/hassou-mochidashi/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/hassou-mochidashi/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/hassou-mochidashi/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>ハンドメイドの発送で、送料と梱包資材費を記録して「持ち出し」を出す</h1>
-<p class="date">公開日: 2026-11-12</p>
-<p>送料は、お客さまからいただいた額と同じだけ払っているつもりでも、封筒・緩衝材・OPP 袋・お礼カードの代金を足すと、少しずつ足が出ていることがあります。1回あたりは数十円でも、発送の数だけ積み重なります。</p>
-<p>この記事では、発送1回を1行で記録して、資材費・発送にかかった合計・受け取った送料との差(持ち出し)を式で出す表を作ります。</p>
-<h2>1回の発送を1行で書く</h2>
-<p>発送のシートには、次の列を用意します。</p>
-<ul>
-<li>日付・注文/作品・出品先・発送方法・重さ</li>
-<li>払った送料(実際に払った金額)・受け取った送料(お客さまからいただいた送料)</li>
-<li>使った資材と数(1回の発送で3種類まで。資材1・数、資材2・数、資材3・数)</li>
-</ul>
-<p>資材の1個あたりの値段は、別のシート(設定)に「買った値段 ÷ 入っていた数」で出しておきます(くわしくは<a href="../konpou-shizai/">梱包資材の1個あたりの値段と残りの目安の記事</a>)。</p>
-<p><a href="../../img/44_hassou.png"><img alt="発送のシート。6回の発送の、出品先・発送方法・払った送料・受け取った送料・資材と数と、資材費・発送にかかった合計・送料の差。差がマイナスの行はオレンジ" src="../../img/44_hassou.png" /></a></p>
-<h2>資材費・合計・差の式</h2>
-<pre><code>N2(資材費):
-=IF(AND($H2&lt;&gt;&quot;&quot;,ISNUMBER($I2)),IFERROR(VLOOKUP($H2,設定!$C$2:$F$31,4,FALSE)*$I2,0),0)
- + 資材2(J・K 列)・資材3(L・M 列)の同じ形
-O2(発送にかかった合計): =IF(ISNUMBER($F2),$F2+N($N2),&quot;&quot;)
-P2(送料の差):         =IF(AND(ISNUMBER($G2),ISNUMBER($O2)),$G2-$O2,&quot;&quot;)
-</code></pre>
-<ul>
-<li>テンプレートの N2 は、行が空のときは空になるように全体を IF で包んでいます。上の式は、資材費の部分だけを抜き出したものです</li>
-<li>VLOOKUP の 4 は、設定の C〜F 列のうち4列目(1個あたり)を返す、という意味です</li>
-<li>IFERROR で、設定に無い資材名は 0 円になります。打ちまちがいがあると資材費が少なく出るので、テンプレートでは設定に無い資材名・資材と数の片方だけの欄を、条件付き書式で赤にしています(赤の見つけ方は<a href="../nyuuryoku-iro/">入力のまちがいを色で知らせる記事</a>)</li>
-<li>P 列がマイナスの行は、条件付き書式でオレンジにしています(<code>=AND(ISNUMBER($P2),$P2&lt;0)</code>)</li>
-</ul>
-<p>1行目のピアスは、送料 180 円を受け取って 180 円払っていますが、封筒 5 円・緩衝材 6 円・お礼カード 10 円で資材費が 21 円、差は −21 円です。送料だけ見ると「とんとん」でも、資材を入れると持ち出しになっています。</p>
-<h2>発送方法ごとにまとめる</h2>
-<p>発送方法のシートでは、発送方法ごとに回数・送料の合計・1回あたりの送料・資材費・合計・受け取った送料・差・持ち出しの回数を SUMIFS と COUNTIFS で出します。</p>
-<pre><code>B2(発送した回数):     =COUNTIFS(発送!$D$2:$D$2001,$A2)
-C2(払った送料の合計): =SUMIFS(発送!$F$2:$F$2001,発送!$D$2:$D$2001,$A2,発送!$F$2:$F$2001,&quot;&gt;=0&quot;)
-H2(送料の差の合計):   =SUMIFS(発送!$P$2:$P$2001,発送!$D$2:$D$2001,$A2)
-I2(持ち出しの回数):   =COUNTIFS(発送!$D$2:$D$2001,$A2,発送!$P$2:$P$2001,&quot;&lt;0&quot;)
-</code></pre>
-<p><a href="../../img/44_houhou.png"><img alt="発送方法別の表。ポスト投函 3回・送料540・資材費57・差 −37・持ち出し2回。追跡ありの小さな箱 2回・860・30・−440・1回。宅配便60サイズ 1回・850・128・−178・1回" src="../../img/44_houhou.png" /></a></p>
-<p>この例では、追跡ありの小さな箱の差が −440 円と大きく出ています。ただ、その内訳は「送料込みの価格で売った1回(受け取った送料 0)」の −444 円です。送料込みで売った発送は、受け取った送料が 0 なので、送料と資材費の合計(430 円+14 円)がそのままマイナスになります。作品の価格に送料を入れてあるかどうかで読み方が変わります(送料込みの価格の考え方は<a href="../souryou-komi/">出品先ごとの記事</a>で)。</p>
-<h2>読み方の注意</h2>
-<ul>
-<li><strong>送料は、払った金額を入れる</strong>: 料金は改定されることがあるので、料金表から引かず、レシートや発送の履歴の金額を入れます</li>
-<li><strong>資材費は「使った分」だけ</strong>: まとめ買いした封筒100枚の代金ではなく、1回に使った1枚分です。買った月にまとめて費用にする帳簿のつけ方とは数字がずれます</li>
-<li><strong>差が小さくても回数をかける</strong>: −21 円でも、月に30回発送すれば約600円です。送料の設定を見直すときは、1回あたりの差に月の発送数をかけて見ます</li>
-</ul>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。作品の価格に送料・梱包をどう入れるかは、<a href="../handmade-nedan/">ハンドメイド作品の値段の決め方</a>でも説明しています。ギフト用のラッピングの資材と手間は、<a href="../wrapping-genka/">ラッピングの原価を資材費と作業時間で出す記事</a>で別に記録する方法を説明しています。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、設定・発送・発送方法別・出品先別・資材別をまとめたテンプレートで作りました。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9136112">ハンドメイド 発送・送料と梱包資材の記録シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../konpou-shizai/">梱包資材の1個あたりの値段と、残りの数を式で出す</a></li><li><a href="../souryou-komi/">送料込みと送料別で、出品先ごとの「持ち出し」を比べる</a></li><li><a href="../konpou-mikomi/">12月の発送の見込みから、梱包資材を買い足す数を出す</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#hassou">発送・送料と梱包資材</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/hassou-mochidashi/">https://masumedo.com/posts/hassou-mochidashi/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

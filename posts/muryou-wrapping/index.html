@@ -3,67 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>無料ラッピングを続けるかを、出品先ごとの持ち出しで決める|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="minne・Creema・イベントなど出品先ごとにラッピングの原価と受け取った額・持ち出しをまとめ、無料を続けるか有料にするかを決める見方と注意。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/muryou-wrapping/">
-<meta property="og:title" content="無料ラッピングを続けるかを、出品先ごとの持ち出しで決める">
-<meta property="og:description" content="minne・Creema・イベントなど出品先ごとにラッピングの原価と受け取った額・持ち出しをまとめ、無料を続けるか有料にするかを決める見方と注意。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/muryou-wrapping/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/muryou-wrapping/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/muryou-wrapping/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>無料ラッピングを続けるかを、出品先ごとの持ち出しで決める</h1>
-<p class="date">公開日: 2026-11-12</p>
-<p>「ラッピング無料」は、お客さまにはうれしいサービスです。ただ、出品先によってラッピングを頼まれる割合や、選ばれる包み方はちがいます。全体ではとんとんでも、ある出品先だけ持ち出しが続いている、ということがあります。</p>
-<p>この記事では、ラッピングの記録を出品先ごとにまとめて、どこで無料を続け、どこで有料に切り替えるかを決める見方を説明します(記録の作り方は<a href="../wrapping-genka/">ラッピングの原価を資材費と作業時間で出す記事</a>で)。</p>
-<h2>出品先ごとにまとめる式</h2>
-<p>出品先別のシートは、包み方別の表と同じ形で、条件の列を「出品先(ラッピングの C 列)」に変えるだけです。</p>
-<pre><code>B2(回数):       =COUNTIFS(ラッピング!$C$2:$C$2001,$A2)
-F2(原価の合計): =SUMIFS(ラッピング!$P$2:$P$2001,ラッピング!$C$2:$C$2001,$A2)
-H2(受け取ったラッピング代の合計):
-               =SUMIFS(ラッピング!$F$2:$F$2001,ラッピング!$C$2:$C$2001,$A2,ラッピング!$F$2:$F$2001,&quot;&gt;=0&quot;)
-I2(差の合計):   =SUMIFS(ラッピング!$R$2:$R$2001,ラッピング!$C$2:$C$2001,$A2)
-J2(持ち出しの回数): =COUNTIFS(ラッピング!$C$2:$C$2001,$A2,ラッピング!$R$2:$R$2001,&quot;&lt;0&quot;)
-</code></pre>
-<ul>
-<li>出品先の名前は、設定のシートの B 列に並べたものを A 列に表示しています。ラッピングの記録では、設定と同じ名前で入れます(「minne」と「ミンネ」は別の出品先として数えられます)</li>
-<li>1個あたりの原価の出し方は、<a href="../wrapping-ryoukin/">包み方ごとの記事</a>と同じです</li>
-</ul>
-<p><a href="../../img/49_shuppinsaki.png"><img alt="出品先別の表。minne 2回・原価456・受け取った300・差 −156・持ち出し2回。Creema 2回・599・700・+101・1回。イベント 1回・193・200・+7・0回" src="../../img/49_shuppinsaki.png" /></a></p>
-<h2>例の表の読み方</h2>
-<ul>
-<li><strong>minne</strong>: 2回とも持ち出しで、差の合計は −156円です。1回は無料ラッピング(−124円)、もう1回はギフトボックスを 300円で受けた回(−32円)です</li>
-<li><strong>Creema</strong>: 差の合計は +101円です。ただ、そのうち1回(ヘアゴム3点・−23円)は持ち出しで、ギフトボックスを 400円で受けた回(+124円)が全体を押し上げています</li>
-<li><strong>イベント</strong>: 1回だけで +7円。ほぼとんとんです</li>
-</ul>
-<p>この例なら、「minne の無料ラッピングをやめて、袋は1個 150円・箱は 350円にそろえる」のように、出品先ごとに決め直すことができます。</p>
-<h2>無料を続けるか、有料にするかの考え方</h2>
-<ul>
-<li><strong>無料が売れる理由になっているなら、続けてもよい</strong>: 無料ラッピングで選ばれて売れているなら、持ち出しは広告の費用のようなものです。そのときは、持ち出しの合計を「月にいくらまで」と決めて、超えたら見直します</li>
-<li><strong>無料をやめるなら、作品の値段に入れる方法もある</strong>: 「ラッピング込み」として作品の値段を少し上げれば、お客さまから見た手間は増えません。値段の考え方は<a href="../handmade-nedan/">ハンドメイド作品の値段の決め方</a>で</li>
-<li><strong>切り替えは、12月の前か後か</strong>: ギフトの注文が多い時期に変えると、反応の変化が大きく出ます。変える前と後で同じくらいの期間の記録を並べ、注文の数や選ばれた包み方も一緒に見ます。12月は季節で注文そのものが増えるので、有料にした影響かどうかは、1か月だけでは決めつけないようにします</li>
-<li><strong>受け取ったラッピング代の空欄に注意</strong>: 無料の回に 0 を入れ忘れると、その回は差の合計にも持ち出しの回数にも入らず、持ち出しが小さく見えます</li>
-</ul>
-<h2>読み方の注意</h2>
-<ul>
-<li><strong>出品先ごとの差には、包み方のちがいが混ざる</strong>: ある出品先でギフトボックスばかり選ばれていれば、原価は高く出ます。出品先と包み方の両方で見ると、原因が分けられます</li>
-<li><strong>回数が少ないうちは決めつけない</strong>: 1〜2回の差は、たまたまの注文で大きく動きます</li>
-<li><strong>出品先の手数料は入っていない</strong>: ラッピング代にも販売手数料がかかる出品先では、受け取ったラッピング代から手数料を引いた額で見ると、より実際に近くなります</li>
-</ul>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。送料と梱包資材の持ち出しを出品先ごとに見る方法は、<a href="../souryou-komi/">送料込みと送料別で出品先ごとの持ち出しを比べる記事</a>で説明しています。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、設定・ラッピング・包み方別・出品先別・資材別をまとめたテンプレートで作りました。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9136810">ハンドメイド ラッピング・ギフト包装の原価記録シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../wrapping-kaitashi/">ラッピング資材の残りと、12月に買い足す数を式で出す</a></li><li><a href="../wrapping-genka/">ハンドメイドのラッピングの原価を、資材費と作業時間で出す</a></li><li><a href="../wrapping-ryoukin/">包み方ごとの1個あたりの原価から、ラッピング代を決める</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#wrapping">ラッピング・ギフト包装</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/muryou-wrapping/">https://masumedo.com/posts/muryou-wrapping/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

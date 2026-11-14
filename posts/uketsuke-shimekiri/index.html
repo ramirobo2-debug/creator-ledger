@@ -3,66 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>クリスマスに届けるための受付の締切を、届けたい日から逆算する|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="届けたい日から、届くまでの日数と作る日数をさかのぼって発送の締切と受付の締切を WORKDAY.INTL で出し、告知文まで式で作る方法。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/uketsuke-shimekiri/">
-<meta property="og:title" content="クリスマスに届けるための受付の締切を、届けたい日から逆算する">
-<meta property="og:description" content="届けたい日から、届くまでの日数と作る日数をさかのぼって発送の締切と受付の締切を WORKDAY.INTL で出し、告知文まで式で作る方法。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/uketsuke-shimekiri/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/uketsuke-shimekiri/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/uketsuke-shimekiri/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>クリスマスに届けるための受付の締切を、届けたい日から逆算する</h1>
-<p class="date">公開日: 2026-11-12</p>
-<p>「クリスマスに間に合わせたいのですが、いつまでに注文すればいいですか?」というお問い合わせは、12月に入るとぐっと増えます。受付の締切を先に告知しておけば、お問い合わせへの返事も減り、間に合わない注文を受けてしまうことも防げます。</p>
-<p>この記事では、届けたい日から「発送の締切」と「ご注文の受付の締切」を、表の式で逆算する方法を説明します。</p>
-<h2>逆算は2段階</h2>
-<p>締切は、届けたい日から2回さかのぼって出します。</p>
-<ol>
-<li><strong>発送の締切</strong> = 届けたい日から、届くまでの日数をさかのぼった日</li>
-<li><strong>受付の締切</strong> = 発送の締切から、作る日数をさかのぼった日</li>
-</ol>
-<p>たとえば、12/24 に届けたい作品を、届くまで3日かかる方法で送り、作るのに3日かかるとします。12/21 に発送すれば 12/24 に届くので、発送の締切は 12/21 です。作るのに3日かかるので、12/18 までにご注文をいただければ、12/18〜12/20 に作って 12/21 に発送できます。</p>
-<h2>表にする</h2>
-<p>1行に、届けたい日・発送方法・作る日数を入れると、締切が出る表にします。</p>
-<p><a href="../../img/53_shimekiri.png"><img alt="締切の表。クリスマス 12/24 にゆうパケットで届ける場合、発送の締切 12/21・受付の締切 12/18。宅配便なら 12/22・12/19" src="../../img/53_shimekiri.png" /></a></p>
-<p>発送方法ごとの届くまでの日数は、別の「設定」のシートに書いておき、VLOOKUP で引きます。式の形は次のとおりです(読みやすくするため、入力の誤りを調べる部分は省いています)。</p>
-<pre><code>E2(発送の締切): =WORKDAY.INTL($B2-VLOOKUP($C2,設定!$A$2:$B$31,2,FALSE)+1,-1,設定!$H$2,設定!$D$2:$D$61)
-F2(受付の締切): =WORKDAY.INTL($E2,-$D2,設定!$H$2,設定!$D$2:$D$61)
-G2(受付の締切まで): =$F2-TODAY()
-</code></pre>
-<ul>
-<li>発送の締切は「届けたい日 − 日数 + 1 の前の、発送できる日」として出しています。12/24 − 3 + 1 = 12/22 の、1日前の発送できる日なので 12/21 です</li>
-<li>WORKDAY.INTL は、休みの日を飛ばして数える関数です。年末年始の休みや定休の曜日を飛ばす方法は、<a href="../nenmatsu-kyuujitsu/">年末年始の休みと定休日を飛ばして締切を出す記事</a>で説明しています</li>
-<li>例では、届くまで2日の宅配便なら発送の締切は 12/22、受付の締切は 12/19 です。発送方法を選べる作品は、方法ごとに1行ずつ作ると、告知で「宅配便なら 12/19 まで」と分けて書けます</li>
-</ul>
-<h2>告知文も式で作る</h2>
-<p>締切が出たら、SNS や商品ページに貼る文も、TEXT 関数で日付を文字にしてつなげれば、そのまま作れます。</p>
-<pre><code>H2: =$A2&amp;&quot;(&quot;&amp;TEXT($B2,&quot;m/d&quot;)&amp;&quot;)までにお届けするご注文は、&quot;&amp;TEXT($F2,&quot;m/d&quot;)&amp;&quot;までにお願いします(発送は&quot;&amp;TEXT($E2,&quot;m/d&quot;)&amp;&quot;まで)&quot;
-</code></pre>
-<p>例の1行目は「クリスマス(12/24)までにお届けするご注文は、12/18までにお願いします(発送は12/21まで)」になります。日数を直せば文も変わるので、書きまちがいが起きません。SNS の投稿の予定に組み込むときは、<a href="../sns-yotei/">SNS の投稿予定の記事</a>の表も使えます。</p>
-<h2>決めるときの注意</h2>
-<ul>
-<li><strong>届くまでの日数は、配送サービスの案内で確かめる</strong>: 地域によって日数が変わります。遠い地域にも送るなら、いちばん日数のかかる地域に合わせます</li>
-<li><strong>12月は1日多めに見る</strong>: 年末は荷物が多く、いつもより遅れることがあります。届くまでの日数を1日多く入れておくと安心です</li>
-<li><strong>作る日数は、注文が重なったときの日数で入れる</strong>: 1点なら1日で作れても、12月は注文が重なります。<a href="../shinsaku-keikaku/">新作を間に合わせる1日の作業時間の記事</a>のように、作業の量から日数を見積もると外れにくくなります</li>
-<li><strong>告知は締切の2〜3週間前から</strong>: 受付の締切まで(G 列)が少なくなってから告知すると、見てもらえる回数が減ります</li>
-</ul>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
-<p>締切を決めたあとの告知の出し方と、発送方法ごとに締切を分ける方法は、<a href="../shimekiri-kokuchi/">受付締切の告知の記事</a>にまとめています。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、設定・締切・注文をまとめたテンプレートで作りました(入力の誤りを赤で知らせる式も入っています)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9138291">ハンドメイド 年末年始・クリスマスの受注締切と発送予定表</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../nenmatsu-kyuujitsu/">年末年始の休みと定休日を飛ばして、発送の締切を出す</a></li><li><a href="../chuumon-joutai/">受けた注文ごとに、作り始めの締切と間に合うかを出す</a></li><li><a href="../shimekiri-kokuchi/">受付締切の告知をいつ・何回出すかと、発送方法ごとの締切を決める</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#shimekiri">受注締切・年末年始の発送</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/uketsuke-shimekiri/">https://masumedo.com/posts/uketsuke-shimekiri/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

@@ -3,71 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>年末年始の休みと定休日を飛ばして、発送の締切を出す|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="年末年始の休みの日と定休の曜日を表に書き、WORKDAY.INTL で飛ばして発送と受付の締切を出す方法。土日を定休にしたときの違いつき。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/nenmatsu-kyuujitsu/">
-<meta property="og:title" content="年末年始の休みと定休日を飛ばして、発送の締切を出す">
-<meta property="og:description" content="年末年始の休みの日と定休の曜日を表に書き、WORKDAY.INTL で飛ばして発送と受付の締切を出す方法。土日を定休にしたときの違いつき。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/nenmatsu-kyuujitsu/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/nenmatsu-kyuujitsu/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/nenmatsu-kyuujitsu/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>年末年始の休みと定休日を飛ばして、発送の締切を出す</h1>
-<p class="date">公開日: 2026-11-12</p>
-<p>年末年始にお休みをとると、締切の計算がややこしくなります。「1/5 に届けたいなら、何日に発送すればいい?」を、カレンダーを指で数えて決めると、休みの日を数えてしまったり、数え落としたりします。</p>
-<p>この記事では、休みの日と定休の曜日を表に書いておき、WORKDAY.INTL 関数で飛ばして数える方法を説明します。届けたい日から締切を逆算する考え方は、<a href="../uketsuke-shimekiri/">受付の締切を届けたい日から逆算する記事</a>で説明しています。</p>
-<h2>休みの日と定休の曜日を書く</h2>
-<p>設定のシートに、休みの日を1日1行で並べ、曜日の表に、定休の曜日だけ「休」と入れます。</p>
-<p><a href="../../img/54_settei.png"><img alt="設定のシート。発送方法と届くまでの日数、休みの日 12/29〜1/3、土と日に「休」を入れた曜日の表" src="../../img/54_settei.png" /></a></p>
-<p>WORKDAY.INTL は、定休の曜日を「月曜から日曜の7文字の 0 と 1」で受け取れます。1 が休みです。土日が休みなら <code>"0000011"</code> です。曜日の表から、この7文字を式で作っておきます。</p>
-<pre><code>H2(定休の並び): =IF(TRIM(G2)=&quot;休&quot;,&quot;1&quot;,&quot;0&quot;)&amp;IF(TRIM(G3)=&quot;休&quot;,&quot;1&quot;,&quot;0&quot;)&amp;IF(TRIM(G4)=&quot;休&quot;,&quot;1&quot;,&quot;0&quot;)&amp;IF(TRIM(G5)=&quot;休&quot;,&quot;1&quot;,&quot;0&quot;)&amp;IF(TRIM(G6)=&quot;休&quot;,&quot;1&quot;,&quot;0&quot;)&amp;IF(TRIM(G7)=&quot;休&quot;,&quot;1&quot;,&quot;0&quot;)&amp;IF(TRIM(G8)=&quot;休&quot;,&quot;1&quot;,&quot;0&quot;)
-</code></pre>
-<p>G2 が月曜、G8 が日曜の欄です。TRIM で前後の空白を取っているので、「休 」と空白が入っても休みとして数えます。</p>
-<h2>締切の式に、休みを渡す</h2>
-<p>締切の式では、3つ目に定休の並び、4つ目に休みの日の範囲を渡します。</p>
-<pre><code>発送の締切: =WORKDAY.INTL(届けたい日-届くまでの日数+1,-1,設定!$H$2,設定!$D$2:$D$61)
-受付の締切: =WORKDAY.INTL(発送の締切,-作る日数,設定!$H$2,設定!$D$2:$D$61)
-</code></pre>
-<ul>
-<li>2つ目の数がマイナスなので、さかのぼって数えます。休みの日と定休の曜日は、1日として数えずに飛ばします</li>
-<li>休みの日の範囲は、空の行があってもかまいません。あとから休みを足せるよう、範囲は広めにとっておきます</li>
-</ul>
-<h3>年末年始の休みをはさむ例</h3>
-<p>休みを 12/29〜1/3 にして、1/5 に宅配便(届くまで2日)で届けたい場合です。1/5 − 2 + 1 = 1/4 の前の発送できる日は、1/3〜12/29 が休みなので 12/28 です。作るのに2日かかるなら、受付の締切は 12/26 です。休みを数えてしまうと「1/3 発送」になり、実際には送れません。</p>
-<h3>土日を定休にした例</h3>
-<p>同じ記入例で、土と日に「休」を入れると、締切は次のように変わります。</p>
-<p><a href="../../img/54_donichi.png"><img alt="土日を定休にしたときの締切の表。クリスマスのゆうパケットは受付の締切が 12/18 から 12/16 に早まる" src="../../img/54_donichi.png" /></a></p>
-<ul>
-<li>クリスマス(12/24)・ゆうパケット・作る3日: 受付の締切は 12/18 から <strong>12/16</strong> に早まります(12/19・12/20 の土日に作らない分)</li>
-<li>お歳暮(12/20)・宅配便・作る5日: 12/13 から <strong>12/11</strong> に早まります</li>
-</ul>
-<p>この式では、発送の締切も受付の締切も同じ休みで数えるので、定休を入れると「作る日数」も平日だけで数えることになります。</p>
-<h3>発送の休みと、作業の休みが違うとき</h3>
-<p>「作業は土日もするが、発送は平日だけ」のように休みが違うときは、休みを2組に分けます。設定のシートに、作業用の定休の並び(たとえば J2)と作業用の休みの日の列(たとえば I 列)をもう1組作り、受付の締切の式にだけそちらを渡します。</p>
-<pre><code>発送の締切: =WORKDAY.INTL(届けたい日-届くまでの日数+1,-1,設定!$H$2,設定!$D$2:$D$61)
-受付の締切: =WORKDAY.INTL(発送の締切,-作る日数,設定!$J$2,設定!$I$2:$I$61)
-</code></pre>
-<p>作る日数を少なめに入れてごまかすと、締切の根拠があいまいになるので、休みを分けるほうが確かです。</p>
-<h2>気をつけること</h2>
-<ul>
-<li><strong>配送サービスの年末年始の休みも見る</strong>: 自分が休みでなくても、集荷や窓口が休みの日があります。その日は発送用の休みの日に足しておきます(休みを1組で使っているときは、作業もその日を休みとして数えることになります)</li>
-<li><strong>届くまでの日数は、休みを考えていない</strong>: 式は、届くまでの日数をカレンダーどおりに数えています。年末年始は配達が遅れることがあるので、日数を1日多めに入れておきます</li>
-<li><strong>休みの日が日付として入っているかを確かめる</strong>: 入れ方によっては文字として保存され、休みとして数えられません。右寄せで表示されているか、年まで正しい日付になっているかを確かめます(年をまたぐ 1/1〜1/3 は、翌年の日付になっているかも見ます)</li>
-</ul>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。WORKDAY.INTL は、Excel 2010 以降・Google スプレッドシート・LibreOffice Calc で使えます。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、設定・締切・注文をまとめたテンプレートで作りました。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9138291">ハンドメイド 年末年始・クリスマスの受注締切と発送予定表</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../chuumon-joutai/">受けた注文ごとに、作り始めの締切と間に合うかを出す</a></li><li><a href="../shimekiri-kokuchi/">受付締切の告知をいつ・何回出すかと、発送方法ごとの締切を決める</a></li><li><a href="../uketsuke-shimekiri/">クリスマスに届けるための受付の締切を、届けたい日から逆算する</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#shimekiri">受注締切・年末年始の発送</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/nenmatsu-kyuujitsu/">https://masumedo.com/posts/nenmatsu-kyuujitsu/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>

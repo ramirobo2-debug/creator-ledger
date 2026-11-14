@@ -3,62 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>12月の発送の見込みから、梱包資材を買い足す数を出す|個人クリエイターの売上・在庫管理</title>
-<meta name="description" content="発送の記録から1回の発送で使う封筒・緩衝材・箱の数を出し、12月の発送の回数の見込みから足りない数と買い足すパック数を式で出す方法。">
-<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/konpou-mikomi/">
-<meta property="og:title" content="12月の発送の見込みから、梱包資材を買い足す数を出す">
-<meta property="og:description" content="発送の記録から1回の発送で使う封筒・緩衝材・箱の数を出し、12月の発送の回数の見込みから足りない数と買い足すパック数を式で出す方法。">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/konpou-mikomi/">
-<link rel="stylesheet" href="../../style.css">
+<title>移転しました|個人クリエイターの売上・在庫管理</title>
+<link rel="canonical" href="https://masumedo.com/posts/konpou-mikomi/">
+<meta http-equiv="refresh" content="0; url=https://masumedo.com/posts/konpou-mikomi/">
 </head>
 <body>
-<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
-<main>
-<article>
-<h1>12月の発送の見込みから、梱包資材を買い足す数を出す</h1>
-<p class="date">公開日: 2026-11-12</p>
-<p>12月はプレゼントの注文で、発送の回数がふだんの月より増えます。封筒やお礼カードはたくさん残っていても、緩衝材や箱は思ったより早くなくなることがあります。発送の直前に足りないと気づくと、近くのお店で割高に買うことになりがちです。</p>
-<p>この記事では、発送の記録から「1回の発送で、どの資材をいくつ使っているか」を出し、12月の発送の回数の見込みから、足りない数と買い足すパック数を式で出します。</p>
-<h2>発送の記録と資材ごとの残り</h2>
-<p>発送1回を1行で記録して、送料と資材費・持ち出しを出す表は、<a href="../hassou-mochidashi/">発送で送料と梱包資材費を記録する記事</a>で作ったものです。資材別のシートには、使った回数・使った数・費用・入っていた数・残りの目安があります(残りの出し方は<a href="../konpou-shizai/">梱包資材の1個あたりの値段と残りの数の記事</a>)。</p>
-<h2>発送の回数あたりの使う数から、足りない数を出す</h2>
-<p>資材別のシートの右に、次の列を足します(この4列と M2・N2 は記事のために足したもので、テンプレートには入っていません)。</p>
-<p><a href="../../img/51_konpou_mikomi.png"><img alt="梱包資材の資材別のシートに、1回あたりの使う数・見込みで要る数・足りない数・買い足すパック数を足した表。12月の発送の見込みは60回" src="../../img/51_konpou_mikomi.png" /></a></p>
-<pre><code>M2(これまでの発送の回数): =COUNTIF(発送!$D$2:$D$2001,&quot;?*&quot;)
-N2(12月の発送の見込み):   60 のように手で入れる
-H2(1回あたりの使う数):   =IF(OR($A2=&quot;&quot;,N($M$2)&lt;=0),&quot;&quot;,$D2/$M$2)
-I2(見込みで要る数):      =IF(OR(NOT(ISNUMBER($H2)),NOT(ISNUMBER($N$2))),&quot;&quot;,$H2*$N$2)
-J2(足りない数):          =IF(OR(NOT(ISNUMBER($I2)),NOT(ISNUMBER($G2))),&quot;&quot;,MAX(0,$I2-$G2))
-K2(買い足すパック数):    =IF(OR(NOT(ISNUMBER($J2)),N($F2)&lt;=0),&quot;&quot;,ROUNDUP($J2/$F2,0))
-</code></pre>
-<ul>
-<li>M2 は、発送方法(D 列)に文字が入っている行の数です。<code>"?*"</code> は「1文字以上の文字」という条件で、式だけが入っている空の行は数えません</li>
-<li>H 列は「使った数 ÷ 発送の回数」です。例では6回の発送で緩衝材シートを7枚使ったので、1回あたり約 1.17枚です</li>
-<li>I 列は、それに12月の見込みの回数をかけたものです。60回発送するなら、緩衝材は 70枚要る見込みです</li>
-<li>J 列で残り(43枚)を引くと 27枚足りません。K 列で1パック 50枚(F 列)で割って切り上げ、1パック買い足します。買い足したときは、F 列を書き換えずに設定へ新しい名前で1行足す形にしておくと、F 列がそのまま1パックの数になります。F 列を合計に書き換えている場合は、これから買う1パックの数で割ってください</li>
-<li>N2 には数字だけを入れます。「60回」のように文字で入れると、I〜K 列は空になります</li>
-</ul>
-<p>例では、緩衝材シートを1パック、60サイズの箱を1パック買い足せば、60回の発送に足りる見込みです。封筒・OPP袋・お礼カードは、いまの残りで足ります。</p>
-<h2>読み方の注意</h2>
-<ul>
-<li><strong>箱は発送方法しだい</strong>: 箱は宅配便のときだけ使うので、12月に大きな作品(リースなど)の注文が増えそうなら、見込みより多めにします。発送方法ごとの回数は、テンプレートの発送方法別のシート(作り方は上の発送の記録の記事)で見られます</li>
-<li><strong>記録が少ないうちは、ぶれが大きい</strong>: 6回分の記録では、1回の包み方の違いで1回あたりの数が大きく変わります。出た数は目安にして、少し多めに買います</li>
-<li><strong>見込みの回数は、根拠のある数を入れる</strong>: 去年の12月の発送の回数や、11月の何倍かで決めます</li>
-<li><strong>ラッピングの資材は別に数える</strong>: ギフト袋やリボンは、<a href="../wrapping-kaitashi/">ラッピング資材を買い足す数の記事</a>と同じ形で、ラッピングの記録から出します</li>
-<li><strong>発送の締切も先に決めておく</strong>: 年末年始の休みをはさむと、発送できる日が限られます。休みを飛ばして締切を出す方法は、<a href="../nenmatsu-kyuujitsu/">年末年始の休みと定休日を飛ばして発送の締切を出す記事</a>で説明しています</li>
-<li><strong>お礼カード・ショップカードも同じ見込みで</strong>: 発送が増えると同封物も早く減ります。発送件数を12月の見込みに変えて、どれが先に切れるかを見る方法は、<a href="../doufuubutsu-12gatsu/">12月に同封物が足りるかを確かめる記事</a>で説明しています</li>
-</ul>
-<p>LibreOffice で式の区切りが <code>;</code> の設定になっている場合は、<code>,</code> を <code>;</code> に置き換えて入力します。</p>
-<h2>作った表を、そのまま使いたい方へ</h2>
-<p>この記事の表は、発送の記録と発送方法別・出品先別・資材別の集計をまとめたテンプレートで作りました(H〜K 列と M2・N2 は記事のために足したもので、テンプレートには入っていません)。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9136112">ハンドメイド 発送・送料と梱包資材の記録シート</a>もご覧ください。</p>
-<section class="related"><h2>関連記事</h2><ul><li><a href="../hassou-mochidashi/">ハンドメイドの発送で、送料と梱包資材費を記録して「持ち出し」を出す</a></li><li><a href="../konpou-shizai/">梱包資材の1個あたりの値段と、残りの数を式で出す</a></li><li><a href="../souryou-komi/">送料込みと送料別で、出品先ごとの「持ち出し」を比べる</a></li></ul></section>
-<p class="cat">カテゴリ: <a href="../../#hassou">発送・送料と梱包資材</a></p>
-</article>
-</main>
-<footer class="site">
-<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
-<p>© 2026 ますめ堂</p>
-</footer>
+<p>このサイトは <a href="https://masumedo.com/posts/konpou-mikomi/">https://masumedo.com/posts/konpou-mikomi/</a> に移転しました。自動で移動しない場合は、リンクを押してください。</p>
 </body>
 </html>
