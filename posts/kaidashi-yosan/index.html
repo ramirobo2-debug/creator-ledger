@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>材料の買い出しを「必須」と「あれば」に分けて、袋の数と予算内に収まるかを出す|個人クリエイターの売上・在庫管理</title>
+<meta name="description" content="使う数と手元の数から買う数・袋の数・金額を出し、材料を必須とあればに分けて、送料を含めて予算内に入る分と今回は見送る分を決める。">
+<link rel="canonical" href="https://ramirobo2-debug.github.io/creator-ledger/posts/kaidashi-yosan/">
+<meta property="og:title" content="材料の買い出しを「必須」と「あれば」に分けて、袋の数と予算内に収まるかを出す">
+<meta property="og:description" content="使う数と手元の数から買う数・袋の数・金額を出し、材料を必須とあればに分けて、送料を含めて予算内に入る分と今回は見送る分を決める。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ramirobo2-debug.github.io/creator-ledger/posts/kaidashi-yosan/">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<header class="site"><a href="../../" class="brand">個人クリエイターの売上・在庫管理</a></header>
+<main>
+<article>
+<h1>材料の買い出しを「必須」と「あれば」に分けて、袋の数と予算内に収まるかを出す</h1>
+<p class="date">公開日: 2026-11-14</p>
+<p>年始のセールや新作の準備で材料を買いに行くと、ついほかの材料も手に取ってしまい、予算をこえがちです。買う前に、<strong>作る数から買う数と袋の数を出し</strong>、材料を「必須」と「あれば」に分けて、<strong>予算内に入る分だけ買う</strong> と決めておくと、買いすぎを防げます。</p>
+<h2>買う数と袋の数の出し方</h2>
+<pre><code>買う数 = 使う数 − 手元の数(0 より小さければ 0)
+袋の数 = 買う数 ÷ 1袋の数(小数は切り上げ)
+金額 = 袋の数 × 1袋の値段
+余る数 = 袋の数 × 1袋の数 − 買う数(買った分のうち、今回使わずに残る数)
+</code></pre>
+<p>表の「余る数」は買った分の残りです。手元の分も合わせた作ったあとの在庫は、手元の数 + 買う数 − 使う数 で出します(個包装の袋なら 50 − 30 = 20枚)。</p>
+<p>数字は説明のための架空のものです。</p>
+<table>
+<thead>
+<tr>
+<th>材料</th>
+<th>区分</th>
+<th>使う数</th>
+<th>手元</th>
+<th>1袋の数</th>
+<th>1袋の値段</th>
+<th>袋の数</th>
+<th>金額</th>
+<th>余る数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>金具</td>
+<td>必須</td>
+<td>28個</td>
+<td>0個</td>
+<td>10個</td>
+<td>480円</td>
+<td>3袋</td>
+<td>1,440円</td>
+<td>2個</td>
+</tr>
+<tr>
+<td>レジン液</td>
+<td>必須</td>
+<td>2本</td>
+<td>0本</td>
+<td>1本</td>
+<td>1,100円</td>
+<td>2本</td>
+<td>2,200円</td>
+<td>0</td>
+</tr>
+<tr>
+<td>個包装の袋</td>
+<td>必須</td>
+<td>30枚</td>
+<td>50枚</td>
+<td>100枚</td>
+<td>300円</td>
+<td>0</td>
+<td>0円</td>
+<td>手元で足りる</td>
+</tr>
+<tr>
+<td>新色の糸</td>
+<td>あれば</td>
+<td>1個</td>
+<td>0個</td>
+<td>1個</td>
+<td>660円</td>
+<td>1個</td>
+<td>660円</td>
+<td>0</td>
+</tr>
+<tr>
+<td>ビーズ</td>
+<td>あれば</td>
+<td>1袋</td>
+<td>0袋</td>
+<td>1袋</td>
+<td>1,300円</td>
+<td>1袋</td>
+<td>1,300円</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>個包装の袋は手元の 50枚 で足りるので、買いません。手元の数を先に入れておくと、同じものを二重に買うのを防げます。</p>
+<h2>予算内に入るかを上から順に決める</h2>
+<p>予算 5,000円、通販の送料 600円 とします。</p>
+<ol>
+<li>送料と「必須」を先に入れます: 600 + 1,440 + 2,200 = 4,240円 → 残り <strong>760円</strong></li>
+<li>「あれば」は、ほしい順に上から入れます: 新色の糸 660円 → 残り 100円 で <strong>予算内</strong></li>
+<li>次のビーズ 1,300円 は残りに入らないので、<strong>今回は見送り</strong></li>
+</ol>
+<p>ぜんぶ買うと 6,200円 で、1,200円 予算をこえていました。必須だけで予算をこえるときは、作る数を減らすか、予算を見直します(「あれば」を削っても足りないからです)。</p>
+<h2>気をつけること</h2>
+<ul>
+<li>「あれば」は、ほしい順(使う予定が早い順)に並べてから入れます。並べ方で、どれが見送りになるかが変わります</li>
+<li>通販で送料無料の金額に届きそうなときは、送料と合わせて比べます(<a href="../souryou-muryou/">送料無料まであと何円かの記事</a>)</li>
+<li>余る数が多い材料は、ほかの作品で使う予定がなければ、小さい袋の店を探すと安く済むことがあります(<a href="../shiire-hikaku/">仕入れ先を送料込みの1個あたりで比べる記事</a>)</li>
+</ul>
+<h2>作った表を、そのまま使いたい方へ</h2>
+<p>この記事の考え方は、使う数と手元の数から袋の数と金額を出し、必須とあればに分けて予算内か見送りかを判定するテンプレートの考え方と同じです。表を一から作る時間を省きたい方は、<a href="https://masumedo.booth.pm/items/9146217">ハンドメイド 材料の買い出しリストと予算シート</a>もご覧ください。</p>
+<section class="related"><h2>関連記事</h2><ul><li><a href="../shiire-hikaku/">材料の仕入れ先を、送料込みの1個あたりの値段で比べる</a></li><li><a href="../souryou-muryou/">送料無料まであと何円かと、まとめ買いで1個あたりがいくら下がるかを出す</a></li><li><a href="../shiire-ichiran/">材料ごとに一番安い店を一覧にする</a></li></ul></section>
+<p class="cat">カテゴリ: <a href="../../#shiire">材料の仕入れ先・価格比較</a></p>
+</article>
+</main>
+<footer class="site">
+<nav><a href="../../">記事の一覧</a> ・ <a href="../../about/">このサイトについて</a> ・ <a href="../../privacy/">プライバシーポリシー</a></nav>
+<p>© 2026 ますめ堂</p>
+</footer>
+</body>
+</html>
